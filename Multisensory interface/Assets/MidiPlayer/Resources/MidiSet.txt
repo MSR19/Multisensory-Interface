@@ -1,0 +1,181 @@
+<?xml version="1.0"?>
+<MidiSet xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SoundFonts>
+    <SoundFontInfo>
+      <Name>GeneralUser GS v1.471</Name>
+      <PatchCount>269</PatchCount>
+      <WaveCount>864</WaveCount>
+      <WaveSize>35262462</WaveSize>
+      <SF2Path>C:/Users/thier/AppData/LocalLow/DefaultCompany/MidiPlayer - free 2_89_1\SoundFont\GeneralUser GS v1.471.sf2</SF2Path>
+    </SoundFontInfo>
+  </SoundFonts>
+  <IndexSelectedSF>0</IndexSelectedSF>
+  <MidiFiles>
+    <string>@ All Rights Reserved for these Midi Files</string>
+    <string>Albinoni - Adagio</string>
+    <string>All Night Long</string>
+    <string>Animal Crossing</string>
+    <string>Aqua - Lollipop Candy Man</string>
+    <string>Bach - Fugue</string>
+    <string>Bach - Little fugue G minor</string>
+    <string>Bach - Prelude</string>
+    <string>Bach - The Art of Fugue</string>
+    <string>Bach - Toccata in D minor Organ</string>
+    <string>Bach - Toccata in D minor Piano</string>
+    <string>Bach - Trisonate 3iem mvt</string>
+    <string>Baez Joan - Here's to You</string>
+    <string>Baez Joan - Plaisir D'Amour</string>
+    <string>Beattles - Michelle</string>
+    <string>Bizet - Arlesienne</string>
+    <string>Bjork - Joga</string>
+    <string>Bjork - Oh So Quiet</string>
+    <string>Bjork - Venus As A Boy</string>
+    <string>BlowinintheWind</string>
+    <string>Blues Image - Ride Captain Ride</string>
+    <string>Bobby Blue Bland - A Touch Of Blues</string>
+    <string>Buddy Guy - Midnight Train</string>
+    <string>Christopher Cross - Sailing</string>
+    <string>CO2 Levels</string>
+    <string>CO2_Levels</string>
+    <string>Conan The Barbarian</string>
+    <string>crh</string>
+    <string>crh24</string>
+    <string>crh33</string>
+    <string>crh66</string>
+    <string>crh99</string>
+    <string>Dark Cloud 2 - Dark Chronicle</string>
+    <string>Dark Cloud 2 - Peace</string>
+    <string>Dark Cloud 2 - Shop Theme</string>
+    <string>DarkCloud2</string>
+    <string>Debussy - Clair De Lune</string>
+    <string>Debussy - Clair De Lune V2</string>
+    <string>Donkey Kong - Country</string>
+    <string>Donkey Kong - Theme</string>
+    <string>Dragon Ball Z - Battle Theme1</string>
+    <string>Dragon Ball Z - Opening</string>
+    <string>Dragon Ball Z - Super Butouden 2</string>
+    <string>Eagles - Best Of My Love</string>
+    <string>Everybody loves somebody sometime 1</string>
+    <string>EVO - Boss Theme</string>
+    <string>exe</string>
+    <string>exexe</string>
+    <string>exexeex</string>
+    <string>exexeexexc</string>
+    <string>exexeexexcexc</string>
+    <string>Faure - Requiem</string>
+    <string>Final Fantasy - Village</string>
+    <string>Fire Emblem 3 - Theme</string>
+    <string>Forest fires Drought Code</string>
+    <string>Forest fires Duff Moisture Code</string>
+    <string>Forest fires Fine Fuel Moisture Code</string>
+    <string>Forest fires Initial Spread Index</string>
+    <string>Forest fires Relative Humidity</string>
+    <string>Forest fires temperature</string>
+    <string>ForestFire_Temp</string>
+    <string>Genesis - OneForTheVine</string>
+    <string>Higelin Jacques - Champagne</string>
+    <string>Iris petal length</string>
+    <string>Iris petal length and width</string>
+    <string>Iris petal width</string>
+    <string>Iris sepal length</string>
+    <string>Iris sepal length and width</string>
+    <string>Iris sepal width</string>
+    <string>iris_petalLength_petalWidth</string>
+    <string>iris_sepalLength_sepalWidth</string>
+    <string>John Lee Hooker - Boom Boom Boom</string>
+    <string>kakariko</string>
+    <string>kekW</string>
+    <string>ladolcevita</string>
+    <string>lel</string>
+    <string>Leo Ferre - Avec le temps</string>
+    <string>Linbon_TempC</string>
+    <string>Lisbon humidity</string>
+    <string>Lisbon pressure</string>
+    <string>Lisbon temperature</string>
+    <string>Lisbon winds peed</string>
+    <string>Liszt - La Campanella</string>
+    <string>Liszt Saint-Saens - Danse Macabre</string>
+    <string>Louis Armstrong - Hello Dolly</string>
+    <string>Louis Armstrong - What A Wonderful World</string>
+    <string>lul</string>
+    <string>Maji Call Jarr</string>
+    <string>Mammals body and brain weight</string>
+    <string>Mammals dreaming and danger level</string>
+    <string>Mammals sleep and body weight</string>
+    <string>Mammals sleep and brain weight</string>
+    <string>Mammals sleep and danger level</string>
+    <string>Mammals sleep and life span</string>
+    <string>Mammals sleep and life span and danger level</string>
+    <string>Mammals time dreaming</string>
+    <string>Mammals total sleep time</string>
+    <string>Mike Oldfield - Incantations 1</string>
+    <string>Mike Oldfield - Incantations 3</string>
+    <string>Mike Oldfield - Moonlight_Shadow</string>
+    <string>Mike Oldfield - Ommadawn 1</string>
+    <string>Mike Oldfield - Ommadawn 1b</string>
+    <string>Mike Oldfield - TubularBells Part 1</string>
+    <string>Moby - Alone</string>
+    <string>Moby - J Breas</string>
+    <string>Moby - The Blue Terror of Lawns</string>
+    <string>Mozart - Requiem Confutatis</string>
+    <string>Mozart - Requiem Dies Irae</string>
+    <string>Mozart - Requiem Introitus</string>
+    <string>Mozart - Sonate 11 Alla Turca</string>
+    <string>MPTK_Example 0001</string>
+    <string>MPTK_Example 0021</string>
+    <string>Nirvana - Smells Like Teen Spirit</string>
+    <string>Palm Bricks</string>
+    <string>Patti Smith - Because the Night</string>
+    <string>peng flipper lenght</string>
+    <string>Penguins  culmen length</string>
+    <string>Penguins culmen depth</string>
+    <string>Penguins culmen depth and length</string>
+    <string>Penguins flipper length</string>
+    <string>Penguins weight</string>
+    <string>Penguins weight and flipper length</string>
+    <string>Pergolesi - Stabat Mater</string>
+    <string>Porto humidity</string>
+    <string>Porto pressure</string>
+    <string>Porto temperature</string>
+    <string>Porto wind speed</string>
+    <string>Porto_TempC</string>
+    <string>Reayo - Amor de Hombre</string>
+    <string>Salvador Henri - Jardin D'hiver</string>
+    <string>Satie - Gnossienne 4</string>
+    <string>Satie - Gnossienne 5</string>
+    <string>Satie - Gymnopedie 1</string>
+    <string>Satie - Gymnopedie 2</string>
+    <string>Satie - Trois Gnossiennes</string>
+    <string>Sibelius - Finlandia</string>
+    <string>Sibelius - Romance</string>
+    <string>sleepMinutes_lifeSpan</string>
+    <string>sleepMinutes_lifeSpan_danger</string>
+    <string>sloth</string>
+    <string>Sloth claw and tail length</string>
+    <string>Sloth claw length</string>
+    <string>Sloth size</string>
+    <string>Sloth size and weight</string>
+    <string>Sloth tail length</string>
+    <string>Sloth weight</string>
+    <string>Take 5 - by Paul Desmond</string>
+    <string>Tchaikovsky - Flower Waltz</string>
+    <string>Tetris2</string>
+    <string>The Christmas Song</string>
+    <string>To Make the End of Battle</string>
+    <string>toturialSound</string>
+    <string>toturialSound2</string>
+    <string>toturialSound3</string>
+    <string>Van Morrison - Moondance</string>
+    <string>Van Morrison - Wild Nights</string>
+    <string>vbbbbbb</string>
+    <string>Void World's 2nd Half</string>
+    <string>wa</string>
+    <string>we</string>
+    <string>wi</string>
+    <string>winequalityN_N_alcohol</string>
+    <string>WishYouWereHere</string>
+    <string>wo</string>
+    <string>Yves Montand - A bicyclette</string>
+    <string>Zagronia - Dw1gOver</string>
+  </MidiFiles>
+</MidiSet>
