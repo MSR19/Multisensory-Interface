@@ -2,7 +2,7 @@
 
 This is a interface done for the thesys "Application of Multisensory Interfaces in Immersive Analytics"
 
-It uses sound, touch and graohs to transmit information to the user.
+It uses sound, touch and graphs to transmit information to the user.
 
 This projetc used IATK (https://github.com/MaximeCordeil/IATK) as a starting point to the interface. 
 
