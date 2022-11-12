@@ -43,9 +43,7 @@ namespace MidiPlayerTK
         public GUIStyle BtTransparent;
         public GUIStyle BtListNormal;
 
-        public Color ButtonColor = new Color(.7f, .9f, .7f, 1f);
-
-        /// <summary>
+        /// <summary>@brief
         /// Set custom Style. Good for background color 3E619800
         /// </summary>
         public CustomStyle()
@@ -218,22 +216,5 @@ namespace MidiPlayerTK
             BlueText.alignment = TextAnchor.UpperLeft;
             //styleDragZone.border = new RectOffset(2, 2, 2, 2);
         }
-
-        /// <summary>
-        /// Used to define color of GUI ----  Issue: become transparent when get focus. Prefer loading texture from resource
-        /// </summary>
-        /// <param name="tex2"></param>
-        /// <param name="color"></param>
-        /// <returns></returns>
-        public Texture2D SetColor(Texture2D tex2, Color32 color)
-        {
-            var fillColorArray = tex2.GetPixels32();
-            for (var i = 0; i < fillColorArray.Length; ++i)
-                fillColorArray[i] = color;
-            tex2.SetPixels32(fillColorArray);
-            tex2.Apply();
-            return tex2;
-        }
-     
     }
 }

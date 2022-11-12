@@ -8,7 +8,7 @@ namespace MidiPlayerTK
     using UnityEditor;
     using UnityEngine;
 
-    /// <summary>
+    /// <summary>@brief
     /// Window editor for the setup of MPTK
     /// </summary>
     public class SoundFontSetupWindow : EditorWindow
@@ -36,19 +36,7 @@ namespace MidiPlayerTK
         static float xpostitlebox = 2;
         static float ypostitlebox = 5;
 
-        static GUIStyle styleWindow;
-        static GUIStyle stylePanel;
-        static GUIStyle styleBold;
-        static GUIStyle styleAlertRed;
-        static GUIStyle styleRichText;
-        static GUIStyle styleLabelLeft;
-        static GUIStyle styleLabelRight;
-        static GUIStyle styleMiniButton;
-        static GUIStyle styleListTitle;
-        static GUIStyle styleListRow;
-        static GUIStyle styleListRowSelected;
-        static GUIStyle styleListLabel;
-        static GUIStyle styleToggle;
+
 
         public static BuilderInfo LogInfo;
 #if MPTK_PRO
@@ -59,14 +47,16 @@ namespace MidiPlayerTK
         static public bool RemoveUnusedWaves = false;
         static public bool LogDetailSoundFont = false;
 
-        private Texture buttonIconView;
-        private Texture buttonIconHelp;
-        private Texture buttonIconSave;
-        private Texture buttonIconFolders;
-        private Texture buttonIconDelete;
+        List<MPTKGui.StyleItem> columnSF;
+        List<MPTKGui.StyleItem> columnBank;
 
-        ToolsEditor.DefineColumn[] columnSF;
-        ToolsEditor.DefineColumn[] columnBank;
+        static int LoadType;
+        static int CompressionFormat;
+        static MPTKGui.PopupList popupLoadType;
+        static MPTKGui.PopupList popupCompressionFormat;
+
+        static List<MPTKGui.StyleItem> listLoadType;
+        static  List<MPTKGui.StyleItem> listCompressionFormat;
 
 
         // % (ctrl on Windows, cmd on macOS), # (shift), & (alt).
@@ -80,72 +70,9 @@ namespace MidiPlayerTK
                 window = GetWindow<SoundFontSetupWindow>(true, "SoundFont Setup");
                 if (window == null) return;
                 window.minSize = new Vector2(989, 568);
+                LoadType = 1;
+                CompressionFormat = 0;
                 //Debug.Log(window.position);
-
-                int borderSize = 1; // Border size in pixels
-                RectOffset rectBorder = new RectOffset(borderSize, borderSize, borderSize, borderSize);
-
-                styleBold = new GUIStyle(EditorStyles.boldLabel);
-                styleBold.fontStyle = FontStyle.Bold;
-                styleBold.alignment = TextAnchor.UpperLeft;
-                styleBold.normal.textColor = Color.black;
-
-                styleMiniButton = new GUIStyle(EditorStyles.miniButtonMid);
-                styleMiniButton.fixedWidth = 16;
-                styleMiniButton.fixedHeight = 16;
-                float gray1 = 0.5f;
-                float gray2 = 0.1f;
-                float gray3 = 0.7f;
-                float gray4 = 0.65f;
-                float gray5 = 0.5f;
-
-                styleWindow = new GUIStyle("box");
-                styleWindow.normal.background = ToolsEditor.MakeTex(10, 10, new Color(gray5, gray5, gray5, 1f), rectBorder, new Color(gray2, gray2, gray2, 1f));
-                styleWindow.alignment = TextAnchor.MiddleCenter;
-
-                stylePanel = new GUIStyle("box");
-                stylePanel.normal.background = ToolsEditor.MakeTex(10, 10, new Color(gray4, gray4, gray4, 1f), rectBorder, new Color(gray2, gray2, gray2, 1f));
-                stylePanel.alignment = TextAnchor.MiddleCenter;
-
-                styleListTitle = new GUIStyle("box");
-                styleListTitle.normal.background = ToolsEditor.MakeTex(10, 10, new Color(gray1, gray1, gray1, 1f), rectBorder, new Color(gray2, gray2, gray2, 1f));
-                styleListTitle.normal.textColor = Color.black;
-                styleListTitle.alignment = TextAnchor.MiddleCenter;
-
-                styleListRow = new GUIStyle("box");
-                styleListRow.normal.background = ToolsEditor.MakeTex(10, 10, new Color(gray3, gray3, gray3, 1f), rectBorder, new Color(gray2, gray2, gray2, 1f));
-                styleListRow.alignment = TextAnchor.MiddleCenter;
-
-                styleListRowSelected = new GUIStyle("box");
-                styleListRowSelected.normal.background = ToolsEditor.MakeTex(10, 10, new Color(.6f, .8f, .6f, 1f), rectBorder, new Color(gray2, gray2, gray2, 1f));
-                styleListRowSelected.alignment = TextAnchor.MiddleCenter;
-
-                styleListLabel = new GUIStyle("label");
-                styleListLabel.alignment = TextAnchor.UpperLeft;
-                styleListLabel.normal.textColor = Color.black;
-
-                styleToggle = new GUIStyle("toggle");
-                //styleToggle.normal.background = ToolsEditor.MakeTex(10, 10, new Color(gray1, gray1, gray1, 1f), rectBorder, new Color(gray2, gray2, gray2, 1f));
-                styleToggle.normal.textColor = Color.black;
-                //styleToggle.alignment = TextAnchor.MiddleCenter;
-
-                styleAlertRed = new GUIStyle(EditorStyles.label);
-                styleAlertRed.normal.textColor = new Color(188f / 255f, 56f / 255f, 56f / 255f);
-                styleAlertRed.fontSize = 16;
-                //styleRed.fontStyle = FontStyle.Bold;
-
-                styleRichText = new GUIStyle(EditorStyles.label);
-                styleRichText.richText = true;
-                styleRichText.alignment = TextAnchor.UpperLeft;
-                styleRichText.normal.textColor = Color.black;
-
-                styleLabelRight = new GUIStyle(EditorStyles.label);
-                styleLabelRight.alignment = TextAnchor.MiddleRight;
-                styleLabelRight.normal.textColor = Color.black;
-
-                styleLabelLeft = new GUIStyle(EditorStyles.label);
-                styleLabelLeft.alignment = TextAnchor.MiddleLeft;
-                styleLabelLeft.normal.textColor = Color.black;
             }
             catch (System.Exception/* ex*/)
             {
@@ -155,16 +82,7 @@ namespace MidiPlayerTK
 
         }
 
-        private void OnEnable()
-        {
-            buttonIconView = Resources.Load<Texture2D>("Textures/eye");
-            buttonIconSave = Resources.Load<Texture2D>("Textures/Save_24x24");
-            buttonIconFolders = Resources.Load<Texture2D>("Textures/Folders");
-            buttonIconDelete = Resources.Load<Texture2D>("Textures/Delete_32x32");
-            buttonIconHelp = Resources.Load<Texture2D>("Textures/question-mark"); 
-
-        }
-        /// <summary>
+        /// <summary>@brief
         /// Reload data
         /// </summary>
         private void OnFocus()
@@ -172,7 +90,7 @@ namespace MidiPlayerTK
             // Load description of available soundfont
             try
             {
-                Init();
+                //Init();
 
                 MidiPlayerGlobal.InitPath();
 
@@ -193,6 +111,8 @@ namespace MidiPlayerTK
                 // Exec after Refresh, either cause errror
                 if (MidiPlayerGlobal.ImSFCurrent == null)
                     MidiPlayerGlobal.LoadCurrentSF();
+                //BuildPopup();
+
             }
             catch (Exception /*ex*/)
             {
@@ -206,15 +126,17 @@ namespace MidiPlayerTK
             {
                 if (window == null)
                     Init();
+
                 if (LogInfo == null) LogInfo = new BuilderInfo();
+                MidiCommonEditor.LoadSkinAndStyle();
 
                 float startx = 5;
                 float starty = 7;
 
-                GUI.Box(new Rect(0, 0, window.position.width, window.position.height), "", styleWindow);
+                GUI.Box(new Rect(0, 0, window.position.width, window.position.height), "", MidiCommonEditor.styleWindow);
 
                 GUIContent content = new GUIContent() { text = "Setup SoundFont - Version " + ToolsEditor.version, tooltip = "" };
-                EditorGUI.LabelField(new Rect(startx, starty, 500, itemHeight), content, styleBold);
+                EditorGUI.LabelField(new Rect(startx, starty, 500, itemHeight), content, MidiCommonEditor.styleBold);
 
                 content = new GUIContent() { text = "Doc & Contact", tooltip = "Get some help" };
 
@@ -249,29 +171,29 @@ namespace MidiPlayerTK
         }
 
 
-        /// <summary>
+        /// <summary>@brief
         /// Display, add, remove Soundfont
         /// </summary>
         /// <param name="localstartX"></param>
         /// <param name="localstartY"></param>
         private void ShowListSoundFonts(float startX, float startY, float width, float height)
         {
-            try
+            try 
             {
                 if (columnSF == null)
                 {
-                    columnSF = new ToolsEditor.DefineColumn[6];
-                    columnSF[0].Width = 215; columnSF[0].Caption = "SoundFont Name"; columnSF[0].PositionCaption = 1f;
-                    columnSF[1].Width = 40; columnSF[1].Caption = "Patch"; columnSF[1].PositionCaption = 6f;
-                    columnSF[2].Width = 45; columnSF[2].Caption = "Wave"; columnSF[2].PositionCaption = 15f;
-                    columnSF[3].Width = 60; columnSF[3].Caption = "Size"; columnSF[3].PositionCaption = 25f;
-                    columnSF[4].Width = 85; columnSF[4].Caption = "SoundFont"; columnSF[4].PositionCaption = 5f;
-                    columnSF[5].Width = 50; columnSF[5].Caption = "Remove"; columnSF[5].PositionCaption = -7f;
+                    columnSF = new List<MPTKGui.StyleItem>();
+                    columnSF.Add(new MPTKGui.StyleItem() { Width = 215, Caption = "SoundFont Name", Offset = 1f });
+                    columnSF.Add(new MPTKGui.StyleItem() { Width = 40, Caption = "Patch", Offset = 6f });
+                    columnSF.Add(new MPTKGui.StyleItem() { Width = 45, Caption = "Wave", Offset = 15f });
+                    columnSF.Add(new MPTKGui.StyleItem() { Width = 60, Caption = "Size", Offset = 25f });
+                    columnSF.Add(new MPTKGui.StyleItem() { Width = 85, Caption = "SoundFont", Offset = 5f });
+                    columnSF.Add(new MPTKGui.StyleItem() { Width = 50, Caption = "Remove", Offset = -7f });
                 }
 
                 Rect zone = new Rect(startX, startY, width, height);
                 //GUI.color = new Color(.8f, .8f, .8f, 1f);
-                GUI.Box(zone, "", stylePanel);
+                GUI.Box(zone, "", MidiCommonEditor.stylePanel);
                 GUI.color = Color.white;
                 float localstartX = 0;
                 float localstartY = 0;
@@ -285,7 +207,7 @@ namespace MidiPlayerTK
                 }
                 localstartX += xpostitlebox;
                 localstartY += ypostitlebox;
-                EditorGUI.LabelField(new Rect(startX + localstartX + 5, startY + localstartY, width, titleHeight), content, styleBold);
+                EditorGUI.LabelField(new Rect(startX + localstartX + 5, startY + localstartY, width, titleHeight), content, MidiCommonEditor.styleBold);
                 localstartY += titleHeight;
 
                 if (GUI.Button(new Rect(startX + localstartX + espace, startY + localstartY, buttonLargeWidth, buttonHeight), "Download SoundFonts"))
@@ -301,15 +223,17 @@ namespace MidiPlayerTK
                         //if (EditorUtility.DisplayDialog("Import SoundFont", "This action could take time, do you confirm ?", "Ok", "Cancel"))
                         {
                             this.AddSoundFont();
+                            LoadType = popupLoadType.SelectedIndex = MidiPlayerGlobal.ImSFCurrent.LoadType;
+                            CompressionFormat = popupCompressionFormat.SelectedIndex = MidiPlayerGlobal.ImSFCurrent.CompressionFormat;
                             scrollPosSoundFont = Vector2.zero;
                         }
                     }
                 }
 #else
-                if (GUI.Button(new Rect(startX + localstartX + 2* espace+ buttonLargeWidth, startY + localstartY, buttonLargeWidth, buttonHeight), "Add a SoundFont [PRO]"))
+                if (GUI.Button(new Rect(startX + localstartX + 2 * espace + buttonLargeWidth, startY + localstartY, buttonLargeWidth, buttonHeight), "Add a SoundFont [PRO]"))
                     PopupWindow.Show(new Rect(startX + localstartX, startY + localstartY, buttonLargeWidth, buttonHeight), new GetFullVersion());
 #endif
-                if (GUI.Button(new Rect(startX + localstartX + width - 65, startY + localstartY - 18, 35, 35), buttonIconHelp))
+                if (GUI.Button(new Rect(startX + localstartX + width - 65, startY + localstartY - 18, 35, 35), MPTKGui.IconHelp))
                 {
                     //CreateWave createwave = new CreateWave();
                     //string path = System.IO.Path.Combine(MidiPlayerGlobal.MPTK_PathToResources, "unitySample") + ".wav";
@@ -327,11 +251,11 @@ namespace MidiPlayerTK
                 localstartY += buttonHeight + espace;
 
                 // Draw title list box
-                GUI.Box(new Rect(startX + localstartX + espace, startY + localstartY, width - 35, itemHeight), "", styleListTitle);
+                GUI.Box(new Rect(startX + localstartX + espace, startY + localstartY, width - 35, itemHeight), "", MidiCommonEditor.styleListTitle);
                 float boxX = startX + localstartX + espace;
-                foreach (ToolsEditor.DefineColumn column in columnSF)
+                foreach (MPTKGui.StyleItem column in columnSF)
                 {
-                    GUI.Label(new Rect(boxX + column.PositionCaption, startY + localstartY, column.Width, itemHeight), column.Caption, styleLabelLeft);
+                    GUI.Label(new Rect(boxX + column.Offset, startY + localstartY, column.Width, itemHeight), column.Caption, MidiCommonEditor.styleLabelLeft);
                     boxX += column.Width;
                 }
 
@@ -341,9 +265,9 @@ namespace MidiPlayerTK
                 {
 
                     Rect listVisibleRect = new Rect(startX + localstartX, startY + localstartY - 6, width - 10, height - localstartY);
-                    Rect listContentRect = new Rect(0, 0, width - 25, MidiPlayerGlobal.CurrentMidiSet.SoundFonts.Count * itemHeight + 5);
+                    Rect listContentRect = new Rect(0, 0, width - 35, MidiPlayerGlobal.CurrentMidiSet.SoundFonts.Count * itemHeight + 5);
 
-                    scrollPosSoundFont = GUI.BeginScrollView(listVisibleRect, scrollPosSoundFont, listContentRect, false, true);
+                    scrollPosSoundFont = GUI.BeginScrollView(listVisibleRect, scrollPosSoundFont, listContentRect, false, false);
                     float boxY = 0;
 
                     // Loop on each soundfont
@@ -353,24 +277,24 @@ namespace MidiPlayerTK
                         bool selected = (MidiPlayerGlobal.ImSFCurrent != null && sf.Name == MidiPlayerGlobal.CurrentMidiSet.ActiveSounFontInfo.Name);
 
                         // Draw a row
-                        GUI.Box(new Rect(espace, boxY, width - 35, itemHeight), "", selected ? styleListRowSelected : styleListRow);
+                        GUI.Box(new Rect(espace, boxY, width - 35, itemHeight), "", selected ? MidiCommonEditor.styleListRowSelected : MidiCommonEditor.styleListRow);
 
                         // Start content position (from the visible rect)
                         boxX = espace;
 
                         // col 1 - name
                         float colw = columnSF[0].Width;
-                        EditorGUI.LabelField(new Rect(boxX + 1, boxY + 2, colw, itemHeight - 5), sf.Name, styleLabelLeft);
+                        EditorGUI.LabelField(new Rect(boxX + 1, boxY + 2, colw, itemHeight - 5), sf.Name, MidiCommonEditor.styleLabelLeft);
                         boxX += colw;
 
                         // col 2 - patch count
                         colw = columnSF[1].Width;
-                        EditorGUI.LabelField(new Rect(boxX, boxY + 3, colw, itemHeight - 7), sf.PatchCount.ToString(), styleLabelRight);
+                        EditorGUI.LabelField(new Rect(boxX, boxY + 3, colw, itemHeight - 7), sf.PatchCount.ToString(), MidiCommonEditor.styleLabelRight);
                         boxX += colw;
 
                         // col 3 - wave count
                         colw = columnSF[2].Width;
-                        EditorGUI.LabelField(new Rect(boxX, boxY + 3, colw, itemHeight - 7), sf.WaveCount.ToString(), styleLabelRight);
+                        EditorGUI.LabelField(new Rect(boxX, boxY + 3, colw, itemHeight - 7), sf.WaveCount.ToString(), MidiCommonEditor.styleLabelRight);
                         boxX += colw;
 
                         // col 4 - size
@@ -378,7 +302,7 @@ namespace MidiPlayerTK
                         string sizew = (sf.WaveSize < 1000000) ?
                              Math.Round((double)sf.WaveSize / 1000d).ToString() + " Ko" :
                              Math.Round((double)sf.WaveSize / 1000000d).ToString() + " Mo";
-                        EditorGUI.LabelField(new Rect(boxX, boxY + 3, colw, itemHeight - 7), sizew, styleLabelRight);
+                        EditorGUI.LabelField(new Rect(boxX, boxY + 3, colw, itemHeight - 7), sizew, MidiCommonEditor.styleLabelRight);
                         boxX += colw;
 
                         string textselect = "Select";
@@ -392,6 +316,11 @@ namespace MidiPlayerTK
                         {
 #if MPTK_PRO
                             this.SelectSf(i);
+                            if (MidiPlayerGlobal.ImSFCurrent != null)
+                            {
+                                LoadType = popupLoadType.SelectedIndex = MidiPlayerGlobal.ImSFCurrent.LoadType;
+                                CompressionFormat = popupCompressionFormat.SelectedIndex = MidiPlayerGlobal.ImSFCurrent.CompressionFormat;
+                            }
                             LogInfo = new BuilderInfo();
 #else
                             PopupWindow.Show(new Rect(boxX, boxY + 3, buttonMediumWidth, buttonHeight), new GetFullVersion());
@@ -400,7 +329,7 @@ namespace MidiPlayerTK
                         boxX += colw;
 
                         colw = columnSF[5].Width;
-                        if (GUI.Button(new Rect(boxX, boxY + 3, 30, buttonHeight), new GUIContent(buttonIconDelete, "Remove SoundFont and samples associated")))
+                        if (GUI.Button(new Rect(boxX, boxY + 3, 30, buttonHeight), new GUIContent(MPTKGui.IconDelete, "Remove SoundFont and Samples associated")))
                         {
 #if MPTK_PRO
                             if (Application.isPlaying)
@@ -408,10 +337,16 @@ namespace MidiPlayerTK
                             else
                             {
                                 if (this.DeleteSf(i))
+                                {
                                     if (MidiPlayerGlobal.CurrentMidiSet.SoundFonts.Count > 0)
+                                    {
                                         this.SelectSf(0);
+                                        LoadType = popupLoadType.SelectedIndex = MidiPlayerGlobal.ImSFCurrent.LoadType;
+                                        CompressionFormat = popupCompressionFormat.SelectedIndex = MidiPlayerGlobal.ImSFCurrent.CompressionFormat;
+                                    }
                                     else
                                         MidiPlayerGlobal.ImSFCurrent = null;
+                                }
                             }
 #else
                             PopupWindow.Show(new Rect(boxX, boxY + 3, 30, buttonHeight), new GetFullVersion());
@@ -426,9 +361,9 @@ namespace MidiPlayerTK
                 }
             }
             catch (ExitGUIException) { }
-            catch (Exception /*ex*/)
+            catch (Exception ex)
             {
-                //MidiPlayerGlobal.ErrorDetail(ex); 
+                MidiPlayerGlobal.ErrorDetail(ex); 
             }
         }
 
@@ -438,17 +373,17 @@ namespace MidiPlayerTK
             {
                 if (columnBank == null)
                 {
-                    columnBank = new ToolsEditor.DefineColumn[5];
-                    columnBank[0].Width = 150; columnBank[0].Caption = "Bank number"; columnBank[0].PositionCaption = 1f;
-                    columnBank[1].Width = 60; columnBank[1].Caption = "View"; columnBank[1].PositionCaption = -3f;
-                    columnBank[2].Width = 80; columnBank[2].Caption = "Keep"; columnBank[2].PositionCaption = -10f;
-                    columnBank[3].Width = 77; columnBank[3].Caption = "Instrument"; columnBank[3].PositionCaption = -25f;
-                    columnBank[4].Width = 77; columnBank[4].Caption = "Drum"; columnBank[4].PositionCaption = -6f;
+                    columnBank = new List<MPTKGui.StyleItem>();
+                    columnBank.Add(new MPTKGui.StyleItem() { Width = 150, Caption = "Bank number", Offset = 1f });
+                    columnBank.Add(new MPTKGui.StyleItem() { Width = 60,Caption = "View",Offset = -3f });
+                    columnBank.Add(new MPTKGui.StyleItem() { Width = 80,Caption = "Keep",Offset = -10f });
+                    columnBank.Add(new MPTKGui.StyleItem() { Width = 77,Caption = "Instrument",Offset = -25f });
+                    columnBank.Add(new MPTKGui.StyleItem() { Width = 77,Caption = "Drum",Offset = -6f });
                 }
 
                 Rect zone = new Rect(startX, startY, width, height);
                 //GUI.color = new Color(.8f, .8f, .8f, 1f);
-                GUI.Box(zone, "", stylePanel);
+                GUI.Box(zone, "", MidiCommonEditor.stylePanel);
                 //GUI.color = Color.white;
                 float localstartX = 0;
                 float localstartY = 0;
@@ -457,12 +392,12 @@ namespace MidiPlayerTK
                     GUIContent content = new GUIContent() { text = "Banks available in SoundFont " + MidiPlayerGlobal.ImSFCurrent.SoundFontName, tooltip = "Each bank contains a set of patchs (instrument).\nOnly two banks can be active at the same time : default sound (piano, ...) and drum kit (percussive)" };
                     localstartX += xpostitlebox;
                     localstartY += ypostitlebox;
-                    EditorGUI.LabelField(new Rect(startX + localstartX + 5, startY + localstartY, width, titleHeight), content, styleBold);
+                    EditorGUI.LabelField(new Rect(startX + localstartX + 5, startY + localstartY, width, titleHeight), content, MidiCommonEditor.styleBold);
                     localstartY += titleHeight;
 
                     // Save selection of banks
                     float btw = 25;
-                    if (GUI.Button(new Rect(startX + localstartX + espace, startY + localstartY, btw, buttonHeight), new GUIContent(buttonIconSave, "Save banks configuration")))
+                    if (GUI.Button(new Rect(startX + localstartX + espace, startY + localstartY, btw, buttonHeight), new GUIContent(MPTKGui.IconSave, "Save banks configuration")))
                     {
 #if MPTK_PRO
                         if (Application.isPlaying)
@@ -474,7 +409,7 @@ namespace MidiPlayerTK
 
                     btw = 75;
                     float buttonX = startX + localstartX + btw + 4 * espace;
-                    EditorGUI.LabelField(new Rect(buttonX, startY + localstartY, btw, buttonHeight), "Keep banks:", styleLabelLeft);
+                    EditorGUI.LabelField(new Rect(buttonX, startY + localstartY, btw, buttonHeight), "Keep banks:", MidiCommonEditor.styleLabelLeft);
                     buttonX += btw;
 
                     if (GUI.Button(new Rect(buttonX, startY + localstartY, btw, buttonHeight), new GUIContent("All", "Select all banks to be kept in the SoundFont")))
@@ -498,11 +433,11 @@ namespace MidiPlayerTK
                     localstartY += buttonHeight + espace;
 
                     // Draw title list box
-                    GUI.Box(new Rect(startX + localstartX + espace, startY + localstartY, width - 35, itemHeight), "", styleListTitle);
+                    GUI.Box(new Rect(startX + localstartX + espace, startY + localstartY, width - 35, itemHeight), "", MidiCommonEditor.styleListTitle);
                     float boxX = startX + localstartX + espace;
-                    foreach (ToolsEditor.DefineColumn column in columnBank)
+                    foreach (MPTKGui.StyleItem column in columnBank)
                     {
-                        GUI.Label(new Rect(boxX + column.PositionCaption, startY + localstartY, column.Width, itemHeight), column.Caption, styleLabelLeft);
+                        GUI.Label(new Rect(boxX + column.Offset, startY + localstartY, column.Width, itemHeight), column.Caption, MidiCommonEditor.styleLabelLeft);
                         boxX += column.Width;
                     }
 
@@ -513,9 +448,9 @@ namespace MidiPlayerTK
                     foreach (ImBank bank in MidiPlayerGlobal.ImSFCurrent.Banks)
                         if (bank != null) countBank++;
                     Rect listVisibleRect = new Rect(startX + localstartX, startY + localstartY - 6, width - 10, height - localstartY);
-                    Rect listContentRect = new Rect(0, 0, width - 25, countBank * itemHeight + 5);
+                    Rect listContentRect = new Rect(0, 0, width - 35, countBank * itemHeight + 5);
 
-                    scrollPosBanks = GUI.BeginScrollView(listVisibleRect, scrollPosBanks, listContentRect, false, true);
+                    scrollPosBanks = GUI.BeginScrollView(listVisibleRect, scrollPosBanks, listContentRect, false, false);
 
                     float boxY = 0;
                     if (MidiPlayerGlobal.ImSFCurrent != null)
@@ -524,7 +459,7 @@ namespace MidiPlayerTK
                         {
                             if (bank != null)
                             {
-                                GUI.Box(new Rect(5, boxY, width - 35, itemHeight), "", styleListRow);
+                                GUI.Box(new Rect(5, boxY, width - 35, itemHeight), "", MidiCommonEditor.styleListRow);
 
                                 GUI.color = Color.white;
 
@@ -533,20 +468,20 @@ namespace MidiPlayerTK
 
                                 // col 0 - bank and patch count
                                 float colw = columnBank[0].Width;
-                                GUI.Label(new Rect(boxX + 1, boxY, colw, itemHeight), string.Format("Bank [{0,3:000}] Patch:{1,4}", bank.BankNumber, bank.PatchCount), styleLabelLeft);
+                                GUI.Label(new Rect(boxX + 1, boxY, colw, itemHeight), string.Format("Bank [{0,3:000}] Patch:{1,4}", bank.BankNumber, bank.PatchCount), MidiCommonEditor.styleLabelLeft);
                                 boxX += colw;
 
                                 // col 1 - bt view list of patchs
                                 colw = columnBank[1].Width;
                                 Rect btrect = new Rect(boxX, boxY + 3, 30, buttonHeight);
-                                if (GUI.Button(btrect, new GUIContent(buttonIconView, "See the detail of this bank")))
+                                if (GUI.Button(btrect, new GUIContent(MPTKGui.IconEye, "See the detail of this bank")))
                                     PopupWindow.Show(btrect, new PopupListPatchs("Patch", false, bank.GetDescription()));
                                 boxX += colw;
 
                                 // col 2 - select bank to keep
                                 colw = columnBank[2].Width;
                                 Rect rect = new Rect(boxX, boxY + 4, colw, buttonHeight);
-                                bool newSelect = GUI.Toggle(rect, MidiPlayerGlobal.ImSFCurrent.BankSelected[bank.BankNumber], new GUIContent("", "Keep or remove this bank"), styleToggle);
+                                bool newSelect = GUI.Toggle(rect, MidiPlayerGlobal.ImSFCurrent.BankSelected[bank.BankNumber], new GUIContent("", "Keep or remove this bank"), MidiCommonEditor.styleToggle);
                                 if (newSelect != MidiPlayerGlobal.ImSFCurrent.BankSelected[bank.BankNumber])
                                 {
 #if MPTK_PRO
@@ -560,7 +495,7 @@ namespace MidiPlayerTK
                                 // col 3 - set default bank for instrument
                                 colw = columnBank[3].Width;
                                 bool curSelect = MidiPlayerGlobal.ImSFCurrent.DefaultBankNumber == bank.BankNumber;
-                                newSelect = GUI.Toggle(new Rect(boxX, boxY + 4, colw, buttonHeight), curSelect, new GUIContent("", "Select this bank as default for playing all instruments except drum"), styleToggle);
+                                newSelect = GUI.Toggle(new Rect(boxX, boxY + 4, colw, buttonHeight), curSelect, new GUIContent("", "Select this bank as default for playing all instruments except drum"), MidiCommonEditor.styleToggle);
                                 if (newSelect != curSelect)
                                     MidiPlayerGlobal.ImSFCurrent.DefaultBankNumber = newSelect ? bank.BankNumber : -1;
                                 boxX += btw + espace;
@@ -568,7 +503,7 @@ namespace MidiPlayerTK
                                 // col 4 - set default bank for Drum
                                 colw = columnBank[4].Width;
                                 curSelect = MidiPlayerGlobal.ImSFCurrent.DrumKitBankNumber == bank.BankNumber;
-                                newSelect = GUI.Toggle(new Rect(boxX, boxY + 4, colw, buttonHeight), curSelect, new GUIContent("", "Select this bank as default for playing drum hit (Channel=9)"), styleToggle);
+                                newSelect = GUI.Toggle(new Rect(boxX, boxY + 4, colw, buttonHeight), curSelect, new GUIContent("", "Select this bank as default for playing drum hit (Channel=9)"), MidiCommonEditor.styleToggle);
                                 if (newSelect != curSelect)
                                     MidiPlayerGlobal.ImSFCurrent.DrumKitBankNumber = newSelect ? bank.BankNumber : -1;
                                 boxX += btw + espace;
@@ -581,16 +516,23 @@ namespace MidiPlayerTK
                     GUI.EndScrollView();
                 }
                 else
-                    EditorGUI.LabelField(new Rect(startX + xpostitlebox, startY + ypostitlebox, 300, itemHeight), "No SoundFont selected", styleBold);
+                    EditorGUI.LabelField(new Rect(startX + xpostitlebox, startY + ypostitlebox, 300, itemHeight), "No SoundFont selected", MidiCommonEditor.styleBold);
             }
             catch (ExitGUIException) { }
-            catch (Exception /*ex*/)
+            catch (Exception ex)
             {
-                //MidiPlayerGlobal.ErrorDetail(ex);
+                MidiPlayerGlobal.ErrorDetail(ex);
             }
         }
 
 #if MPTK_PRO
+        private void SaveTypeBank()
+        {
+            this.SetTypeBank(LoadType, CompressionFormat);
+            this.SaveCurrentIMSF(true);
+            AssetDatabase.Refresh();
+        }
+
         private bool SaveBanksConfig()
         {
             string infocheck = this.CheckAndSetBank();
@@ -606,7 +548,8 @@ namespace MidiPlayerTK
             return false;
         }
 #endif
-        /// <summary>
+
+        /// <summary>@brief
         /// Display optimization
         /// </summary>
         /// <param name="localstartX"></param>
@@ -615,93 +558,124 @@ namespace MidiPlayerTK
         {
             try
             {
-                Rect zone = new Rect(localstartX, localstartY, width, height);
-                //GUI.color = new Color(.8f, .8f, .8f, 1f);
-                GUI.Box(zone, "", stylePanel);
-                //GUI.color = Color.white;
+                // Begin area display settings
+                // --------------------------
+                GUILayout.BeginArea(new Rect(localstartX, localstartY, width, height), MidiCommonEditor.stylePanel);
 
+                //Rect zone = new Rect(localstartX, localstartY, width, height);
+                ////GUI.color = new Color(.8f, .8f, .8f, 1f);
+                //GUI.Box(zone, "", MidiCommonEditor.stylePanel);
+                ////GUI.color = Color.white;
+                //int lineHeight = 35;
                 string tooltip = "Remove all banks and Presets not used in the Midi file list";
 
                 GUIContent content;
                 if (MidiPlayerGlobal.ImSFCurrent != null)
                 {
+                    content = new GUIContent() { text = $"Extract Patchs & Waves from the SoundFont '{MidiPlayerGlobal.ImSFCurrent.SoundFontName}'", tooltip = "" };
+                    GUILayout.Label(content, MidiCommonEditor.styleBold);
 
-                    float xpos = localstartX + xpostitlebox + 5;
-                    float ypos = localstartY + ypostitlebox;
-                    content = new GUIContent() { text = "Extract Patchs & Waves from " + MidiPlayerGlobal.ImSFCurrent.SoundFontName, tooltip = tooltip };
-                    EditorGUI.LabelField(new Rect(xpos, ypos, 380 + 85, itemHeight), content, styleBold);
-                    ypos += itemHeight;// + espace;
+                    GUILayout.Space(20);
 
-                    float widthCheck = buttonLargeWidth;
-                    /*
-                    KeepAllZones = GUI.Toggle(new Rect(xpos, ypos, widthCheck, itemHeight), KeepAllZones, new GUIContent("Keep all Zones", "Keep all Waves associated with a Patch regardless of notes and velocities played in Midi files.\n Usefull if you want transpose Midi files."));
-                    xpos += widthCheck + espace;
-                    KeepAllPatchs = GUI.Toggle(new Rect(xpos, ypos, widthCheck, itemHeight), KeepAllPatchs, new GUIContent("Keep all Patchs", "Keep all Patchs and waves found in the SoundFont selected.\nWarning : a huge volume of files coud be created"));
-                    xpos += widthCheck + +2 * espace;
-                    */
-                    RemoveUnusedWaves = GUI.Toggle(new Rect(xpos, ypos, widthCheck, itemHeight), RemoveUnusedWaves, new GUIContent("Remove unused waves", "If check, keep only waves used by your midi files and/or in the selected banks"), styleToggle);
-                    //xpos += widthCheck + espace;
-                    ypos += itemHeight;
+                    GUILayout.BeginHorizontal();
+                    RemoveUnusedWaves = GUILayout.Toggle(RemoveUnusedWaves,
+                        new GUIContent("Remove unused waves", "If check, keep only waves used by your midi files and/or in the selected banks"), MidiCommonEditor.styleToggle);
+                    LogDetailSoundFont = GUILayout.Toggle(LogDetailSoundFont,
+                        new GUIContent("Log SoundFont Detail", "If check, keep only waves used by your midi files"), MidiCommonEditor.styleToggle);
+                    GUILayout.EndHorizontal();
 
-                    LogDetailSoundFont = GUI.Toggle(new Rect(xpos, ypos, widthCheck, itemHeight), LogDetailSoundFont, new GUIContent("Log SoundFont Detail", "If check, keep only waves used by your midi files"), styleToggle);
-                    ypos += itemHeight;
+                    GUILayout.Space(20);
 
-                    // restaure X positio,
-                    xpos = localstartX + xpostitlebox + 5;
-                    Rect rect1 = new Rect(xpos, ypos, 210, (float)buttonHeight * 2f);
-                    Rect rect2 = new Rect(xpos + 210 + 3, ypos, 210, (float)buttonHeight * 2f);
-#if MPTK_PRO
-                    if (GUI.Button(rect1, new GUIContent("Optimize from Midi file list", "Your list of Midi files will be scanned to identify patchs and zones useful")))
+                    GUILayout.BeginHorizontal();
+
+                    if (listLoadType == null)
+                    {
+                        listLoadType = new List<MPTKGui.StyleItem>();
+                        foreach (string loadType in Enum.GetNames(typeof(AudioClipLoadType)))
+                            listLoadType.Add(new MPTKGui.StyleItem(loadType, true));
+                    }
+                    MPTKGui.ComboBox(ref popupLoadType, "Audio Load Type: {Label}", listLoadType, LoadType, delegate (int index) { LoadType = index; });
+
+                    if (listCompressionFormat == null)
+                    {
+                        listCompressionFormat = new List<MPTKGui.StyleItem>();
+                        foreach (string loadType in Enum.GetNames(typeof(AudioCompressionFormat)))
+                            listCompressionFormat.Add(new MPTKGui.StyleItem(loadType, true));
+                    }
+
+                    MPTKGui.ComboBox(ref popupCompressionFormat, "Audio Compression Format: {Label}", listCompressionFormat, CompressionFormat, delegate (int index) { CompressionFormat = index; });
+                    GUILayout.EndHorizontal();
+
+                    content = new GUIContent() { text = "Setup recommended for Maestro: 'Compressed In Memory' and 'PCM'", tooltip = "However, feel free to check other format for specific devices" };
+                    GUILayout.Label(content);
+
+                    if (CompressionFormat != MidiPlayerGlobal.ImSFCurrent.CompressionFormat || LoadType != MidiPlayerGlobal.ImSFCurrent.LoadType)
+                        GUILayout.Label("You need to extract to apply the changes.", MidiCommonEditor.styleAlertRed);
+
+                    GUILayout.Space(20);
+
+                    GUILayout.Label("Extract Patches and Samples from the SoundFont:", MidiCommonEditor.styleBold);
+
+                    GUILayout.BeginHorizontal();
+                    if (GUILayout.Button(new GUIContent("Extract Only Required", "Your list of Midi files will be scanned to identify patches and samples needed."), GUILayout.Height(35)))
                     {
                         if (Application.isPlaying)
                             EditorUtility.DisplayDialog("Optimization", "This action is not possible when application is running.", "Ok");
                         else
                         {
+#if MPTK_PRO
                             if (SaveBanksConfig())
                             {
                                 KeepAllPatchs = false;
                                 KeepAllZones = false;
                                 this.OptimizeSoundFont();// LogInfo, KeepAllPatchs, KeepAllZones, RemoveUnusedWaves);
+                                SaveTypeBank();
                             }
+#else
+                            PopupWindow.Show(GUILayoutUtility.GetLastRect(), new GetFullVersion());
+#endif
                         }
                     }
 
-                    if (GUI.Button(rect2, new GUIContent("Extract all Patchs & Waves", "Extract patchs and waves from the Soundfont for the selected banks")))
+                    if (GUILayout.Button(new GUIContent("Extract All", "Extract all patchs and waves from the Soundfont for the selected banks."), GUILayout.Height(35)))
                     {
                         if (Application.isPlaying)
                             EditorUtility.DisplayDialog("Extraction", "This action is not possible when application is running.", "Ok");
                         else
                         {
+#if MPTK_PRO
                             if (SaveBanksConfig())
                             {
                                 KeepAllPatchs = true;
                                 KeepAllZones = true;
                                 this.OptimizeSoundFont();// (LogInfo, KeepAllPatchs, KeepAllZones, RemoveUnusedWaves);
+                                SaveTypeBank();
                             }
+#else
+                            PopupWindow.Show(GUILayoutUtility.GetLastRect(), new GetFullVersion());
+#endif
                         }
                     }
-#else
-                    if (GUI.Button(rect1, new GUIContent("Optimize from Midi file list [PRO]", "You need to setup some midi files before to launch ths optimization")))
-                        PopupWindow.Show(rect1, new GetFullVersion());
-                    if (GUI.Button(rect2, new GUIContent("Extract all Patchs & Waves [PRO]", "")))
-                        PopupWindow.Show(rect2, new GetFullVersion());
+                    GUILayout.EndHorizontal();
 
-#endif
                 }
                 else
                 {
                     content = new GUIContent() { text = "No SoundFont selected", tooltip = tooltip };
-                    EditorGUI.LabelField(new Rect(localstartX + xpostitlebox, localstartY + ypostitlebox, 300, itemHeight), content, styleBold);
+                    GUILayout.Label(content, MidiCommonEditor.styleBold);
                 }
+                GUILayout.EndArea();
+
             }
             catch (ExitGUIException) { }
-            catch (Exception /*ex*/)
+            catch (Exception ex)
             {
-                //MidiPlayerGlobal.ErrorDetail(ex);
+                //Debug.Log(ex.Message);
+                MidiPlayerGlobal.ErrorDetail(ex);
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Display optimization log
         /// </summary>
         /// <param name="localstartX"></param>
@@ -712,13 +686,13 @@ namespace MidiPlayerTK
             {
                 Rect zone = new Rect(localstartX, localstartY, width, height);
                 //GUI.color = new Color(.8f, .8f, .8f, 1f);
-                GUI.Box(zone, "", stylePanel);
+                GUI.Box(zone, "", MidiCommonEditor.stylePanel);
                 //GUI.color = Color.white;
                 float posx = localstartX;
-                GUI.Label(new Rect(posx + espace, localstartY + espace, 40, buttonHeight), new GUIContent("Logs:"), styleBold);
+                GUI.Label(new Rect(posx + espace, localstartY + espace, 40, buttonHeight), new GUIContent("Logs:"), MidiCommonEditor.styleBold);
                 posx += 40;
-                float btw = 25f;
-                if (GUI.Button(new Rect(posx + espace, localstartY + espace, btw, buttonHeight), new GUIContent(buttonIconSave, "Save Log")))
+                float btw = 32f;
+                if (GUI.Button(new Rect(posx + espace, localstartY + espace, btw, btw), new GUIContent(MPTKGui.IconSave, "Save Log")))
                 {
                     // Save log file
                     if (LogInfo != null)
@@ -730,18 +704,18 @@ namespace MidiPlayerTK
                     }
                 }
 
-                if (GUI.Button(new Rect(posx + 2f * espace + btw, localstartY + espace, btw, buttonHeight), new GUIContent(buttonIconFolders, "Open Logs Folder")))
+                if (GUI.Button(new Rect(posx + 2f * espace + btw, localstartY + espace, btw, btw), new GUIContent(MPTKGui.IconFolders, "Open Logs Folder")))
                 {
                     Application.OpenURL("file://" + Application.persistentDataPath);
                 }
 
-                if (GUI.Button(new Rect(posx + 3f * espace + 2f * btw, localstartY + espace, btw, buttonHeight), new GUIContent(buttonIconDelete, "Clear Logs")))
+                if (GUI.Button(new Rect(posx + 3f * espace + 2f * btw, localstartY + espace, btw, btw), new GUIContent(MPTKGui.IconDelete, "Clear Logs")))
                 {
                     LogInfo = new BuilderInfo();
                 }
 #if MPTK_PRO
                 bool displayAlert = MidiPlayerGlobal.CurrentMidiSet.ActiveSounFontInfo != null && MidiPlayerGlobal.CurrentMidiSet.ActiveSounFontInfo.PatchCount == 0;
-                float heightLine = styleRichText.lineHeight;// * 1.2f;
+                float heightLine = MidiCommonEditor.styleRichText.lineHeight;// * 1.2f;
                 int countLine = (LogInfo != null ? LogInfo.Count : 0) + (displayAlert ? 7 : 0);
                 if (countLine > 0)
                 {
@@ -755,7 +729,7 @@ namespace MidiPlayerTK
                     if (LogInfo != null)
                         foreach (string s in LogInfo.Infos)
                         {
-                            EditorGUI.LabelField(new Rect(localstartX, labelY, width * 2, heightLine), s, styleRichText);
+                            EditorGUI.LabelField(new Rect(localstartX, labelY, width * 2, heightLine), s, MidiCommonEditor.styleRichText);
                             labelY += heightLine;
                         }
 
@@ -763,25 +737,25 @@ namespace MidiPlayerTK
                     {
                         float xpos = 0;
                         float ypos = labelY;
-                        float fHeight = styleAlertRed.fontSize;
+                        float fHeight = MidiCommonEditor.styleAlertRed.fontSize;
                         float fwidth = width * 2;
-                        EditorGUI.LabelField(new Rect(xpos, ypos, fwidth, fHeight), "No patchs and samples has been yet extracted from", styleAlertRed);
+                        EditorGUI.LabelField(new Rect(xpos, ypos, fwidth, fHeight), "No patchs and samples has been yet extracted from", MidiCommonEditor.styleAlertRed);
                         ypos += fHeight;
-                        EditorGUI.LabelField(new Rect(xpos, ypos, fwidth, fHeight), $"the Soundfont '{MidiPlayerGlobal.CurrentMidiSet.ActiveSounFontInfo.Name}'", styleAlertRed);
+                        EditorGUI.LabelField(new Rect(xpos, ypos, fwidth, fHeight), $"the Soundfont '{MidiPlayerGlobal.CurrentMidiSet.ActiveSounFontInfo.Name}'", MidiCommonEditor.styleAlertRed);
                         ypos += 2 * fHeight;
-                        EditorGUI.LabelField(new Rect(xpos, ypos, fwidth, fHeight), "On the right panel:", styleAlertRed);
+                        EditorGUI.LabelField(new Rect(xpos, ypos, fwidth, fHeight), "On the top-right panel keep the default selection or:", MidiCommonEditor.styleAlertRed);
                         ypos += fHeight;
-                        EditorGUI.LabelField(new Rect(xpos, ypos, fwidth, fHeight), "   Select banks you want to keep.", styleAlertRed);
+                        EditorGUI.LabelField(new Rect(xpos, ypos, fwidth, fHeight), "   - Select banks you want to keep.", MidiCommonEditor.styleAlertRed);
                         ypos += fHeight;
-                        EditorGUI.LabelField(new Rect(xpos, ypos, fwidth, fHeight), "   Select default bank for instruments and drums kit.", styleAlertRed);
+                        EditorGUI.LabelField(new Rect(xpos, ypos, fwidth, fHeight), "   - Change default bank for instruments and drums kit.", MidiCommonEditor.styleAlertRed);
                         ypos += 2 * fHeight;
-                        EditorGUI.LabelField(new Rect(xpos, ypos, fwidth, fHeight), "Click on buttons:", styleAlertRed);
+                        EditorGUI.LabelField(new Rect(xpos, ypos, fwidth, fHeight), "On the bottom-right panel, click on buttons:", MidiCommonEditor.styleAlertRed);
                         ypos += fHeight;
-                        EditorGUI.LabelField(new Rect(xpos, ypos, fwidth, fHeight), "   'Optimize from Midi file list' to keep only required patchs.", styleAlertRed);
+                        EditorGUI.LabelField(new Rect(xpos, ypos, fwidth, fHeight), "   'Extract Only Required' to keep only required patchs.", MidiCommonEditor.styleAlertRed);
                         ypos += fHeight;
-                        EditorGUI.LabelField(new Rect(xpos, ypos, fwidth, fHeight), "      or", styleAlertRed);
+                        EditorGUI.LabelField(new Rect(xpos, ypos, fwidth, fHeight), "      or", MidiCommonEditor.styleAlertRed);
                         ypos += fHeight;
-                        EditorGUI.LabelField(new Rect(xpos, ypos, fwidth, fHeight), "   'Extract all patchs & samples' to keep all from selected banks.", styleAlertRed);
+                        EditorGUI.LabelField(new Rect(xpos, ypos, fwidth, fHeight), "   'Extract All' to keep all samples and patchs from selected banks.", MidiCommonEditor.styleAlertRed);
                         ypos += fHeight;
                         scrollPosOptim = new Vector2(0, 1000);
                     }
@@ -790,9 +764,9 @@ namespace MidiPlayerTK
                 }
 #endif
             }
-            catch (Exception /*ex*/)
+            catch (Exception ex)
             {
-                //MidiPlayerGlobal.ErrorDetail(ex);
+                MidiPlayerGlobal.ErrorDetail(ex);
             }
         }
     }

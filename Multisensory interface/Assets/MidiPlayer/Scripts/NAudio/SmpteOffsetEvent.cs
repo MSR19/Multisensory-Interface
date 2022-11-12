@@ -13,7 +13,7 @@ namespace MPTK.NAudio.Midi
         private byte frames;
         private byte subFrames; // 100ths of a frame
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a new time signature event
         /// </summary>
         public SmpteOffsetEvent(byte hours, byte minutes, byte seconds, byte frames, byte subFrames)
@@ -25,7 +25,7 @@ namespace MPTK.NAudio.Midi
             this.subFrames = subFrames;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Reads a new time signature event from a MIDI stream
         /// </summary>
         /// <param name="br">The MIDI stream</param>
@@ -43,7 +43,7 @@ namespace MPTK.NAudio.Midi
             subFrames = br.ReadByte();
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a deep clone of this MIDI event.
         /// </summary>
         public override MidiEvent Clone()
@@ -51,7 +51,7 @@ namespace MPTK.NAudio.Midi
             return (SmpteOffsetEvent)MemberwiseClone();
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Hours
         /// </summary>
         public int Hours
@@ -59,7 +59,7 @@ namespace MPTK.NAudio.Midi
             get { return hours; }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Minutes
         /// </summary>
         public int Minutes
@@ -67,7 +67,7 @@ namespace MPTK.NAudio.Midi
             get { return minutes; }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Seconds
         /// </summary>
         public int Seconds
@@ -75,7 +75,7 @@ namespace MPTK.NAudio.Midi
             get { return seconds; }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Frames
         /// </summary>
         public int Frames
@@ -83,7 +83,7 @@ namespace MPTK.NAudio.Midi
             get { return frames; }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// SubFrames
         /// </summary>
         public int SubFrames
@@ -92,7 +92,7 @@ namespace MPTK.NAudio.Midi
         }
 
         
-        /// <summary>
+        /// <summary>@brief
         /// Describes this time signature event
         /// </summary>
         /// <returns>A string describing this event</returns>
@@ -102,7 +102,7 @@ namespace MPTK.NAudio.Midi
                 base.ToString(),hours,minutes,seconds,frames,subFrames);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Calls base class export first, then exports the data 
         /// specific to this event
         /// <seealso cref="MidiEvent.Export">MidiEvent.Export</seealso>

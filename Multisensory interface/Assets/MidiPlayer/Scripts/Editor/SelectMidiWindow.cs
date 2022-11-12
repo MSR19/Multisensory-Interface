@@ -8,7 +8,7 @@ namespace MidiPlayerTK
     using UnityEditor;
     using UnityEngine;
 
-    /// <summary>
+    /// <summary>@brief
     /// Window editor for the setup of MPTK
     /// </summary>
     public class SelectMidiWindow : EditorWindow
@@ -34,28 +34,30 @@ namespace MidiPlayerTK
         private int calculatedColCount;
         private int countRow;
         public Action<object, int> OnSelect;
-
+        string midiFilter = "";
 
 
         void OnGUI()
         {
             try
             {
-
                 //Debug.Log("ongui");
-                KeepOpen = true;
-                list = new List<MPTKListItem>();
-                foreach (string midiname in MidiPlayerGlobal.CurrentMidiSet.MidiFiles)
-                    list.Add(new MPTKListItem() { Label = midiname, Index = list.Count });
+                MidiCommonEditor.LoadSkinAndStyle();
                 ColWidth = 250;
                 ColHeight = 30;
-                calculatedColCount = 3;
                 EspaceX = 5;
                 EspaceY = 5;
                 TitleHeight = 30;
-                countRow = (int)((float)list.Count / (float)calculatedColCount + 1f);
-                resizedWidth = (int)SelectWindow.position.size.x; ;
+                KeepOpen = true;
+
+                resizedWidth = (int)SelectWindow.position.size.x;
                 resizedHeight = (int)SelectWindow.position.size.y;
+                list = new List<MPTKListItem>();
+                foreach (string midiname in MidiPlayerGlobal.CurrentMidiSet.MidiFiles)
+                    list.Add(new MPTKListItem() { Label = midiname, Index = list.Count });
+                calculatedColCount = resizedWidth / (ColWidth + EspaceX); //3;
+                calculatedColCount = Mathf.Clamp(calculatedColCount, 1, 5);
+                countRow = (int)((float)list.Count / (float)calculatedColCount + 1f);
 
                 if (myStyle == null)
                     myStyle = new CustomStyle();
@@ -67,7 +69,6 @@ namespace MidiPlayerTK
                 MidiPlayerGlobal.ErrorDetail(ex);
             }
         }
-
         private void DrawWindow()
         {
             int localstartX = 0;// EspaceX;
@@ -80,8 +81,13 @@ namespace MidiPlayerTK
             GUI.Box(zone, "");
             GUI.color = Color.white;
 
-            Rect listVisibleRect = new Rect(localstartX, localstartY, resizedWidth - localstartX, resizedHeight - EspaceY);
-            Rect listContentRect = new Rect(0, 0, calculatedColCount * (ColWidth + EspaceX) + 0, countRow * ColHeight + EspaceY);
+            GUI.Label(new Rect(localstartX, localstartY + 5, 50, TitleHeight - 10), "Filter:");
+            midiFilter = GUI.TextField(new Rect(localstartX + 55, localstartY + 5, 200, TitleHeight - 10), midiFilter);
+            if (GUI.Button(new Rect(localstartX + 55 + 5 + 200, localstartY + 5, 20, TitleHeight - 10), "X", myStyle.BtStandard))
+                midiFilter = "";
+
+            Rect listVisibleRect = new Rect(localstartX, localstartY + TitleHeight, resizedWidth - localstartX, resizedHeight - EspaceY - TitleHeight);
+            Rect listContentRect = new Rect(0, 0, calculatedColCount * (ColWidth + EspaceX) + 0, countRow * ColHeight + EspaceY + TitleHeight);
 
             scrollPos = GUI.BeginScrollView(listVisibleRect, scrollPos, listContentRect);
 
@@ -96,32 +102,34 @@ namespace MidiPlayerTK
                     if (item != null)
                     {
                         indexList++;
-
-                        GUIStyle style = myStyle.BtStandard;
-                        // if (patch.Index == selectedItem) style = myStyle.BtSelected;
-                        if (item.Index == SelectedItem)
-                            GUI.color = myStyle.ButtonColor;
-
-                        Rect rect = new Rect(boxX, boxY, ColWidth, ColHeight);
-
-                        if (GUI.Button(rect, indexList + " - " + item.Label, style))
+                        if (string.IsNullOrEmpty(midiFilter) || item.Label.ToUpper().Contains(midiFilter.ToUpper()))
                         {
-                            SelectedItem = item.Index;
-                            if (OnSelect != null)
-                                OnSelect(Tag, item.Index);
-                            if (!KeepOpen)
-                                SelectWindow.Close();
-                        }
-                        GUI.color = Color.white;
+                            GUIStyle style = myStyle.BtStandard;
+                            // if (patch.Index == selectedItem) style = myStyle.BtSelected;
+                            if (item.Index == SelectedItem)
+                                GUI.color = MPTKGui.ButtonColor;
 
-                        if (calculatedColCount <= 1 || indexList % calculatedColCount == calculatedColCount - 1)
-                        {
-                            // New row
-                            boxY += ColHeight;
-                            boxX = 0;
+                            Rect rect = new Rect(boxX, boxY, ColWidth, ColHeight);
+
+                            if (GUI.Button(rect, indexList + " - " + item.Label, style))
+                            {
+                                SelectedItem = item.Index;
+                                if (OnSelect != null)
+                                    OnSelect(Tag, item.Index);
+                                if (!KeepOpen)
+                                    SelectWindow.Close();
+                            }
+                            GUI.color = Color.white;
+
+                            if (calculatedColCount <= 1 || indexList % calculatedColCount == calculatedColCount - 1)
+                            {
+                                // New row
+                                boxY += ColHeight;
+                                boxX = 0;
+                            }
+                            else
+                                boxX += ColWidth + EspaceX;
                         }
-                        else
-                            boxX += ColWidth + EspaceX;
                     }
                 }
             }

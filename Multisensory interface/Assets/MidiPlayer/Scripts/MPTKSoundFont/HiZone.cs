@@ -8,12 +8,12 @@ using UnityEngine;
 
 namespace MidiPlayerTK
 {
-    /// <summary>
+    /// <summary>@brief
     /// Cover fluid_inst_zone_t and fluid_preset_zone_t
     /// </summary>
     public class HiZone
     {
-        /// <summary>
+        /// <summary>@brief
         /// unique item id (see int note above)
         /// </summary>
         public int ItemId;
@@ -23,7 +23,7 @@ namespace MidiPlayerTK
 
         //public string Name;
         //public fluid_sample_t sample;
-        /// <summary>
+        /// <summary>@brief
         /// Index to the sample (only for instrument zone)
         /// </summary>
         public int Index;

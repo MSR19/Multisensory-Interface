@@ -10,7 +10,7 @@ namespace DemoMPTK
 {
     public class TestMidiFilePlayerScripting : MonoBehaviour
     {
-        /// <summary>
+        /// <summary>@brief
         /// MPTK component able to play a Midi file from your list of Midi file. This PreFab must be present in your scene.
         /// </summary>
         public MidiFilePlayer midiFilePlayer;
@@ -35,7 +35,7 @@ namespace DemoMPTK
         public bool IsRandomTranspose;
         public bool IsRandomPlay;
 
-        /// <summary>
+        /// <summary>@brief
         /// When true the transition between two songs is immediate, but a small crossing can occur
         /// </summary>
         public bool IsWaitNotesOff;
@@ -44,7 +44,10 @@ namespace DemoMPTK
         public int forceBank;
 
         public bool toggleChannelDisplay;
-        public bool TestSpecialPreProcessMidi;
+        public bool toggleApplyRealTimeChange;
+        public bool toggleChangeNoteOn;
+        public bool toggleDisableChangePreset;
+        public bool toggleChangeTempo;
 
         // Manage skin
         private CustomStyle myStyle;
@@ -68,25 +71,61 @@ namespace DemoMPTK
         //DateTime localStartTimeMidi;
         TimeSpan realTimeMidi;
 
+        /// <summary>
+        /// PreProcessMidi is triggered from an internal thread.
+        ///    - Accuracy is garantee (see midiFilePlayer.MPTK_PulseLenght which is the minimum time in millisecond between two MIDI events).
+        ///    - MIDI Events can be modified before processed by the MIDI synth.
+        ///    - Direct call to Unity API is not possible.
+        ///    - Avoid huge processing in this callback, that could cause irregular musical rhythms.
+        ///  set with: midiFilePlayer.OnMidiEvent = PreProcessMidi;
+        /// </summary>
+        /// <param name="midiEvent">a MIDI event see https://mptkapi.paxstellar.com/d9/d50/class_midi_player_t_k_1_1_m_p_t_k_event.html </param>
         void PreProcessMidi(MPTKEvent midiEvent)
         {
-            if (TestSpecialPreProcessMidi)
+            if (toggleApplyRealTimeChange)
             {
                 switch (midiEvent.Command)
                 {
+
                     case MPTKCommand.NoteOn:
-                        if (midiEvent.Channel != 9)
-                            // transpose 2 octaves
-                            midiEvent.Value += 24;
-                        else
-                            // Drums are muted
-                            midiEvent.Velocity = 0;
+                        if (toggleChangeNoteOn)
+                        {
+                            if (midiEvent.Channel != 9)
+                                // transpose one octave depending on the value channel even or odd
+                                if (midiEvent.Channel % 2 == 0)
+                                    midiEvent.Value += 12;
+                                else
+                                    midiEvent.Value -= 12;
+                            else
+                                // Drums are muted
+                                midiEvent.Velocity = 0;
+                        }
                         break;
                     case MPTKCommand.PatchChange:
-                        // Change patch change to Meta text: all channels will played the default preset 0!
-                        midiEvent.Command = MPTKCommand.MetaEvent;
-                        midiEvent.Meta = MPTKMeta.TextEvent;
-                        midiEvent.Info = $"Patch Change {midiEvent.Value} removed";
+                        if (toggleDisableChangePreset)
+                        {
+                            // Transform Patch change event to Meta text event: related channel will played the default preset 0.
+                            // TextEvent has no effect on the MIDI synth but is displayed in the demo windows.
+                            // It would also been possible de change the preset to another instrument.
+                            midiEvent.Command = MPTKCommand.MetaEvent;
+                            midiEvent.Meta = MPTKMeta.TextEvent;
+                            midiEvent.Info = $"Detected MIDI event Patch Change {midiEvent.Value} removed";
+                        }
+                        break;
+                    case MPTKCommand.MetaEvent:
+                        switch (midiEvent.Meta)
+                        {
+                            case MPTKMeta.SetTempo:
+                                if (toggleChangeTempo)
+                                {
+                                    // Warning: this call back is run out of the main Unity thread, Unity API (like UnityEngine.Random) can't be used.
+                                    System.Random rnd = new System.Random();
+                                    // Change the tempo with a random value here, because it's too late for the MIDI Sequencer (alredy taken into account).
+                                    midiFilePlayer.MPTK_Tempo = rnd.Next(30, 240);
+                                    Debug.Log($"Detected MIDI event Set Tempo {midiEvent.Value}, forced to a random value {midiFilePlayer.MPTK_Tempo}");
+                                }
+                                break;
+                        }
                         break;
                 }
             }
@@ -94,7 +133,8 @@ namespace DemoMPTK
 
         void Start()
         {
-            // Warning: avoid to define this event by script kike below because the initial loading could be not trigger in the case of MidiPlayerGlobal id load before any other gamecomponent
+
+            // Warning: avoid to define this event by script like below because the initial loading could be not trigger in the case of MidiPlayerGlobal id load before any other gamecomponent
             // It's better to set this method from MidiPlayerGlobal event inspector.
             if (!MidiPlayerGlobal.OnEventPresetLoaded.HasEvent())
             {
@@ -125,9 +165,26 @@ namespace DemoMPTK
                 }
             }
 
+            MidiLoad midiLoaded = midiFilePlayer.MPTK_Load();
+            if (midiLoaded == null) throw new Exception("Could not load MIDI file");
+            //Debug.Log(midiLoaded.MPTK_TrackCount);
+            
             if (midiFilePlayer != null)
             {
 #if MPTK_PRO
+                // OnMidiEvent (pro) and OnEventNotesMidi are triggered for each notes read by the MIDI sequencer
+                // but their uses depends on the need:
+                //      OnEventNotesMidi is handled from the main Unity thread (in the Update loop) 
+                //          - Accuracy not garantee because depends on the Unity process and the Time.deltaTime
+                //            (interval in seconds from the last frame to the current one).
+                //          - MIDI Events can't be modified before processed by the MIDI synth.
+                //          - Direct call to Unity API is possible.
+                //      OnMidiEvent is handled from an internal thread 
+                //          - accuracy is garantee.
+                //          - MIDI Events can be modified before processed by the MIDI synth.
+                //          - Direct call to Unity API is not possible.
+
+
                 midiFilePlayer.OnMidiEvent = PreProcessMidi;
 #endif
                 // There is two methods to trigger event: 
@@ -176,7 +233,7 @@ namespace DemoMPTK
             //! [Example OnEventStartPlayMidi]
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// This method is defined from MidiPlayerGlobal event inspector and run when SoundFont is loaded.
         /// Warning: avoid to define this event by script because the initial loading could be not trigger in the case of MidiPlayerGlobal id load before any other gamecomponent
         /// </summary>
@@ -189,7 +246,7 @@ namespace DemoMPTK
             Debug.Log("   Samples Loaded: " + MidiPlayerGlobal.MPTK_CountWaveLoaded);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Event fired by MidiFilePlayer when a midi is started (set by Unity Editor in MidiFilePlayer Inspector or by script see above)
         /// </summary>
         public void StartPlay(string name)
@@ -206,7 +263,8 @@ namespace DemoMPTK
                 infoMidi += $"Last note-on : {TimeSpan.FromMilliseconds(midiFilePlayer.MPTK_PositionLastNote)} {midiFilePlayer.MPTK_PositionLastNote / 1000f:F2} seconds  {midiFilePlayer.MPTK_TickLastNote} ticks\n";
                 infoMidi += $"Track Count  : {midiFilePlayer.MPTK_MidiLoaded.MPTK_TrackCount}\n";
                 infoMidi += $"Initial Tempo: {midiFilePlayer.MPTK_MidiLoaded.MPTK_InitialTempo:F2}\n";
-                infoMidi += $"Delta Ticks Per Quarter: {midiFilePlayer.MPTK_MidiLoaded.MPTK_DeltaTicksPerQuarterNote}\n";
+                infoMidi += $"Delta Ticks  : {midiFilePlayer.MPTK_MidiLoaded.MPTK_DeltaTicksPerQuarterNote} Ticks Per Quarter\n";
+                infoMidi += $"Pulse Length : {midiFilePlayer.MPTK_PulseLenght} milliseconds (MIDI resolution)\n";
                 infoMidi += $"Number Beats Measure   : {midiFilePlayer.MPTK_MidiLoaded.MPTK_NumberBeatsMeasure}\n";
                 infoMidi += $"Number Quarter Beats   : {midiFilePlayer.MPTK_MidiLoaded.MPTK_NumberQuarterBeat}\n";
                 infoMidi += $"Count Midi Events      : {midiFilePlayer.MPTK_MidiEvents.Count}\n";
@@ -216,13 +274,14 @@ namespace DemoMPTK
             Debug.Log($"Start Play Midi '{name}' '{midiFilePlayer.MPTK_MidiName}' Duration: {midiFilePlayer.MPTK_DurationMS / 1000f:F2} seconds  Load time: {midiFilePlayer.MPTK_MidiLoaded.MPTK_LoadTime:F2} milliseconds");
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Event fired by MidiFilePlayer when midi notes are available. 
         /// Set by Unity Editor in MidiFilePlayer Inspector or by script with OnEventNotesMidi.
         /// </summary>
         public void MidiReadEvents(List<MPTKEvent> midiEvents)
         {
             //List<MPTKEvent> eventsOrdered = events.OrderBy(o => o.Value).ToList();
+            // test exception on the callback midiEvents[10000].Channel = 1;
 
             // Looping in this demo is using percentage. Obviously, absolute tick value can be used.
             if (StopPositionPct < 100f)
@@ -288,7 +347,7 @@ namespace DemoMPTK
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Event fired by MidiFilePlayer when a midi is ended when reach end or stop by MPTK_Stop or Replay with MPTK_Replay
         /// The parameter reason give the origin of the end
         /// </summary>
@@ -326,7 +385,7 @@ namespace DemoMPTK
         }
 
         //! [Example TheMostSimpleDemoForMidiPlayer]
-        /// <summary>
+        /// <summary>@brief
         /// Load a midi file wuthout playing it
         /// </summary>
         private void TheMostSimpleDemoForMidiPlayer()
@@ -478,18 +537,20 @@ namespace DemoMPTK
                 }
                 GUILayout.EndHorizontal();
 
+                toggleApplyRealTimeChange = GUILayout.Toggle(toggleApplyRealTimeChange, "  Apply MIDI Real-Time Change [Pro]");
+                if (toggleApplyRealTimeChange)
+                    RealTimeMIDIChange();
+
                 // Channel setting display
                 toggleChannelDisplay = GUILayout.Toggle(toggleChannelDisplay, "  Display Channels and Change Properties");
                 if (toggleChannelDisplay)
                     ChannelDisplay();
 
                 // Random playing ?
-                GUILayout.Space(spaceV);
                 GUILayout.BeginHorizontal();
                 IsRandomPlay = GUILayout.Toggle(IsRandomPlay, "  Enable MIDI Random Playing");
 
                 // Weak device ?
-                //midiFilePlayer.MPTK_WeakDevice = GUILayout.Toggle(midiFilePlayer.MPTK_WeakDevice, "Weak Device", GUILayout.Width(220));
                 GUILayout.EndHorizontal();
                 GUILayout.Space(spaceV);
 
@@ -612,6 +673,32 @@ namespace DemoMPTK
 
         }
 
+        private void RealTimeMIDIChange()
+        {
+            GUILayout.BeginVertical();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("", myStyle.TitleLabel3, GUILayout.Width(40));
+            GUILayout.Label("Transpose one octave depending on the channel value and disable drum.", myStyle.TitleLabel3, GUILayout.Width(400));
+            toggleChangeNoteOn = GUILayout.Toggle(toggleChangeNoteOn, "");
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("", myStyle.TitleLabel3, GUILayout.Width(40));
+            GUILayout.Label("Disable patch change", myStyle.TitleLabel3, GUILayout.Width(400));
+            toggleDisableChangePreset = GUILayout.Toggle(toggleDisableChangePreset, "");
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("", myStyle.TitleLabel3, GUILayout.Width(40));
+            GUILayout.Label("Random change of MIDI tempo change event", myStyle.TitleLabel3, GUILayout.Width(400));
+            toggleChangeTempo = GUILayout.Toggle(toggleChangeTempo, "");
+            GUILayout.EndHorizontal();
+
+            GUILayout.EndVertical();
+        }
+
+
         private void ChannelDisplay()
         {
             GUILayout.BeginVertical();
@@ -705,7 +792,7 @@ namespace DemoMPTK
             GUILayout.EndVertical();
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Coroutine: stop current midi playing, wait until all samples are off and go next or previous midi
         /// </summary>
         /// <param name="next"></param>
@@ -724,7 +811,7 @@ namespace DemoMPTK
             yield return 0;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Event fired by MidiFilePlayer when a midi is ended (set by Unity Editor in MidiFilePlayer Inspector)
         /// </summary>
         public void RandomPlay()

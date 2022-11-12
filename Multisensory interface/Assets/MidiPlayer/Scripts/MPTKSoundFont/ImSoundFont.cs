@@ -11,7 +11,7 @@ using UnityEngine.Events;
 
 namespace MidiPlayerTK
 {
-    /// <summary>
+    /// <summary>@brief
     /// SoundFont adapted to Unity
     /// </summary>
     [Serializable]
@@ -21,6 +21,9 @@ namespace MidiPlayerTK
         public int DefaultBankNumber;
         public int DrumKitBankNumber;
         public const int MAXBANKPRESET = 129;
+        public int LoadType;
+        public int CompressionFormat;
+
 
         public string StrBankSelected;
 
@@ -36,7 +39,7 @@ namespace MidiPlayerTK
         [XmlIgnore]
         public float[] SamplesData;
 
-        /// <summary>
+        /// <summary>@brief
         /// List  of banks of the sound font
         /// </summary>
         [XmlIgnore]
@@ -47,6 +50,8 @@ namespace MidiPlayerTK
             DefaultBankNumber = -1;
             DrumKitBankNumber = -1;
             BankSelected = new bool[MAXBANKPRESET];
+            CompressionFormat = 0; // PCM 
+            LoadType = 1; // CompressedInMemory
         }
 
         public int IndexInstrumentBank
@@ -126,7 +131,7 @@ namespace MidiPlayerTK
             return ibank;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Load a ImSoundFont from a TextAsset resource
         /// </summary>
         /// <param name="path"></param>

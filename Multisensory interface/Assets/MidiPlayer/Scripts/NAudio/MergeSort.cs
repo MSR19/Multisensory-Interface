@@ -6,7 +6,7 @@ namespace MPTK.NAudio.Midi
 {
     class MergeSort
     {
-        /// <summary>
+        /// <summary>@brief
         /// In-place and stable implementation of MergeSort
         /// </summary>
         static void Sort<T>(IList<T> list, int lowIndex, int highIndex, IComparer<T> comparer)
@@ -57,7 +57,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// MergeSort a list of comparable items
         /// </summary>
         public static void Sort<T>(IList<T> list) where T : IComparable<T>
@@ -65,7 +65,7 @@ namespace MPTK.NAudio.Midi
             Sort(list, 0, list.Count - 1, Comparer<T>.Default);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// MergeSort a list 
         /// </summary>
         public static void Sort<T>(IList<T> list, IComparer<T> comparer)

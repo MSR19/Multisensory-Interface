@@ -10,7 +10,7 @@ using System.IO;
 
 namespace MidiPlayerTK
 {
-    /// <summary>
+    /// <summary>@brief
     /// Inspector for the midi global player component
     /// </summary>
     [CanEditMultipleObjects]

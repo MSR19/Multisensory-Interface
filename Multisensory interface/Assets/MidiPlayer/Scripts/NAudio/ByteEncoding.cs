@@ -3,7 +3,7 @@ using System.Text;
 
 namespace MPTK.NAudio.Utils
 {
-    /// <summary>
+    /// <summary>@brief
     /// An encoding for use with file types that have one byte per character
     /// </summary>
     public class ByteEncoding : Encoding
@@ -12,12 +12,12 @@ namespace MPTK.NAudio.Utils
         { 
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// The one and only instance of this class
         /// </summary>
         public static readonly ByteEncoding Instance = new ByteEncoding();
 
-        /// <summary>
+        /// <summary>@brief
         /// <see cref="Encoding.GetByteCount(char[],int,int)"/>
         /// </summary>
         public override int GetByteCount(char[] chars, int index, int count)
@@ -25,7 +25,7 @@ namespace MPTK.NAudio.Utils
             return count;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// <see cref="Encoding.GetBytes(char[],int,int,byte[],int)"/>
         /// </summary>
         public override int GetBytes(char[] chars, int charIndex, int charCount, byte[] bytes, int byteIndex)
@@ -37,7 +37,7 @@ namespace MPTK.NAudio.Utils
             return charCount;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// <see cref="Encoding.GetCharCount(byte[],int,int)"/>
         /// </summary>
         public override int GetCharCount(byte[] bytes, int index, int count)
@@ -50,7 +50,7 @@ namespace MPTK.NAudio.Utils
             return count;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// <see cref="Encoding.GetChars(byte[],int,int,char[],int)"/>
         /// </summary>
         public override int GetChars(byte[] bytes, int byteIndex, int byteCount, char[] chars, int charIndex)
@@ -67,7 +67,7 @@ namespace MPTK.NAudio.Utils
             return byteCount;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// <see cref="Encoding.GetMaxCharCount"/>
         /// </summary>
         public override int GetMaxCharCount(int byteCount)
@@ -75,7 +75,7 @@ namespace MPTK.NAudio.Utils
             return byteCount;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// <see cref="Encoding.GetMaxByteCount"/>
         /// </summary>
         public override int GetMaxByteCount(int charCount)

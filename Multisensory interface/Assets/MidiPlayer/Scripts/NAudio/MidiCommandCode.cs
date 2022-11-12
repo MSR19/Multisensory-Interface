@@ -1,39 +1,39 @@
 namespace MPTK.NAudio.Midi 
 {
-    /// <summary>
+    /// <summary>@brief
     /// MIDI command codes
     /// </summary>
     public enum MidiCommandCode : byte 
     {
-        /// <summary>Note Off</summary>
+        /// <summary>@briefNote Off</summary>
         NoteOff = 0x80,
-        /// <summary>Note On</summary>
+        /// <summary>@briefNote On</summary>
         NoteOn = 0x90,
-        /// <summary>Key After-touch</summary>
+        /// <summary>@briefKey After-touch</summary>
         KeyAfterTouch = 0xA0,
-        /// <summary>Control change</summary>
+        /// <summary>@briefControl change</summary>
         ControlChange = 0xB0,
-        /// <summary>Patch change</summary>
+        /// <summary>@briefPatch change</summary>
         PatchChange = 0xC0,
-        /// <summary>Channel after-touch</summary>
+        /// <summary>@briefChannel after-touch</summary>
         ChannelAfterTouch = 0xD0,
-        /// <summary>Pitch wheel change</summary>
+        /// <summary>@briefPitch wheel change</summary>
         PitchWheelChange = 0xE0,
-        /// <summary>Sysex message</summary>
+        /// <summary>@briefSysex message</summary>
         Sysex = 0xF0,
-        /// <summary>Eox (comes at end of a sysex message)</summary>
+        /// <summary>@briefEox (comes at end of a sysex message)</summary>
         Eox = 0xF7,
-        /// <summary>Timing clock (used when synchronization is required)</summary>
+        /// <summary>@briefTiming clock (used when synchronization is required)</summary>
         TimingClock = 0xF8,
-        /// <summary>Start sequence</summary>
+        /// <summary>@briefStart sequence</summary>
         StartSequence = 0xFA,
-        /// <summary>Continue sequence</summary>
+        /// <summary>@briefContinue sequence</summary>
         ContinueSequence = 0xFB,
-        /// <summary>Stop sequence</summary>
+        /// <summary>@briefStop sequence</summary>
         StopSequence = 0xFC,
-        /// <summary>Auto-Sensing</summary>
+        /// <summary>@briefAuto-Sensing</summary>
         AutoSensing = 0xFE,
-        /// <summary>Meta-event</summary>
+        /// <summary>@briefMeta-event</summary>
         MetaEvent = 0xFF,
     }
 }

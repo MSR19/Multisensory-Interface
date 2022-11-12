@@ -4,14 +4,14 @@ using System.Text;
 
 namespace MPTK.NAudio.Midi
 {
-    /// <summary>
+    /// <summary>@brief
     /// Represents a MIDI note on event
     /// </summary>
     public class NoteOnEvent : NoteEvent
     {
         private NoteEvent offEvent;
 
-        /// <summary>
+        /// <summary>@brief
         /// Reads a new Note On event from a stream of MIDI data
         /// </summary>
         /// <param name="br">Binary reader on the MIDI data stream</param>
@@ -20,7 +20,7 @@ namespace MPTK.NAudio.Midi
         {
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a NoteOn event with specified parameters
         /// </summary>
         /// <param name="absoluteTime">Absolute time of this event</param>
@@ -37,7 +37,7 @@ namespace MPTK.NAudio.Midi
             NoteLength = duration;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a deep clone of this MIDI event.
         /// </summary>
         public override MidiEvent Clone()
@@ -45,7 +45,7 @@ namespace MPTK.NAudio.Midi
             return new NoteOnEvent(AbsoluteTime, Channel, NoteNumber, Velocity, NoteLength);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// The associated Note off event
         /// </summary>
         public NoteEvent OffEvent
@@ -73,7 +73,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Get or set the Note Number, updating the off event at the same time
         /// </summary>
         public override int NoteNumber
@@ -92,7 +92,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Get or set the channel, updating the off event at the same time
         /// </summary>
         public override int Channel
@@ -111,7 +111,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// The duration of this note
         /// </summary>
         /// <remarks>
@@ -140,7 +140,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Calls base class export first, then exports the data 
         /// specific to this event
         /// <seealso cref="MidiEvent.Export">MidiEvent.Export</seealso>

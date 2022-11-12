@@ -65,7 +65,7 @@ namespace MPTKDemoCatchMusic
 
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Call when a group of midi events is ready to plays from the the midi reader.
         /// Playing the events are delayed until they "fall out"
         /// </summary>
@@ -209,7 +209,7 @@ namespace MPTKDemoCatchMusic
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Remove all gameobject Note on the screen
         /// </summary>
         public void Clear()

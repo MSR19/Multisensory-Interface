@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
+/// <summary>@brief
 /// Demo CatchMusic
 /// </summary>
 namespace MPTKDemoCatchMusic
 {
     
-    /// <summary>
+    /// <summary>@brief
     /// Defined behavior of a note
     /// </summary>
     public class NoteView : MonoBehaviour
@@ -21,7 +21,7 @@ namespace MPTKDemoCatchMusic
         public Material MatPlayed;
         public float zOriginal;
         // 
-        /// <summary>
+        /// <summary>@brief
         /// Update
         /// @code
         /// midiFilePlayer.MPTK_PlayNote(note);

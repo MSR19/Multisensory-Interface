@@ -25,7 +25,7 @@ namespace MidiPlayerTK
             HiSample c;
             try
             {
-                if (!dicWave.TryGetValue(smpl.Name, out c))
+                if (dicWave!= null && !dicWave.TryGetValue(smpl.Name, out c))
                 {
                     dicWave.Add(smpl.Name, smpl);
                 }
@@ -39,8 +39,11 @@ namespace MidiPlayerTK
         {
             try
             {
-                HiSample c;
-                return dicWave.TryGetValue(name, out c);
+                if (dicWave != null)
+                {
+                    HiSample c;
+                    return dicWave.TryGetValue(name, out c);
+                }
             }
             catch (System.Exception ex)
             {

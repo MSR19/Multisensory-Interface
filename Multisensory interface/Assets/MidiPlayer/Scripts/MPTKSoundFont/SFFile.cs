@@ -166,7 +166,7 @@ namespace MidiPlayerTK
     }
 
 
-    /// <summary>
+    /// <summary>@brief
     /// An encoding for use with file types that have one byte per character
     /// </summary>
     public class ByteEncoding : Encoding
@@ -175,12 +175,12 @@ namespace MidiPlayerTK
         {
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// The one and only instance of this class
         /// </summary>
         public static readonly ByteEncoding Instance = new ByteEncoding();
 
-        /// <summary>
+        /// <summary>@brief
         /// <see cref="Encoding.GetByteCount(char[],int,int)"/>
         /// </summary>
         public override int GetByteCount(char[] chars, int index, int count)
@@ -188,7 +188,7 @@ namespace MidiPlayerTK
             return count;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// <see cref="Encoding.GetBytes(char[],int,int,byte[],int)"/>
         /// </summary>
         public override int GetBytes(char[] chars, int charIndex, int charCount, byte[] bytes, int byteIndex)
@@ -200,7 +200,7 @@ namespace MidiPlayerTK
             return charCount;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// <see cref="Encoding.GetCharCount(byte[],int,int)"/>
         /// </summary>
         public override int GetCharCount(byte[] bytes, int index, int count)
@@ -213,7 +213,7 @@ namespace MidiPlayerTK
             return count;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// <see cref="Encoding.GetChars(byte[],int,int,char[],int)"/>
         /// </summary>
         public override int GetChars(byte[] bytes, int byteIndex, int byteCount, char[] chars, int charIndex)
@@ -230,7 +230,7 @@ namespace MidiPlayerTK
             return byteCount;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// <see cref="Encoding.GetMaxCharCount"/>
         /// </summary>
         public override int GetMaxCharCount(int byteCount)
@@ -238,7 +238,7 @@ namespace MidiPlayerTK
             return byteCount;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// <see cref="Encoding.GetMaxByteCount"/>
         /// </summary>
         public override int GetMaxByteCount(int charCount)
@@ -276,7 +276,7 @@ namespace MidiPlayerTK
     //{               /* Generator amount structure */
     //    public ushort uword;      /* unsigned 16 bit value */
 
-    //    /// <summary>
+    //    /// <summary>@brief
     //    /// Generator amount as a signed short
     //    /// </summary>
     //    public short sword
@@ -285,7 +285,7 @@ namespace MidiPlayerTK
     //        set { uword = (ushort)value; }
     //    }
 
-    //    /// <summary>
+    //    /// <summary>@brief
     //    /// Low byte amount
     //    /// </summary>
     //    public byte lo
@@ -294,7 +294,7 @@ namespace MidiPlayerTK
     //        set { uword &= 0xFF00; uword += value; }
     //    }
 
-    //    /// <summary>
+    //    /// <summary>@brief
     //    /// High byte amount
     //    /// </summary>
     //    public byte hi
@@ -306,11 +306,11 @@ namespace MidiPlayerTK
 
     //public class SFGen
     //{
-    //    /// <summary>
+    //    /// <summary>@brief
     //    /// generator ID
     //    /// </summary>
     //    public fluid_gen_type id;
-    //    /// <summary>
+    //    /// <summary>@brief
     //    /// generator value
     //    /// </summary>
     //    public SFGenAmount amount;
@@ -318,19 +318,19 @@ namespace MidiPlayerTK
 
     //public class SFZone
     //{
-    //    /// <summary>
+    //    /// <summary>@brief
     //    /// unique item id (see int note above)
     //    /// </summary>
     //    public int itemid;
-    //    /// <summary>
+    //    /// <summary>@brief
     //    /// index instrument/sample index for zone
     //    /// </summary>
     //    public short index;
-    //    /// <summary>
+    //    /// <summary>@brief
     //    /// list of generators
     //    /// </summary>
     //    public SFGen[] gens;
-    //    /// <summary>
+    //    /// <summary>@brief
     //    /// list of modulators
     //    /// </summary>
     //    public SFMod[] mods;
@@ -338,43 +338,43 @@ namespace MidiPlayerTK
 
     //public class SFSample
     //{
-    //    /// <summary>
+    //    /// <summary>@brief
     //    /// unique item id (see int note above)
     //    /// </summary>
     //    public int itemid;
-    //    /// <summary>
+    //    /// <summary>@brief
     //    /// Name of sample
     //    /// </summary>
     //    public string name;
-    //    /// <summary>
+    //    /// <summary>@brief
     //    /// Offset in sample area to start of sample
     //    /// </summary>
     //    public uint start;
-    //    /// <summary>
+    //    /// <summary>@brief
     //    /// Offset from start to end of sample, this is the last point of the sample, the SF spec has this as the 1st point after, corrected on load/save
     //    /// </summary>
     //    public uint end;
-    //    /// <summary>
+    //    /// <summary>@brief
     //    /// Offset from start to start of loop
     //    /// </summary>
     //    public uint loopstart;
-    //    /// <summary>
+    //    /// <summary>@brief
     //    /// Offset from start to end of loop, marks the first point after loop, whose sample value is ideally equivalent to loopstart
     //    /// </summary>
     //    public uint loopend;
-    //    /// <summary>
+    //    /// <summary>@brief
     //    /// Sample rate recorded at
     //    /// </summary>
     //    public uint samplerate;
-    //    /// <summary>
+    //    /// <summary>@brief
     //    /// root midi key number
     //    /// </summary>
     //    public byte origpitch;
-    //    /// <summary>
+    //    /// <summary>@brief
     //    /// pitch correction in cents
     //    /// </summary>
     //    public byte pitchadj;
-    //    /// <summary>
+    //    /// <summary>@brief
     //    /// 1 mono,2 right,4 left,linked 8,0x8000=ROM
     //    /// </summary>
     //    public ushort sampletype;
@@ -382,15 +382,15 @@ namespace MidiPlayerTK
 
     //public class SFInst
     //{
-    //    /// <summary>
+    //    /// <summary>@brief
     //    /// unique item id (see int note above)
     //    /// </summary>
     //    public int itemid;
-    //    /// <summary>
+    //    /// <summary>@brief
     //    /// Name of instrument
     //    /// </summary>
     //    public string name;
-    //    /// <summary>
+    //    /// <summary>@brief
     //    /// list of instrument zones
     //    /// </summary>
     //    public SFZone[] zone;

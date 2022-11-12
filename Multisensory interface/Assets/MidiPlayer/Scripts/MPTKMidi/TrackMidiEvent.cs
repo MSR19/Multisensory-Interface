@@ -8,12 +8,12 @@ namespace MidiPlayerTK
 {
     //! @cond NODOC
 
-    /// <summary>
+    /// <summary>@brief
     /// Midi event list (NAUdio format). Internal classe.
     /// </summary>
     public class TrackMidiEvent
     {
-        /// <summary>
+        /// <summary>@brief
         /// Track index start from 0
         /// </summary>
         public int IndexTrack;

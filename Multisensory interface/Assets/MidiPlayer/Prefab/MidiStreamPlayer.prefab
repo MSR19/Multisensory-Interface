@@ -298,6 +298,7 @@ MonoBehaviour:
   MaxDspLoad: 50
   IdSynth: 0
   IdSession: 0
+  MPTK_ResetChannel: 1
   playOnlyFirstWave: 0
   MPTK_EnablePresetDrum: 0
   MPTK_ReleaseSameNote: 1
@@ -315,6 +316,8 @@ MonoBehaviour:
   StatDspLoadMIN: 0
   StatDspLoadMAX: 0
   StatDspLoadAVG: 0
+  StatDspBufferSize: 0
+  StatDspChannelCount: 0
   StatSynthLatencyLAST: 0
   StatSynthLatencyAVG: 0
   StatSynthLatencyMIN: 0
@@ -385,9 +388,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   showMidiInfo: 0
-  showSynthParameter: 1
+  showSynthParameter: 0
   showSpatialization: 0
-  showUnitySynthParameter: 1
+  showUnitySynthParameter: 0
   showUnityPerformanceParameter: 0
   showSoundFontEffect: 0
   showUnitySynthEffect: 0

@@ -10,7 +10,7 @@ using System.IO;
 
 namespace MidiPlayerTK
 {
-    /// <summary>
+    /// <summary>@brief
     /// Inspector for the midi global player component
     /// </summary>
     public class MidiCommonEditor : ScriptableObject
@@ -36,6 +36,167 @@ namespace MidiPlayerTK
 
         static public CustomStyle myStyle;
 
+        static public GUIStyle styleCombo;
+        static public GUIStyle styleWindow;
+        static public GUIStyle stylePanel;
+        static public GUIStyle styleBold;
+        static public GUIStyle styleAlertRed;
+        static public GUIStyle styleRichText;
+        static public GUIStyle styleLabelLeft;
+        static public GUIStyle styleLabelCenter;
+        static public GUIStyle styleLabelRight;
+        static public GUIStyle styleListTitle;
+        static public GUIStyle styleListRow;
+        static public GUIStyle styleListRowLeft;
+        static public GUIStyle styleListRowCenter;
+        static public GUIStyle styleListRowSelected;
+        static public GUIStyle styleToggle;
+
+        static public GUIStyle styleRichTextBorder;
+        static public GUIStyle styleLabelFontCourier;
+        static public float lineHeight = 0f;
+
+        static public GUIStyle styleLabelUpperLeft;
+
+        static public GUIStyle styleButtonDemo;
+        static public GUIStyle styleButtonIcon;
+        static public GUIStyle styleListCenter;
+
+        static public GUISkin skin;
+        static public bool styleLoaded = false;
+
+        static public void LoadSkinAndStyle(bool loadSkin = true)
+        {
+            if (loadSkin)
+            {   
+                if (skin == null)
+                {
+                    skin = EditorGUIUtility.Load("Assets/MidiPlayer/MaestroSkin.GUISkin") as GUISkin;
+                    //Debug.Log($"Loaded skin {skin.name}");
+                    styleLoaded = false;
+                }
+                GUI.skin = skin;
+            }
+
+            //string nameStyle = "no custom style";
+            //if (styleListRowSelected != null && styleListRowSelected.normal.background != null)
+            //    nameStyle = styleListRowSelected.normal.background.name;
+            
+            // kind hack to check if custom style are loaded
+            if (!styleLoaded || styleListRowSelected == null || styleListRowSelected.normal.background == null)
+            {
+                //Debug.Log($"Custom skin {skin.name}");
+
+                styleLoaded = true;
+
+                int borderSize = 1; // Border size in pixels
+                RectOffset rectBorder = new RectOffset(borderSize, borderSize, borderSize, borderSize);
+
+                styleCombo = new GUIStyle(EditorStyles.toolbarPopup);
+                styleCombo.alignment = TextAnchor.MiddleLeft;
+
+                styleBold = new GUIStyle(EditorStyles.boldLabel);
+                styleBold.fontStyle = FontStyle.Bold;
+                styleBold.alignment = TextAnchor.UpperLeft;
+                styleBold.normal.textColor = Color.black;
+
+
+                float gray1 = 0.5f;
+                float gray2 = 0.1f;
+                float gray3 = 0.7f;
+                //float gray4 = 0.65f;
+                float gray5 = 0.5f;
+
+                styleWindow = new GUIStyle("box");
+                styleWindow.normal.background = MPTKGui.MakeTex(10, 10, new Color(gray5, gray5, gray5, 1f), rectBorder, new Color(gray2, gray2, gray2, 1f));
+                styleWindow.alignment = TextAnchor.MiddleCenter;
+
+                stylePanel = new GUIStyle("box");
+                stylePanel.normal.background = MPTKGui.MakeTex(10, 10, new Color(gray3, gray3, gray3, 1f), rectBorder, new Color(gray2, gray2, gray2, 1f));
+                stylePanel.alignment = TextAnchor.MiddleCenter;
+
+                styleListTitle = new GUIStyle("box");
+                styleListTitle.normal.background = MPTKGui.MakeTex(10, 10, new Color(gray1, gray1, gray1, 1f), rectBorder, new Color(gray2, gray2, gray2, 1f));
+                styleListTitle.normal.textColor = Color.black;
+                styleListTitle.alignment = TextAnchor.MiddleCenter;
+
+                styleListRow = new GUIStyle("box");
+                styleListRow.normal.background = MPTKGui.MakeTex(10, 10, new Color(gray3, gray3, gray3, 1f), rectBorder, new Color(gray2, gray2, gray2, 1f));
+                styleListRow.normal.textColor = Color.black;
+                styleListRow.alignment = TextAnchor.MiddleCenter;
+
+                styleListRowLeft = new GUIStyle("box");
+                styleListRowLeft.normal.background = MPTKGui.MakeTex(10, 10, new Color(gray3, gray3, gray3, 1f), rectBorder, new Color(gray2, gray2, gray2, 1f));
+                styleListRowLeft.normal.textColor = Color.black;
+                styleListRowLeft.alignment = TextAnchor.MiddleLeft;
+
+                styleListRowCenter = new GUIStyle("box");
+                styleListRowCenter.normal.background = MPTKGui.MakeTex(10, 10, new Color(gray3, gray3, gray3, 1f), rectBorder, new Color(gray2, gray2, gray2, 1f));
+                styleListRowCenter.normal.textColor = Color.black;
+                styleListRowCenter.alignment = TextAnchor.MiddleCenter;
+
+                styleListRowSelected = new GUIStyle("box");
+                styleListRowSelected.normal.background = MPTKGui.MakeTex(10, 10, new Color(.6f, .8f, .6f, 1f), rectBorder, new Color(gray2, gray2, gray2, 1f));
+                styleListRowSelected.normal.background.name = "bckgname"; // kind hack to check if custom style are loaded
+                styleListRowSelected.normal.textColor = Color.black;
+                styleListRowSelected.alignment = TextAnchor.MiddleCenter;
+
+                styleToggle = new GUIStyle("toggle");
+                styleToggle.normal.textColor = Color.black;
+
+                styleAlertRed = new GUIStyle(EditorStyles.label);
+                styleAlertRed.normal.textColor = new Color(188f / 255f, 56f / 255f, 56f / 255f);
+                styleAlertRed.fontSize = 16;
+
+                styleRichText = new GUIStyle(EditorStyles.label);
+                styleRichText.richText = true;
+                styleRichText.alignment = TextAnchor.UpperLeft;
+                styleRichText.normal.textColor = Color.black;
+
+                styleLabelRight = new GUIStyle(EditorStyles.label);
+                styleLabelRight.alignment = TextAnchor.MiddleRight;
+                styleLabelRight.normal.textColor = Color.black;
+
+                styleLabelLeft = new GUIStyle(EditorStyles.label);
+                styleLabelLeft.alignment = TextAnchor.MiddleLeft;
+                styleLabelLeft.normal.textColor = Color.black;
+
+                styleLabelCenter = new GUIStyle(EditorStyles.label);
+                styleLabelCenter.alignment = TextAnchor.MiddleCenter;
+                styleLabelCenter.normal.textColor = Color.black;
+
+
+                // ???? if (EditorStyles.boldLabel == null) return;
+
+                styleRichTextBorder = new GUIStyle(EditorStyles.label);
+                styleRichTextBorder.richText = true;
+                styleRichTextBorder.alignment = TextAnchor.MiddleLeft;
+                styleRichTextBorder.normal.textColor = Color.black;
+                styleRichTextBorder.normal.background = MPTKGui.MakeTex(500, 600, new Color(gray5, gray5, gray5, 1f), rectBorder, new Color(gray2, gray2, gray2, 1f));
+
+                // Load and set Font
+                Font myFont = (Font)Resources.Load("Courier", typeof(Font));
+                styleLabelFontCourier = new GUIStyle(EditorStyles.label);
+                styleLabelFontCourier.font = myFont;
+                styleLabelFontCourier.alignment = TextAnchor.UpperLeft;
+                styleLabelFontCourier.normal.textColor = Color.black;
+                styleLabelFontCourier.hover.textColor = Color.black;
+
+
+                lineHeight = styleRichTextBorder.lineHeight;
+
+                styleLabelUpperLeft = new GUIStyle(EditorStyles.label);
+                styleLabelUpperLeft.alignment = TextAnchor.UpperLeft;
+                styleLabelUpperLeft.normal.textColor = Color.black;
+                styleLabelUpperLeft.hover.textColor = Color.black;
+
+                styleButtonDemo = new GUIStyle("button");
+
+                styleButtonIcon = new GUIStyle("button");
+                styleButtonIcon.normal.background = MPTKGui.MakeTex(500, 600, new Color(gray5, gray5, gray5, 1f), rectBorder, new Color(gray2, gray2, gray2, 1f));
+            }
+        }
+
         public void DrawAlertOnDefault()
         {
             if (myStyle == null) myStyle = new CustomStyle();
@@ -45,8 +206,6 @@ namespace MidiPlayerTK
                 "DEBUG_PERF_AUDIO, DEBUG_PERF_MIDI, DEBUG_STATUS_STAT"
                 , myStyle.LabelAlert);
         }
-
-        static private Texture buttonIconHelp;
 
         static public bool DrawFoldoutAndHelp(bool state, string title, string urlHelp)
         {
@@ -67,9 +226,8 @@ namespace MidiPlayerTK
 
         static public void DrawHelp(string urlHelp)
         {
-            if (buttonIconHelp == null) buttonIconHelp = Resources.Load<Texture2D>("Textures/question-mark");
             if (GUILayout.Button(
-                new GUIContent(buttonIconHelp, "Get some help on MPTK web site"),
+                new GUIContent(MPTKGui.IconHelp, "Get some help on MPTK web site"),
                 EditorStyles.helpBox,
                 GUILayout.Width(16f), GUILayout.Height(16f)))
                 Application.OpenURL(urlHelp);
@@ -175,9 +333,13 @@ namespace MidiPlayerTK
                 float distance = EditorGUILayout.IntField(new GUIContent("Max Distance", tooltipDistance), (int)instance.MPTK_MaxDistance);
                 if (instance.MPTK_MaxDistance != distance)
                     instance.MPTK_MaxDistance = distance;
-
-                //Debug.Log("Camera: " + instance.distanceEditorModeOnly);
-                EditorGUILayout.LabelField(new GUIContent($"Current distance to AudioListener: {Math.Round(instance.distanceToListener, 2)}", tooltipDistance));
+                //float distanceToListener = MidiPlayerGlobal.MPTK_DistanceToListener(instance.transform);
+                if (instance.distanceToListener > instance.MPTK_MaxDistance)
+                    EditorGUILayout.LabelField(new GUIContent($"Midi sequencer is paused, current distance to AudioListener: {Math.Round(instance.distanceToListener, 2)}",
+                        tooltipDistance), myStyle.LabelAlert);
+                else
+                    //Debug.Log("Camera: " + instance.distanceEditorModeOnly);
+                    EditorGUILayout.LabelField(new GUIContent($"Current distance to AudioListener: {Math.Round(instance.distanceToListener, 2)}", tooltipDistance));
                 //EditorGUILayout.EndHorizontal();
 
                 EditorGUI.indentLevel--;
@@ -250,18 +412,22 @@ namespace MidiPlayerTK
                 //        instance.CoreAudioSource.Play();
 
                 if (instance.MPTK_IsPlaying && !instance.MPTK_IsPaused)
-                    GUI.color = ToolsEditor.ButtonColor;
+                    GUI.color = MPTKGui.ButtonColor;
                 if (GUILayout.Button(new GUIContent("Play", "")))
                     instance.MPTK_Play();
                 GUI.color = Color.white;
 
                 if (instance.MPTK_IsPaused)
-                    GUI.color = ToolsEditor.ButtonColor;
+                    GUI.color = MPTKGui.ButtonColor;
                 if (GUILayout.Button(new GUIContent("Pause", "")))
-                    if (instance.MPTK_IsPaused)
-                        instance.MPTK_UnPause();
+                    // No need to explicitly pause when pause on focus lost
+                    if (!instance.MPTK_PauseOnFocusLoss)
+                        if (instance.MPTK_IsPaused)
+                            instance.MPTK_UnPause();
+                        else
+                            instance.MPTK_Pause();
                     else
-                        instance.MPTK_Pause();
+                        Debug.Log("Paused because focus lost, refocusing your app to unpause");
                 GUI.color = Color.white;
 
                 if (GUILayout.Button(new GUIContent("Stop", "")))
@@ -306,8 +472,16 @@ namespace MidiPlayerTK
                 EditorGUILayout.EndHorizontal();
 
                 EditorGUILayout.BeginHorizontal();
-                instance.MPTK_EnableChangeTempo = EditorGUILayout.Toggle(new GUIContent("Tempo Change", "Enable midi event tempo change when playing."), instance.MPTK_EnableChangeTempo);
-                EditorGUILayout.LabelField(new GUIContent("Current:" + Math.Round(instance.MPTK_Tempo, 0), "Current tempo defined in Midi"));
+                instance.MPTK_EnableChangeTempo = EditorGUILayout.Toggle(new GUIContent("MIDI Tempo Change", "Enable MIDI events tempo change from the MIDI file when playing. To be disabled to force tempo by script."), instance.MPTK_EnableChangeTempo);
+                if (EditorApplication.isPlaying && instance.MPTK_IsPlaying)
+                {
+                    float tempo = EditorGUILayout.IntSlider((int)instance.MPTK_Tempo, 1, 1000);
+                    if (tempo != (int)instance.MPTK_Tempo)
+                    {
+                        //Debug.Log("New tempo " + instance.MPTK_Tempo + " --> " + tempo + " " + Event.current.type);
+                        instance.MPTK_Tempo = tempo;
+                    }
+                }
                 EditorGUILayout.EndHorizontal();
 
                 instance.MPTK_EnablePresetDrum = EditorGUILayout.Toggle(new GUIContent("Drum Preset Change", "Enable Preset change on the canal 9 for drum. By default disabled, could sometimes create bad sound with midi files not really compliant with the Midi norm."), instance.MPTK_EnablePresetDrum);
@@ -405,7 +579,7 @@ namespace MidiPlayerTK
                              "Look at Unity menu 'Edit / Project Settings...' and select between best latency and best performance. ",
                              "https://paxstellar.fr/2021/01/01/get-an-accurate-generated-music/"
                              );
-                        DrawLabelAndHelp(                             
+                        DrawLabelAndHelp(
                              "If not checked, then rate and buffer size can be defined manually ... but with the risk of bad audio quality.",
                              "https://paxstellar.fr/2020/09/06/performance//"
                              );

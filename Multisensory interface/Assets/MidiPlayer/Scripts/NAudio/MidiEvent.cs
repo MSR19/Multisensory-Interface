@@ -5,18 +5,18 @@ using UnityEngine;
 
 namespace MPTK.NAudio.Midi
 {
-    /// <summary>
+    /// <summary>@brief
     /// Represents an individual MIDI event
     /// </summary>
     public class MidiEvent : ICloneable
     {
-        /// <summary>The MIDI command code</summary>
+        /// <summary>@briefThe MIDI command code</summary>
         private MidiCommandCode commandCode;
         private int channel;
         private int deltaTime;
         private long absoluteTime;
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a MidiEvent from a raw message received using
         /// the MME MIDI In APIs
         /// </summary>
@@ -85,7 +85,7 @@ namespace MPTK.NAudio.Midi
 
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Constructs a MidiEvent from a BinaryStream
         /// </summary>
         /// <param name="br">The binary stream of MIDI data</param>
@@ -163,7 +163,7 @@ namespace MPTK.NAudio.Midi
             return me;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Converts this MIDI event to a short message (32 bit integer) that
         /// can be sent by the Windows MIDI out short message APIs
         /// Cannot be implemented for all MIDI messages
@@ -174,14 +174,14 @@ namespace MPTK.NAudio.Midi
             return (channel - 1) + (int)commandCode;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Default constructor
         /// </summary>
         protected MidiEvent()
         {
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a MIDI event with specified parameters
         /// </summary>
         /// <param name="absoluteTime">Absolute time of this event</param>
@@ -194,7 +194,7 @@ namespace MPTK.NAudio.Midi
             this.commandCode = commandCode;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a deep clone of this MIDI event.
         /// </summary>
         public virtual MidiEvent Clone()
@@ -207,7 +207,7 @@ namespace MPTK.NAudio.Midi
             return Clone();
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// The MIDI Channel Number for this event (1-16)
         /// </summary>
         public virtual int Channel
@@ -227,7 +227,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// The Delta time for this event
         /// </summary>
         public int DeltaTime
@@ -242,7 +242,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// The absolute time for this event
         /// </summary>
         public long AbsoluteTime
@@ -257,7 +257,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// The command code for this event
         /// </summary>
         public MidiCommandCode CommandCode
@@ -268,7 +268,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Whether this is a note off event
         /// </summary>
         public static bool IsNoteOff(MidiEvent midiEvent)
@@ -285,7 +285,7 @@ namespace MPTK.NAudio.Midi
             return false;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Whether this is a note on event
         /// </summary>
         public static bool IsNoteOn(MidiEvent midiEvent)
@@ -301,7 +301,7 @@ namespace MPTK.NAudio.Midi
             return false;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Determines if this is an end track event
         /// </summary>
         public static bool IsEndTrack(MidiEvent midiEvent)
@@ -318,7 +318,7 @@ namespace MPTK.NAudio.Midi
         }
 
 
-        /// <summary>
+        /// <summary>@brief
         /// Displays a summary of the MIDI event
         /// </summary>
         /// <returns>A string containing a brief description of this MIDI event</returns>
@@ -330,7 +330,7 @@ namespace MPTK.NAudio.Midi
                 return String.Format("{0} {1} Ch: {2}", absoluteTime, commandCode, channel);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Utility function that can read a variable length integer from a binary stream
         /// </summary>
         /// <param name="br">The binary stream</param>
@@ -352,7 +352,7 @@ namespace MPTK.NAudio.Midi
             throw new FormatException("Invalid Var Int");
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Writes a variable length integer to a binary stream
         /// </summary>
         /// <param name="writer">Binary stream</param>
@@ -386,7 +386,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Exports this MIDI event's data
         /// Overriden in derived classes, but they should call this version
         /// </summary>

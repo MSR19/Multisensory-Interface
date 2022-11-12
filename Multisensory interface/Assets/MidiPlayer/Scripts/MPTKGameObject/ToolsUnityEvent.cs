@@ -34,7 +34,7 @@ namespace MidiPlayerTK
         Loop
     }
 
-    /// <summary>
+    /// <summary>@brief
     /// Status of the last midi file loaded
     /// @li      -1: midi file is loading
     /// @li       0: succes, midi file loaded 
@@ -45,57 +45,57 @@ namespace MidiPlayerTK
     /// </summary>
     public enum LoadingStatusMidiEnum
     {
-        /// <summary>
+        /// <summary>@brief
         /// -1: midi file is loading.
         /// </summary>
         NotYetDefined = -1,
 
-        /// <summary>
+        /// <summary>@brief
         /// 0: succes, midi file loaded.
         /// </summary>
         Success = 0,
 
-        /// <summary>
+        /// <summary>@brief
         /// 1: error, no Midi file found.
         /// </summary>
         NotFound = 1,
 
-        /// <summary>
+        /// <summary>@brief
         /// 2: error, not a midi file, too short size.
         /// </summary>
         TooShortSize = 2,
 
-        /// <summary>
+        /// <summary>@brief
         /// 3: error, not a midi file, signature MThd not found.
         /// </summary>
         NoMThdSignature = 3,
 
-        /// <summary>
+        /// <summary>@brief
         /// 4: error, network error or site not found (MidiExternalPlayer only).
         /// </summary>
         NetworkError = 4,
 
-        /// <summary>
+        /// <summary>@brief
         /// 5: error, midi file corrupted, error detected when loading the midi events.
         /// </summary>
         MidiFileInvalid = 5,
 
-        /// <summary>
+        /// <summary>@brief
         /// 6: SoundFont not loaded.
         /// </summary>
         SoundFontNotLoaded = 6,
 
-        /// <summary>
+        /// <summary>@brief
         /// 7: error, Already playing.
         /// </summary>
         AlreadyPlaying = 7,
 
-        /// <summary>
+        /// <summary>@brief
         /// 8: error, MPTK_MidiName must start with file:// or http:// or https:// (only for MidiExternalPlayer).
         /// </summary>
         MidiNameInvalid = 8,
 
-        /// <summary>
+        /// <summary>@brief
         /// 9: error,  Set MPTK_MidiName by script or in the inspector with Midi Url/path before playing.
         /// </summary>
         MidiNameNotDefined = 9,

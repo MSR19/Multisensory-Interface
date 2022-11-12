@@ -5,14 +5,14 @@ using System.IO;
 
 namespace MPTK.NAudio.Midi
 {
-    /// <summary>
+    /// <summary>@brief
     /// Represents a MIDI track sequence number event event
     /// </summary>
     public class TrackSequenceNumberEvent : MetaEvent
     {
         private ushort sequenceNumber;
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a new track sequence number event
         /// </summary>
         public TrackSequenceNumberEvent(ushort sequenceNumber)
@@ -20,7 +20,7 @@ namespace MPTK.NAudio.Midi
             this.sequenceNumber = sequenceNumber;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Reads a new track sequence number event from a MIDI stream
         /// </summary>
         /// <param name="br">The MIDI stream</param>
@@ -43,7 +43,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a deep clone of this MIDI event.
         /// </summary>
         public override MidiEvent Clone()
@@ -51,7 +51,7 @@ namespace MPTK.NAudio.Midi
             return (TrackSequenceNumberEvent)MemberwiseClone();
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Describes this event
         /// </summary>
         /// <returns>String describing the event</returns>
@@ -60,7 +60,7 @@ namespace MPTK.NAudio.Midi
             return String.Format("{0} {1}", base.ToString(), sequenceNumber);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Calls base class export first, then exports the data 
         /// specific to this event
         /// <seealso cref="MidiEvent.Export">MidiEvent.Export</seealso>

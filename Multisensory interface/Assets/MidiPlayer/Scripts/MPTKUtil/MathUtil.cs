@@ -39,7 +39,7 @@ namespace MidiPlayerTK
             windowSize = size;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Computes a new windowed average each time a new sample arrives
         /// </summary>
         /// <param name="newSample"></param>

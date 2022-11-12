@@ -31,7 +31,7 @@ namespace MidiPlayerTK
 
     public partial class fluid_voice
     {
-        /// <summary>
+        /// <summary>@brief
         /// Real time at start of the voice in tick\n
         /// A single tick represents one hundred nanoseconds or one ten-millionth of a second.
         /// There are 10,000 ticks in a millisecond, or 10 million ticks in a second.         
@@ -44,12 +44,12 @@ namespace MidiPlayerTK
         public long NewTimeWrite;
         public long LastTimeWrite;
 
-        /// <summary>
+        /// <summary>@brief
         /// Delay in ms between call to fluid_voice_write
         /// </summary>
         public long DeltaTimeWrite;
 
-        /// <summary>
+        /// <summary>@brief
         /// Current Now.Ticks of the write process (from OnAudioFilterRead)
         /// </summary>
         long ticks;
@@ -59,7 +59,7 @@ namespace MidiPlayerTK
         public int IndexActive;
         public long LatenceTick;
 
-        /// <summary>
+        /// <summary>@brief
         /// Legacy mode, mix fluid_voice and a AudioSource
         /// </summary>
         public VoiceAudioSource VoiceAudio;
@@ -72,14 +72,14 @@ namespace MidiPlayerTK
         public int IdVoice;
         public int IdSession;
 
-        /// <summary>
+        /// <summary>@brief
         ///  MPTK specific - Note duration in tick. Set to -1 to indefinitely.
         /// A single tick represents one hundred nanoseconds or one ten-millionth of a second.
         /// There are 10,000 ticks in a millisecond, or 10 million ticks in a second.         
         /// </summary>
         public long DurationTick;
 
-        /// <summary>
+        /// <summary>@brief
         /// Duration of the note in millisecond, only for information
         /// </summary>
         public long Duration;
@@ -154,17 +154,17 @@ namespace MidiPlayerTK
         /* master gain */
         //public double synth_gain;
 
-        /// <summary>
+        /// <summary>@brief
         /// volume enveloppe
         /// </summary>
         public fluid_env_data[] volenv_data; //[FLUID_VOICE_ENVLAST];
 
-        /// <summary>
+        /// <summary>@brief
         /// Count time since the start of the section
         /// </summary>
         public long volenv_count;
 
-        /// <summary>
+        /// <summary>@brief
         /// Current section in the enveloppe
         /// </summary>
         public fluid_voice_envelope_index volenv_section;
@@ -426,7 +426,7 @@ namespace MidiPlayerTK
 #endif
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Defined default voice value. Called also when a voice is reused.
         /// </summary>
         /// <param name="psample"></param>
@@ -491,7 +491,7 @@ namespace MidiPlayerTK
         }
 
 
-        /// <summary>
+        /// <summary>@brief
         ///  Adds a modulator to the voice.  "mode" indicates, what to do, if an identical modulator exists already.
         /// mode == FLUID_VOICE_ADD: Identical modulators on preset level are added
         /// mode == FLUID_VOICE_OVERWRITE: Identical modulators on instrument level are overwritten
@@ -645,7 +645,7 @@ namespace MidiPlayerTK
                 VoiceAudio.RunUnityThread();
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// in this function we calculate the values of all the parameters. the parameters are converted to their most useful unit for the DSP algorithm, 
         /// for example, number of samples instead of timecents.
         /// Some parameters keep their "perceptual" unit and conversion will be done in the DSP function.
@@ -778,7 +778,7 @@ namespace MidiPlayerTK
             }
             return lower_bound;
         }
-        /// <summary>
+        /// <summary>@brief
         /// The value of a generator (gen) has changed.  (The different generators are listed in fluidsynth.h, or in SF2.01 page 48-49). Now the dependent 'voice' parameters are calculated.
         /// fluid_voice_update_param can be called during the setup of the  voice (to calculate the initial value for a voice parameter), or
         /// during its operation (a generator has been changed due to real-time parameter modifications like pitch-bend).
@@ -1384,7 +1384,7 @@ namespace MidiPlayerTK
             return (uint)((output_rate * seconds) / synth.FLUID_BUFSIZE + 0.5f);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Returns the number of DSP loops, that correspond to the hold (is_decay=0) or decay (is_decay=1) time.
         /// gen_base=GEN_VOLENVHOLD, GEN_VOLENVDECAY, GEN_MODENVHOLD, GEN_MODENVDECAY gen_key2base=GEN_KEYTOVOLENVHOLD, GEN_KEYTOVOLENVDECAY, GEN_KEYTOMODENVHOLD, GEN_KEYTOMODENVDECAY
         /// </summary>
@@ -1506,7 +1506,7 @@ namespace MidiPlayerTK
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Update all the modulators. This function is called after a ALL_CTRL_OFF MIDI message has been received (CC 121). 
         /// </summary>
         /// <param name="voice"></param>
@@ -2126,7 +2126,7 @@ namespace MidiPlayerTK
             yield return 0;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Move phase enveloppe to release
         /// </summary>
         public void fluid_voice_noteoff(bool force = false)

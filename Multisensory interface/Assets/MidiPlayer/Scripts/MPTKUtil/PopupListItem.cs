@@ -20,7 +20,7 @@ namespace MidiPlayerTK
         public int TitleHeight = 30;
         public int itemHeight = 25;
         //public Color BackgroundColor = new Color(.5f, .5f, .5f, 1f);
-        /// <summary>
+        /// <summary>@brief
         /// Selected item in list
         /// </summary>
         private int selectedItem;

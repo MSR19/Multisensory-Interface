@@ -4,14 +4,14 @@ using System.Text;
 
 namespace MPTK.NAudio.Midi
 {
-    /// <summary>
+    /// <summary>@brief
     /// Represents a Sequencer Specific event
     /// </summary>
     public class SequencerSpecificEvent : MetaEvent
     {
         private byte[] data;
 
-        /// <summary>
+        /// <summary>@brief
         /// Reads a new sequencer specific event from a MIDI stream
         /// </summary>
         /// <param name="br">The MIDI stream</param>
@@ -21,7 +21,7 @@ namespace MPTK.NAudio.Midi
             this.data = br.ReadBytes(length);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a new Sequencer Specific event
         /// </summary>
         /// <param name="data">The sequencer specific data</param>
@@ -32,7 +32,7 @@ namespace MPTK.NAudio.Midi
             this.data = data;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a deep clone of this MIDI event.
         /// </summary>
         public override MidiEvent Clone()
@@ -40,7 +40,7 @@ namespace MPTK.NAudio.Midi
             return new SequencerSpecificEvent((byte[])data.Clone(), AbsoluteTime);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// The contents of this sequencer specific
         /// </summary>
         public byte[] Data
@@ -56,7 +56,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Describes this MIDI text event
         /// </summary>
         /// <returns>A string describing this event</returns>
@@ -73,7 +73,7 @@ namespace MPTK.NAudio.Midi
             return sb.ToString();
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Calls base class export first, then exports the data 
         /// specific to this event
         /// <seealso cref="MidiEvent.Export">MidiEvent.Export</seealso>

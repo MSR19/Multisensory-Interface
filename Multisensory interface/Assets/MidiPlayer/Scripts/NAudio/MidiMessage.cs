@@ -2,14 +2,14 @@ using System;
 
 namespace MPTK.NAudio.Midi
 {
-    /// <summary>
+    /// <summary>@brief
     /// Represents a MIDI message
     /// </summary>
     public class MidiMessage
     {
         private int rawData;
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a new MIDI message
         /// </summary>
         /// <param name="status">Status</param>
@@ -20,7 +20,7 @@ namespace MPTK.NAudio.Midi
             rawData = status + (data1 << 8) + (data2 << 16);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a new MIDI message from a raw message
         /// </summary>
         /// <param name="rawData">A packed MIDI message from an MMIO function</param>
@@ -29,7 +29,7 @@ namespace MPTK.NAudio.Midi
             this.rawData = rawData;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a Note On message
         /// </summary>
         /// <param name="note">Note number (0 to 127)</param>
@@ -64,7 +64,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a Note Off message
         /// </summary>
         /// <param name="note">Note number</param>
@@ -77,7 +77,7 @@ namespace MPTK.NAudio.Midi
             return new MidiMessage((int)MidiCommandCode.NoteOff + channel - 1, note, volume);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a patch change message
         /// </summary>
         /// <param name="patch">The patch number</param>
@@ -89,7 +89,7 @@ namespace MPTK.NAudio.Midi
             return new MidiMessage((int)MidiCommandCode.PatchChange + channel - 1, patch, 0);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a Control Change message
         /// </summary>
         /// <param name="controller">The controller number to change</param>
@@ -102,7 +102,7 @@ namespace MPTK.NAudio.Midi
             return new MidiMessage((int)MidiCommandCode.ControlChange + channel - 1, controller, value);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Returns the raw MIDI message data
         /// </summary>
         public int RawData

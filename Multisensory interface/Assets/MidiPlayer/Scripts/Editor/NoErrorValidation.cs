@@ -1,4 +1,5 @@
 ﻿//#define MPTK_PRO
+using MEC;
 using MidiPlayerTK;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,20 +15,22 @@ class NoErrorValidator
     static NoErrorValidator()
     {
         //Debug.Log("NoErrorValidator");  
-        CompilationPipeline.assemblyCompilationStarted += CompileStarted;
+        //CompilationPipeline.assemblyCompilationStarted += CompileStarted;
+        CompilationPipeline.compilationStarted += CompileStarted;
         CompilationPipeline.assemblyCompilationFinished += CompileFinish;
 #if xxxxxUNITY_IOS
         // Now always enabled but without any garantee!
         Debug.Log("Platform iOS selected, change audio configuration is disabled.");
         CantChangeAudioConfiguration = true;
 #else
+        // Always false, keep it for compatibility ?
         CantChangeAudioConfiguration = false;
 #endif
     }
 
-    private static void CompileStarted(string obj)
+    private static void CompileStarted(object obj)
     {
-        Debug.Log("Compilation Started...");
+        Debug.Log("Compilation Started ...");
         // Better to let Unity doing what is set in Edit / Preferences / Script Changes when playing
         //if (EditorApplication.isPlaying)
         //{
@@ -35,13 +38,15 @@ class NoErrorValidator
         //    EditorApplication.isPlaying = false;
         //}
         // in case of a call back has been set, it's mandatory to unset it to avoid crash
+        MidiCommonEditor.styleLoaded = false;
 #if MPTK_PRO
         MidiKeyboard.MPTK_UnsetRealTimeRead();
 #endif
-        
-//#if UNITY_IOS
-//        Debug.Log("Platform iOS selected, change audio configuration is disabled.");
-//#endif
+        Routine.KillCoroutines();
+
+        //#if UNITY_IOS
+        //        Debug.Log("Platform iOS selected, change audio configuration is disabled.");
+        //#endif
 #if NET_LEGACY
         Debug.LogWarning(".NET 2.0 is selected, .NET 4.x API compatibility level is recommended.");
 #endif

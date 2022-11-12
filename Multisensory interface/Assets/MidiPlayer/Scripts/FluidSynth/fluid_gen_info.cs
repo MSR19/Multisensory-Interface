@@ -9,32 +9,32 @@ namespace MidiPlayerTK
 {
     public class fluid_gen_info
     {
-        /// <summary>
+        /// <summary>@brief
         /// Generator number
         /// </summary>
         public int num;
 
-        /// <summary>
+        /// <summary>@brief
         /// Does the generator need to be initialized (cfr. fluid_voice_init()) 
         /// </summary>
         public int init;
 
-        /// <summary>
+        /// <summary>@brief
         /// The scale to convert from NRPN (cfr. fluid_gen_map_nrpn())
         /// </summary>
         public int nrpn_scale;
 
-        /// <summary>
+        /// <summary>@brief
         /// The minimum value 
         /// </summary>
         public float min;
 
-        /// <summary>
+        /// <summary>@brief
         /// The maximum value 
         /// </summary>
         public float max;
 
-        /// <summary>
+        /// <summary>@brief
         /// The default value (cfr. fluid_gen_set_default_values())
         /// </summary>
         public float def;
@@ -149,7 +149,7 @@ namespace MidiPlayerTK
         //#define fluid_gen_set_nrpn(_gen, _val) { (_gen)->nrpn = (double) (_val); }
     }
 
-    /// <summary>
+    /// <summary>@brief
     /// Build list of synth modifier available
     /// </summary>
     public class GenModifier
@@ -183,7 +183,7 @@ namespace MidiPlayerTK
         }
     }
 
-    /// <summary>
+    /// <summary>@brief
     /// Mode for applying the generator change.
     /// </summary>
     public enum MPTKModeGeneratorChange

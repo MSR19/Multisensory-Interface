@@ -6,18 +6,18 @@ using System.Xml.Serialization;
 
 namespace MidiPlayerTK
 {
-    /// <summary>
+    /// <summary>@brief
     /// Preset from a ImSoundFont
     /// </summary>
     public class HiPreset
     {
-        /// <summary>
+        /// <summary>@brief
         /// unique item id (see int note above)
         /// </summary>
         public int ItemId;
         public string Name;
 
-        /// <summary>
+        /// <summary>@brief
         /// the bank number
         /// </summary>
         public int Bank;

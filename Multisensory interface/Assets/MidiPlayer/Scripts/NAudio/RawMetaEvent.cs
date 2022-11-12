@@ -3,17 +3,17 @@ using System.Text;
 
 namespace MPTK.NAudio.Midi
 {
-    /// <summary>
+    /// <summary>@brief
     /// Represents a MIDI meta event with raw data
     /// </summary>
     public class RawMetaEvent : MetaEvent
     {
-        /// <summary>
+        /// <summary>@brief
         /// Raw data contained in the meta event
         /// </summary>
         public byte[] Data { get; set; }
 
-        /// <summary>
+        /// <summary>@brief
         ///  Creates a meta event with raw data
         /// </summary>
         //public RawMetaEvent(MetaEventType metaEventType, long absoluteTime, byte[] data) : base(metaEventType, data?.Length ?? 0, absoluteTime)
@@ -22,7 +22,7 @@ namespace MPTK.NAudio.Midi
             Data = data;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a deep clone of this MIDI event.
         /// </summary>
         public override MidiEvent Clone()
@@ -33,7 +33,7 @@ namespace MPTK.NAudio.Midi
             return new RawMetaEvent(MetaEventType, AbsoluteTime, (byte[])retData);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Describes this meta event
         /// </summary>
         public override string ToString()
@@ -44,7 +44,7 @@ namespace MPTK.NAudio.Midi
             return sb.ToString();
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// <see cref="MidiEvent.Export"/>
         /// </summary>
         public override void Export(ref long absoluteTime, BinaryWriter writer)

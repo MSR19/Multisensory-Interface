@@ -9,13 +9,14 @@ using UnityEngine;
 
 namespace MidiPlayerTK
 {
-    /// <summary>
+    /// <summary>@brief
     /// Contains the setting of MidiFilePlayer TK
     /// </summary>
     public class MidiSet
     {
         public List<SoundFontInfo> SoundFonts;
         public int IndexSelectedSF;
+               
         public SoundFontInfo ActiveSounFontInfo
         {
             get
@@ -60,7 +61,7 @@ namespace MidiPlayerTK
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Save setting (edit mode)
         /// </summary>
         public void Save()
@@ -81,7 +82,7 @@ namespace MidiPlayerTK
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Load setting (edit mode)
         /// </summary>
         /// <param name="path"></param>
@@ -111,7 +112,7 @@ namespace MidiPlayerTK
             return loaded;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Load setting (run mode)
         /// </summary>
         /// <param name="data"></param>

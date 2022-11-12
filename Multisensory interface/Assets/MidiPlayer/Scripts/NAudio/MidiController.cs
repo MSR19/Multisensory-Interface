@@ -2,41 +2,41 @@ using System;
 
 namespace MPTK.NAudio.Midi
 {
-    /// <summary>
+    /// <summary>@brief
     /// MidiController enumeration
     /// http://www.midi.org/techspecs/midimessages.php#3
     /// </summary>
     public enum MidiController : byte 
     {
-        /// <summary>Bank Select (MSB)</summary>
+        /// <summary>@briefBank Select (MSB)</summary>
         BankSelect = 0,
-        /// <summary>Modulation (MSB)</summary>
+        /// <summary>@briefModulation (MSB)</summary>
         Modulation = 1,
-        /// <summary>Breath Controller</summary>
+        /// <summary>@briefBreath Controller</summary>
         BreathController = 2,
-        /// <summary>Foot controller (MSB)</summary>
+        /// <summary>@briefFoot controller (MSB)</summary>
         FootController = 4,
-        /// <summary>Main volume</summary>
+        /// <summary>@briefMain volume</summary>
         MainVolume = 7,
-        /// <summary>Pan</summary>
+        /// <summary>@briefPan</summary>
         Pan = 10,
-        /// <summary>Expression</summary>
+        /// <summary>@briefExpression</summary>
         Expression = 11,
-        /// <summary>Bank Select LSB</summary>
+        /// <summary>@briefBank Select LSB</summary>
         BankSelectLsb = 32,
-        /// <summary>Sustain</summary>
+        /// <summary>@briefSustain</summary>
         Sustain = 64,
-        /// <summary>Portamento On/Off</summary>
+        /// <summary>@briefPortamento On/Off</summary>
         Portamento = 65,
-        /// <summary>Sostenuto On/Off</summary>
+        /// <summary>@briefSostenuto On/Off</summary>
         Sostenuto = 66,
-        /// <summary>Soft Pedal On/Off</summary>
+        /// <summary>@briefSoft Pedal On/Off</summary>
         SoftPedal = 67,
-        /// <summary>Legato Footswitch</summary>
+        /// <summary>@briefLegato Footswitch</summary>
         LegatoFootswitch = 68,
-        /// <summary>Reset all controllers</summary>
+        /// <summary>@briefReset all controllers</summary>
         ResetAllControllers = 121,
-        /// <summary>All notes off</summary>
+        /// <summary>@briefAll notes off</summary>
         AllNotesOff = 123,
     }
 }

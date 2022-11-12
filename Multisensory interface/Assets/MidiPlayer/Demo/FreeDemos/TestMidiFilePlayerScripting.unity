@@ -1091,9 +1091,9 @@ MonoBehaviour:
   MPTK_ModeSpatializer: 0
   MPTK_MaxSpatialSynth: 0
   MPTK_SpatialSynthEnabled: 0
-  midiNameToPlay: Bobby Blue Bland - A Touch Of Blues
-  midiIndexToPlay: 41
-  MPTK_StartPlayAtFirstNote: 0
+  midiNameToPlay: Blues Image - Ride Captain Ride
+  midiIndexToPlay: 20
+  MPTK_StartPlayAtFirstNote: 1
   speed: 1
   durationEditorModeOnly: 
   playTimeEditorModeOnly: 
@@ -1120,7 +1120,7 @@ MonoBehaviour:
   needDelayToStop: 0
   nextMidi: 0
   prevMidi: 0
-  MPTK_PauseOnFocusLoss: 0
+  MPTK_PauseOnFocusLoss: 1
 --- !u!4 &2006122247
 Transform:
   m_ObjectHideFlags: 0
@@ -1178,8 +1178,11 @@ MonoBehaviour:
   IsWaitNotesOff: 0
   CurrentIndexPlaying: 0
   forceBank: -1
-  toggleChannelDisplay: 1
-  TestSpecialPreProcessMidi: 0
+  toggleChannelDisplay: 0
+  toggleApplyRealTimeChange: 0
+  toggleChangeNoteOn: 0
+  toggleDisableChangePreset: 0
+  toggleChangeTempo: 0
 --- !u!4 &2067712911
 Transform:
   m_ObjectHideFlags: 0

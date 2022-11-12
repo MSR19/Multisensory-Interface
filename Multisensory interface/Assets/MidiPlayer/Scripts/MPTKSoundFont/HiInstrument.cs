@@ -8,12 +8,12 @@ using System.Xml.Serialization;
 
 namespace MidiPlayerTK
 {
-    /// <summary>
+    /// <summary>@brief
     /// Instrument from a fluid_inst_t
     /// </summary>
     public class HiInstrument
     {
-        /// <summary>
+        /// <summary>@brief
         /// unique item id (see int note above)
         /// </summary>
         public int ItemId;

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MPTK.NAudio.Midi
 {
-    /// <summary>
+    /// <summary>@brief
     /// A helper class to manage collection of MIDI events
     /// It has the ability to organise them in tracks
     /// </summary>
@@ -16,7 +16,7 @@ namespace MPTK.NAudio.Midi
         int deltaTicksPerQuarterNote;
         long startAbsoluteTime;
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a new Midi Event collection
         /// </summary>
         /// <param name="midiFileType">Initial file type</param>
@@ -29,7 +29,7 @@ namespace MPTK.NAudio.Midi
             trackEvents = new List<IList<MidiEvent>>();
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// The number of tracks
         /// </summary>
         public int Tracks
@@ -40,7 +40,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// The absolute time that should be considered as time zero
         /// Not directly used here, but useful for timeshifting applications
         /// </summary>
@@ -56,7 +56,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// The number of ticks per quarter note
         /// </summary>
         public int DeltaTicksPerQuarterNote
@@ -64,7 +64,7 @@ namespace MPTK.NAudio.Midi
             get { return deltaTicksPerQuarterNote; }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Gets events on a specified track
         /// </summary>
         /// <param name="trackNumber">Track number</param>
@@ -74,7 +74,7 @@ namespace MPTK.NAudio.Midi
             return trackEvents[trackNumber];
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Gets events on a specific track
         /// </summary>
         /// <param name="trackNumber">Track number</param>
@@ -84,7 +84,7 @@ namespace MPTK.NAudio.Midi
             get { return trackEvents[trackNumber]; }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Adds a new track
         /// </summary>
         /// <returns>The new track event list</returns>
@@ -93,7 +93,7 @@ namespace MPTK.NAudio.Midi
             return AddTrack(null);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Adds a new track
         /// </summary>
         /// <param name="initialEvents">Initial events to add to the new track</param>
@@ -109,7 +109,7 @@ namespace MPTK.NAudio.Midi
             return events;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Removes a track
         /// </summary>
         /// <param name="track">Track number to remove</param>
@@ -118,7 +118,7 @@ namespace MPTK.NAudio.Midi
             trackEvents.RemoveAt(track);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Clears all events
         /// </summary>
         public void Clear()
@@ -126,7 +126,7 @@ namespace MPTK.NAudio.Midi
             trackEvents.Clear();
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// The MIDI file type
         /// </summary>
         public int MidiFileType
@@ -154,7 +154,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Adds an event to the appropriate track depending on file type
         /// </summary>
         /// <param name="midiEvent">The event to be added</param>
@@ -249,7 +249,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Sorts, removes empty tracks and adds end track markers
         /// </summary>
         public void PrepareForExport()
@@ -302,7 +302,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Gets an enumerator for the lists of track events
         /// </summary>
         public IEnumerator<IList<MidiEvent>> GetEnumerator()
@@ -311,7 +311,7 @@ namespace MPTK.NAudio.Midi
             
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Gets an enumerator for the lists of track events
         /// </summary>
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()

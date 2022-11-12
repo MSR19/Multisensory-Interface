@@ -39,7 +39,7 @@ using System.Reflection;
 using UnityEngine;
 #endregion
 
-/// <summary>
+/// <summary>@brief
 /// <para>Version: 2.0.7</para>	 
 /// <para>Author: Bob Berkebile (http://pixelplacement.com)</para>
 /// <para>Support: http://itween.pixelplacement.com</para>
@@ -88,7 +88,7 @@ public class iTween : MonoBehaviour
 	private Transform thisTransform;
 
 
-	/// <summary>
+	/// <summary>@brief
 	/// The type of easing to use based on Robert Penner's open source easing equations (http://www.robertpenner.com/easing_terms_of_use.html).
 	/// </summary>
 	public enum EaseType{
@@ -133,41 +133,41 @@ public class iTween : MonoBehaviour
 		punch
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// The type of loop (if any) to use.  
 	/// </summary>
 	public enum LoopType{
-		/// <summary>
+		/// <summary>@brief
 		/// Do not loop.
 		/// </summary>
 		none,
-		/// <summary>
+		/// <summary>@brief
 		/// Rewind and replay.
 		/// </summary>
 		loop,
-		/// <summary>
+		/// <summary>@brief
 		/// Ping pong the animation back and forth.
 		/// </summary>
 		pingPong
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Many shaders use more than one color. Use can have iTween's Color methods operate on them by name.   
 	/// </summary>
 	public enum NamedValueColor{
-		/// <summary>
+		/// <summary>@brief
 		/// The main color of a material. Used by default and not required for Color methods to work in iTween.
 		/// </summary>
 		_Color,
-		/// <summary>
+		/// <summary>@brief
 		/// The specular color of a material (used in specular/glossy/vertexlit shaders).
 		/// </summary>
 		_SpecColor,
-		/// <summary>
+		/// <summary>@brief
 		/// The emissive color of a material (used in vertexlit shaders).
 		/// </summary>
 		_Emission,
-		/// <summary>
+		/// <summary>@brief
 		/// The reflection color of the material (used in reflective shaders).
 		/// </summary>
 		_ReflectColor
@@ -177,7 +177,7 @@ public class iTween : MonoBehaviour
 	
 	#region Defaults
 	
-	/// <summary>
+	/// <summary>@brief
 	/// A collection of baseline presets that iTween needs and utilizes if certain parameters are not provided. 
 	/// </summary>
 	public static class Defaults{
@@ -206,7 +206,7 @@ public class iTween : MonoBehaviour
 	
 	#region #1 Static Registers
 
-	/// <summary>
+	/// <summary>@brief
 	/// Sets up a GameObject to avoid hiccups when an initial iTween is added. It's advisable to run this on every object you intend to run iTween on in its Start or Awake.
 	/// </summary>
 	/// <param name="target">
@@ -217,7 +217,7 @@ public class iTween : MonoBehaviour
 	}
 
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Returns a value to an 'oncallback' method interpolated between the supplied 'from' and 'to' values for application as desired.  Requires an 'onupdate' callback that accepts the same type as the supplied 'from' and 'to' properties.
 	/// </summary>
 	/// <param name="from">
@@ -303,7 +303,7 @@ public class iTween : MonoBehaviour
 		}
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Changes a GameObject's alpha value instantly then returns it to the provided alpha over time with MINIMUM customization options.  Identical to using ColorFrom and using the "a" parameter. 
 	/// </summary>
 	/// <param name="target">
@@ -319,7 +319,7 @@ public class iTween : MonoBehaviour
 		FadeFrom(target,Hash("alpha",alpha,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Changes a GameObject's alpha value instantly then returns it to the provided alpha over time with FULL customization options. Identical to using ColorFrom and using the "a" parameter.
 	/// </summary>
 	/// <param name="alpha">
@@ -374,7 +374,7 @@ public class iTween : MonoBehaviour
 		ColorFrom(target,args);
 	}		
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Changes a GameObject's alpha value over time with MINIMUM customization options. Identical to using ColorTo and using the "a" parameter.
 	/// </summary>
 	/// <param name="target">
@@ -390,7 +390,7 @@ public class iTween : MonoBehaviour
 		FadeTo(target,Hash("alpha",alpha,"time",time));
 	}	
 
-	/// <summary>
+	/// <summary>@brief
 	/// Changes a GameObject's alpha value over time with FULL customization options. Identical to using ColorTo and using the "a" parameter.
 	/// </summary>
 	/// <param name="alpha">
@@ -445,7 +445,7 @@ public class iTween : MonoBehaviour
 		ColorTo(target,args);
 	}		
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Changes a GameObject's color values instantly then returns them to the provided properties over time with MINIMUM customization options.
 	/// </summary>
 	/// <param name="target">
@@ -461,7 +461,7 @@ public class iTween : MonoBehaviour
 		ColorFrom(target,Hash("color",color,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Changes a GameObject's color values instantly then returns them to the provided properties over time with FULL customization options.
 	/// </summary>
 	/// <param name="color">
@@ -595,7 +595,7 @@ public class iTween : MonoBehaviour
 		Launch(target,args);
 	}		
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Changes a GameObject's color values over time with MINIMUM customization options.
 	/// </summary>
 	/// <param name="target">
@@ -611,7 +611,7 @@ public class iTween : MonoBehaviour
 		ColorTo(target,Hash("color",color,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Changes a GameObject's color values over time with FULL customization options.
 	/// </summary>
 	/// <param name="color">
@@ -698,7 +698,7 @@ public class iTween : MonoBehaviour
 		Launch(target,args);
 	}	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Instantly changes an AudioSource's volume and pitch then returns it to it's starting volume and pitch over time with MINIMUM customization options. Default AudioSource attached to GameObject will be used (if one exists) if not supplied.
 	/// </summary>
 	/// <param name="target"> 
@@ -717,7 +717,7 @@ public class iTween : MonoBehaviour
 		AudioFrom(target,Hash("volume",volume,"pitch",pitch,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Instantly changes an AudioSource's volume and pitch then returns it to it's starting volume and pitch over time with FULL customization options. Default AudioSource attached to GameObject will be used (if one exists) if not supplied. 
 	/// </summary>
 	/// <param name="audiosource">
@@ -820,7 +820,7 @@ public class iTween : MonoBehaviour
 		Launch(target,args);			
 	}		
 
-	/// <summary>
+	/// <summary>@brief
 	/// Fades volume and pitch of an AudioSource with MINIMUM customization options.  Default AudioSource attached to GameObject will be used (if one exists) if not supplied. 
 	/// </summary>
 	/// <param name="target"> 
@@ -839,7 +839,7 @@ public class iTween : MonoBehaviour
 		AudioTo(target,Hash("volume",volume,"pitch",pitch,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Fades volume and pitch of an AudioSource with FULL customization options.  Default AudioSource attached to GameObject will be used (if one exists) if not supplied. 
 	/// </summary>
 	/// <param name="audiosource">
@@ -905,7 +905,7 @@ public class iTween : MonoBehaviour
 		Launch(target,args);			
 	}	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Plays an AudioClip once based on supplied volume and pitch and following any delay with MINIMUM customization options. AudioSource is optional as iTween will provide one.
 	/// </summary>
 	/// <param name="target">
@@ -921,7 +921,7 @@ public class iTween : MonoBehaviour
 		Stab(target,Hash("audioclip",audioclip,"delay",delay));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Plays an AudioClip once based on supplied volume and pitch and following any delay with FULL customization options. AudioSource is optional as iTween will provide one.
 	/// </summary>
 	/// <param name="audioclip">
@@ -975,7 +975,7 @@ public class iTween : MonoBehaviour
 		Launch(target,args);			
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Instantly rotates a GameObject to look at the supplied Vector3 then returns it to it's starting rotation over time with MINIMUM customization options. 
 	/// </summary>
 	/// <param name="target">
@@ -991,7 +991,7 @@ public class iTween : MonoBehaviour
 		LookFrom(target,Hash("looktarget",looktarget,"time",time));
 	}	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Instantly rotates a GameObject to look at a supplied Transform or Vector3 then returns it to it's starting rotation over time with FULL customization options. 
 	/// </summary>
 	/// <param name="looktarget">
@@ -1088,7 +1088,7 @@ public class iTween : MonoBehaviour
 		Launch(target,args);
 	}		
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Rotates a GameObject to look at the supplied Vector3 over time with MINIMUM customization options.
 	/// </summary>
 	/// <param name="target">
@@ -1104,7 +1104,7 @@ public class iTween : MonoBehaviour
 		LookTo(target,Hash("looktarget",looktarget,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Rotates a GameObject to look at a supplied Transform or Vector3 over time with FULL customization options.
 	/// </summary>
 	/// <param name="looktarget">
@@ -1174,7 +1174,7 @@ public class iTween : MonoBehaviour
 		Launch(target,args);
 	}		
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Changes a GameObject's position over time to a supplied destination with MINIMUM customization options.
 	/// </summary>
 	/// <param name="target">
@@ -1190,7 +1190,7 @@ public class iTween : MonoBehaviour
 		MoveTo(target,Hash("position",position,"time",time));
 	}	
 		
-	/// <summary>
+	/// <summary>@brief
 	/// Changes a GameObject's position over time to a supplied destination with FULL customization options.
 	/// </summary>
 	/// <param name="position">
@@ -1291,7 +1291,7 @@ public class iTween : MonoBehaviour
 		Launch(target,args);
 	}
 		
-	/// <summary>
+	/// <summary>@brief
 	/// Instantly changes a GameObject's position to a supplied destination then returns it to it's starting position over time with MINIMUM customization options.
 	/// </summary>
 	/// <param name="target">
@@ -1307,7 +1307,7 @@ public class iTween : MonoBehaviour
 		MoveFrom(target,Hash("position",position,"time",time));
 	}		
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Instantly changes a GameObject's position to a supplied destination then returns it to it's starting position over time with FULL customization options.
 	/// </summary>
 	/// <param name="position">
@@ -1479,7 +1479,7 @@ public class iTween : MonoBehaviour
 		Launch(target,args);
 	}
 		
-	/// <summary>
+	/// <summary>@brief
 	/// Translates a GameObject's position over time with MINIMUM customization options.
 	/// </summary>
 	/// <param name="target">
@@ -1495,7 +1495,7 @@ public class iTween : MonoBehaviour
 		MoveAdd(target,Hash("amount",amount,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Translates a GameObject's position over time with FULL customization options.
 	/// </summary>
 	/// <param name="amount">
@@ -1577,7 +1577,7 @@ public class iTween : MonoBehaviour
 		Launch(target,args);
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Adds the supplied coordinates to a GameObject's postion with MINIMUM customization options.
 	/// </summary>
 	/// <param name="target">
@@ -1593,7 +1593,7 @@ public class iTween : MonoBehaviour
 		MoveBy(target,Hash("amount",amount,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Adds the supplied coordinates to a GameObject's position with FULL customization options.
 	/// </summary>
 	/// <param name="amount">
@@ -1675,7 +1675,7 @@ public class iTween : MonoBehaviour
 		Launch(target,args);
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Changes a GameObject's scale over time with MINIMUM customization options.
 	/// </summary>
 	/// <param name="target">
@@ -1691,7 +1691,7 @@ public class iTween : MonoBehaviour
 		ScaleTo(target,Hash("scale",scale,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Changes a GameObject's scale over time with FULL customization options.
 	/// </summary>
 	/// <param name="scale">
@@ -1768,7 +1768,7 @@ public class iTween : MonoBehaviour
 		Launch(target,args);
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Instantly changes a GameObject's scale then returns it to it's starting scale over time with MINIMUM customization options.
 	/// </summary>
 	/// <param name="target">
@@ -1784,7 +1784,7 @@ public class iTween : MonoBehaviour
 		ScaleFrom(target,Hash("scale",scale,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Instantly changes a GameObject's scale then returns it to it's starting scale over time with FULL customization options.
 	/// </summary>
 	/// <param name="scale">
@@ -1883,7 +1883,7 @@ public class iTween : MonoBehaviour
 		Launch(target,args);
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Adds to a GameObject's scale over time with FULL customization options.
 	/// </summary>
 	/// <param name="target">
@@ -1899,7 +1899,7 @@ public class iTween : MonoBehaviour
 		ScaleAdd(target,Hash("amount",amount,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Adds to a GameObject's scale over time with FULL customization options.
 	/// </summary>
 	/// <param name="amount">
@@ -1966,7 +1966,7 @@ public class iTween : MonoBehaviour
 		Launch(target,args);
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Multiplies a GameObject's scale over time with MINIMUM customization options.
 	/// </summary>
 	/// <param name="target">
@@ -1982,7 +1982,7 @@ public class iTween : MonoBehaviour
 		ScaleBy(target,Hash("amount",amount,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Multiplies a GameObject's scale over time with FULL customization options.
 	/// </summary>
 	/// <param name="amount">
@@ -2049,7 +2049,7 @@ public class iTween : MonoBehaviour
 		Launch(target,args);
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Rotates a GameObject to the supplied Euler angles in degrees over time with MINIMUM customization options.
 	/// </summary>
 	/// <param name="target">
@@ -2065,7 +2065,7 @@ public class iTween : MonoBehaviour
 		RotateTo(target,Hash("rotation",rotation,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Rotates a GameObject to the supplied Euler angles in degrees over time with FULL customization options.
 	/// </summary>
 	/// <param name="rotation">
@@ -2145,7 +2145,7 @@ public class iTween : MonoBehaviour
 		Launch(target,args);
 	}	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Instantly changes a GameObject's Euler angles in degrees then returns it to it's starting rotation over time (if allowed) with MINIMUM customization options.
 	/// </summary>
 	/// <param name="target">
@@ -2161,7 +2161,7 @@ public class iTween : MonoBehaviour
 		RotateFrom(target,Hash("rotation",rotation,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Instantly changes a GameObject's Euler angles in degrees then returns it to it's starting rotation over time (if allowed) with FULL customization options.
 	/// </summary>
 	/// <param name="rotation">
@@ -2279,7 +2279,7 @@ public class iTween : MonoBehaviour
 		Launch(target,args);
 	}	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Adds supplied Euler angles in degrees to a GameObject's rotation over time with MINIMUM customization options.
 	/// </summary>
 	/// <param name="target">
@@ -2295,7 +2295,7 @@ public class iTween : MonoBehaviour
 		RotateAdd(target,Hash("amount",amount,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Adds supplied Euler angles in degrees to a GameObject's rotation over time with FULL customization options.
 	/// </summary>
 	/// <param name="amount">
@@ -2365,7 +2365,7 @@ public class iTween : MonoBehaviour
 		Launch(target,args);
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Multiplies supplied values by 360 and rotates a GameObject by calculated amount over time with MINIMUM customization options.
 	/// </summary>
 	/// <param name="target">
@@ -2381,7 +2381,7 @@ public class iTween : MonoBehaviour
 		RotateBy(target,Hash("amount",amount,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Multiplies supplied values by 360 and rotates a GameObject by calculated amount over time with FULL customization options.
 	/// </summary>
 	/// <param name="amount">
@@ -2454,7 +2454,7 @@ public class iTween : MonoBehaviour
 		Launch(target,args);
 	}		
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Randomly shakes a GameObject's position by a diminishing amount over time with MINIMUM customization options.
 	/// </summary>
 	/// <param name="target">
@@ -2470,7 +2470,7 @@ public class iTween : MonoBehaviour
 		ShakePosition(target,Hash("amount",amount,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Randomly shakes a GameObject's position by a diminishing amount over time with FULL customization options.
 	/// </summary>
 	/// <param name="amount">
@@ -2543,7 +2543,7 @@ public class iTween : MonoBehaviour
 		Launch(target,args);
 	}		
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Randomly shakes a GameObject's scale by a diminishing amount over time with MINIMUM customization options.
 	/// </summary>
 	/// <param name="target">
@@ -2559,7 +2559,7 @@ public class iTween : MonoBehaviour
 		ShakeScale(target,Hash("amount",amount,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Randomly shakes a GameObject's scale by a diminishing amount over time with FULL customization options.
 	/// </summary>
 	/// <param name="amount">
@@ -2620,7 +2620,7 @@ public class iTween : MonoBehaviour
 		Launch(target,args);
 	}		
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Randomly shakes a GameObject's rotation by a diminishing amount over time with MINIMUM customization options.
 	/// </summary>
 	/// <param name="target">
@@ -2636,7 +2636,7 @@ public class iTween : MonoBehaviour
 		ShakeRotation(target,Hash("amount",amount,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Randomly shakes a GameObject's rotation by a diminishing amount over time with FULL customization options.
 	/// </summary>
 	/// <param name="amount">
@@ -2700,7 +2700,7 @@ public class iTween : MonoBehaviour
 		Launch(target,args);
 	}			
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Applies a jolt of force to a GameObject's position and wobbles it back to its initial position with MINIMUM customization options.
 	/// </summary>
 	/// <param name="target">
@@ -2716,7 +2716,7 @@ public class iTween : MonoBehaviour
 		PunchPosition(target,Hash("amount",amount,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Applies a jolt of force to a GameObject's position and wobbles it back to its initial position with FULL customization options.
 	/// </summary>
 	/// <param name="amount">
@@ -2787,7 +2787,7 @@ public class iTween : MonoBehaviour
 		Launch(target,args);
 	}		
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Applies a jolt of force to a GameObject's rotation and wobbles it back to its initial rotation with MINIMUM customization options.
 	/// </summary>
 	/// <param name="target">
@@ -2803,7 +2803,7 @@ public class iTween : MonoBehaviour
 		PunchRotation(target,Hash("amount",amount,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Applies a jolt of force to a GameObject's rotation and wobbles it back to its initial rotation with FULL customization options.
 	/// </summary>
 	/// <param name="amount">
@@ -2868,7 +2868,7 @@ public class iTween : MonoBehaviour
 		Launch(target,args);
 	}	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Applies a jolt of force to a GameObject's scale and wobbles it back to its initial scale with MINIMUM customization options.
 	/// </summary>
 	/// <param name="target">
@@ -2884,7 +2884,7 @@ public class iTween : MonoBehaviour
 		PunchScale(target,Hash("amount",amount,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Applies a jolt of force to a GameObject's scale and wobbles it back to its initial scale with FULL customization options.
 	/// </summary>
 	/// <param name="amount">
@@ -4504,7 +4504,7 @@ public class iTween : MonoBehaviour
 	
 	#region #6 Update Callable
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Returns a Rect that is eased between a current and target value by the supplied speed.
 	/// </summary>
 	/// <returns>
@@ -4524,7 +4524,7 @@ public class iTween : MonoBehaviour
 		return (diff);
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Returns a Vector3 that is eased between a current and target value by the supplied speed.
 	/// </summary>
 	/// <returns>
@@ -4545,7 +4545,7 @@ public class iTween : MonoBehaviour
 		return (currentValue);
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Returns a Vector2 that is eased between a current and target value by the supplied speed.
 	/// </summary>
 	/// <returns>
@@ -4566,7 +4566,7 @@ public class iTween : MonoBehaviour
 		return (currentValue);
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Returns a float that is eased between a current and target value by the supplied speed.
 	/// </summary>
 	/// <returns>
@@ -4587,7 +4587,7 @@ public class iTween : MonoBehaviour
 		return (currentValue);
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Similar to FadeTo but incredibly less expensive for usage inside the Update function or similar looping situations involving a "live" set of changing values with FULL customization options. Does not utilize an EaseType. 
 	/// </summary>
 	/// <param name="alpha">
@@ -4604,7 +4604,7 @@ public class iTween : MonoBehaviour
 		ColorUpdate(target,args);
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Similar to FadeTo but incredibly less expensive for usage inside the Update function or similar looping situations involving a "live" set of changing values with MINIMUM customization options. Does not utilize an EaseType. 
 	/// </summary>
 	/// <param name="target">
@@ -4620,7 +4620,7 @@ public class iTween : MonoBehaviour
 		FadeUpdate(target,Hash("alpha",alpha,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Similar to ColorTo but incredibly less expensive for usage inside the Update function or similar looping situations involving a "live" set of changing values with FULL customization options. Does not utilize an EaseType. 
 	/// </summary>
 	/// <param name="color">
@@ -4707,7 +4707,7 @@ public class iTween : MonoBehaviour
 		}
 	}	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Similar to ColorTo but incredibly less expensive for usage inside the Update function or similar looping situations involving a "live" set of changing values with MINIMUM customization options. Does not utilize an EaseType.
 	/// </summary>
 	/// <param name="target">
@@ -4723,7 +4723,7 @@ public class iTween : MonoBehaviour
 		ColorUpdate(target,Hash("color",color,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Similar to AudioTo but incredibly less expensive for usage inside the Update function or similar looping situations involving a "live" set of changing values with FULL customization options. Does not utilize an EaseType. 
 	/// </summary>
 	/// <param name="audiosource">
@@ -4786,7 +4786,7 @@ public class iTween : MonoBehaviour
 		audioSource.pitch=vector2s[3].y;
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Similar to AudioTo but incredibly less expensive for usage inside the Update function or similar looping situations involving a "live" set of changing values with MINIMUM customization options. Does not utilize an EaseType. 
 	/// </summary>
 	/// <param name="target">
@@ -4805,7 +4805,7 @@ public class iTween : MonoBehaviour
 		AudioUpdate(target,Hash("volume",volume,"pitch",pitch,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Similar to RotateTo but incredibly less expensive for usage inside the Update function or similar looping situations involving a "live" set of changing values with FULL customization options. Does not utilize an EaseType. 
 	/// </summary>
 	/// <param name="rotation">
@@ -4886,7 +4886,7 @@ public class iTween : MonoBehaviour
 		}
 	}
 		
-	/// <summary>
+	/// <summary>@brief
 	/// Similar to RotateTo but incredibly less expensive for usage inside the Update function or similar looping situations involving a "live" set of changing values with MINIMUM customization options. Does not utilize an EaseType. 
 	/// </summary>
 	/// <param name="target">
@@ -4902,7 +4902,7 @@ public class iTween : MonoBehaviour
 		RotateUpdate(target,Hash("rotation",rotation,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Similar to ScaleTo but incredibly less expensive for usage inside the Update function or similar looping situations involving a "live" set of changing values with FULL customization options.  Does not utilize an EaseType. 
 	/// </summary>
 	/// <param name="scale">
@@ -4966,7 +4966,7 @@ public class iTween : MonoBehaviour
 		target.transform.localScale=vector3s[3];		
 	}	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Similar to ScaleTo but incredibly less expensive for usage inside the Update function or similar looping situations involving a "live" set of changing values with MINIMUM customization options.  Does not utilize an EaseType.
 	/// </summary>
 	/// <param name="target">
@@ -4982,7 +4982,7 @@ public class iTween : MonoBehaviour
 		ScaleUpdate(target,Hash("scale",scale,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Similar to MoveTo but incredibly less expensive for usage inside the Update function or similar looping situations involving a "live" set of changing values with FULL customization options. Does not utilize an EaseType. 
 	/// </summary>
 	/// <param name="position">
@@ -5095,7 +5095,7 @@ public class iTween : MonoBehaviour
 		}
 	}
 
-	/// <summary>
+	/// <summary>@brief
 	/// Similar to MoveTo but incredibly less expensive for usage inside the Update function or similar looping situations involving a "live" set of changing values with MINIMUM customization options. Does not utilize an EaseType. 
 	/// </summary>
 	/// <param name="target">
@@ -5111,7 +5111,7 @@ public class iTween : MonoBehaviour
 		MoveUpdate(target,Hash("position",position,"time",time));
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Similar to LookTo but incredibly less expensive for usage inside the Update function or similar looping situations involving a "live" set of changing values with FULL customization options. Does not utilize an EaseType. 
 	/// </summary>
 	/// <param name="looktarget">
@@ -5192,7 +5192,7 @@ public class iTween : MonoBehaviour
 		}	
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Similar to LookTo but incredibly less expensive for usage inside the Update function or similar looping situations involving a "live" set of changing values with FULL customization options. Does not utilize an EaseType. 
 	/// </summary>
 	/// <param name="target">
@@ -5212,7 +5212,7 @@ public class iTween : MonoBehaviour
 	
 	#region #7 External Utilities
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Returns the length of a curved path drawn through the provided array of Transforms.
 	/// </summary>
 	/// <returns>
@@ -5245,7 +5245,7 @@ public class iTween : MonoBehaviour
 		return pathLength;
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Returns the length of a curved path drawn through the provided array of Vector3s.
 	/// </summary>
 	/// <returns>
@@ -5273,7 +5273,7 @@ public class iTween : MonoBehaviour
 	}	
 
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Puts a GameObject on a path at the provided percentage 
 	/// </summary>
 	/// <param name="target">
@@ -5289,7 +5289,7 @@ public class iTween : MonoBehaviour
 		target.transform.position=Interp(PathControlPointGenerator(path),percent);
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Puts a GameObject on a path at the provided percentage 
 	/// </summary>
 	/// <param name="target">
@@ -5305,7 +5305,7 @@ public class iTween : MonoBehaviour
 		target.position=Interp(PathControlPointGenerator(path),percent);
 	}	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Puts a GameObject on a path at the provided percentage 
 	/// </summary>
 	/// <param name="target">
@@ -5326,7 +5326,7 @@ public class iTween : MonoBehaviour
 		target.transform.position=Interp(PathControlPointGenerator(suppliedPath),percent);
 	}	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Puts a GameObject on a path at the provided percentage 
 	/// </summary>
 	/// <param name="target">
@@ -5347,7 +5347,7 @@ public class iTween : MonoBehaviour
 		target.position=Interp(PathControlPointGenerator(suppliedPath),percent);
 	}		
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Returns a Vector3 position on a path at the provided percentage  
 	/// </summary>
 	/// <param name="path">
@@ -5368,7 +5368,7 @@ public class iTween : MonoBehaviour
 		return(Interp(PathControlPointGenerator(suppliedPath),percent));
 	}
 		
-	/// <summary>
+	/// <summary>@brief
 	/// When called from an OnDrawGizmos() function it will draw a line through the provided array of Vector3s.
 	/// </summary>
 	/// <param name="line">
@@ -5380,7 +5380,7 @@ public class iTween : MonoBehaviour
 		}
 	}	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// When called from an OnDrawGizmos() function it will draw a line through the provided array of Vector3s.
 	/// </summary>
 	/// <param name="line">
@@ -5395,7 +5395,7 @@ public class iTween : MonoBehaviour
 		}
 	}		
 	
-	/// <summary>
+	/// <summary>@brief
 	/// When called from an OnDrawGizmos() function it will draw a line through the provided array of Transforms.
 	/// </summary>
 	/// <param name="line">
@@ -5412,7 +5412,7 @@ public class iTween : MonoBehaviour
 		}
 	}		
 	
-	/// <summary>
+	/// <summary>@brief
 	/// When called from an OnDrawGizmos() function it will draw a line through the provided array of Transforms.
 	/// </summary>
 	/// <param name="line">
@@ -5433,7 +5433,7 @@ public class iTween : MonoBehaviour
 		}
 	}	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Draws a line through the provided array of Vector3s with Gizmos.DrawLine().
 	/// </summary>
 	/// <param name="line">
@@ -5445,7 +5445,7 @@ public class iTween : MonoBehaviour
 		}
 	}	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Draws a line through the provided array of Vector3s with Gizmos.DrawLine().
 	/// </summary>
 	/// <param name="line">
@@ -5460,7 +5460,7 @@ public class iTween : MonoBehaviour
 		}
 	}		
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Draws a line through the provided array of Transforms with Gizmos.DrawLine().
 	/// </summary>
 	/// <param name="line">
@@ -5477,7 +5477,7 @@ public class iTween : MonoBehaviour
 		}
 	}		
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Draws a line through the provided array of Transforms with Gizmos.DrawLine().
 	/// </summary>
 	/// <param name="line">
@@ -5498,7 +5498,7 @@ public class iTween : MonoBehaviour
 		}
 	}
 
-	/// <summary>
+	/// <summary>@brief
 	/// Draws a line through the provided array of Vector3s with Handles.DrawLine().
 	/// </summary>
 	/// <param name="line">
@@ -5510,7 +5510,7 @@ public class iTween : MonoBehaviour
 		}
 	}	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Draws a line through the provided array of Vector3s with Handles.DrawLine().
 	/// </summary>
 	/// <param name="line">
@@ -5525,7 +5525,7 @@ public class iTween : MonoBehaviour
 		}
 	}		
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Draws a line through the provided array of Transforms with Handles.DrawLine().
 	/// </summary>
 	/// <param name="line">
@@ -5542,7 +5542,7 @@ public class iTween : MonoBehaviour
 		}
 	}		
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Draws a line through the provided array of Transforms with Handles.DrawLine().
 	/// </summary>
 	/// <param name="line">
@@ -5563,7 +5563,7 @@ public class iTween : MonoBehaviour
 		}
 	}	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Returns a Vector3 position on a path at the provided percentage  
 	/// </summary>
 	/// <param name="path">
@@ -5579,7 +5579,7 @@ public class iTween : MonoBehaviour
 		return(Interp(PathControlPointGenerator(path),percent));
 	}		
 	
-	/// <summary>
+	/// <summary>@brief
 	/// When called from an OnDrawGizmos() function it will draw a curved path through the provided array of Vector3s.
 	/// </summary>
 	/// <param name="path">
@@ -5591,7 +5591,7 @@ public class iTween : MonoBehaviour
 		}
 	}		
 	
-	/// <summary>
+	/// <summary>@brief
 	/// When called from an OnDrawGizmos() function it will draw a curved path through the provided array of Vector3s.
 	/// </summary>
 	/// <param name="path">
@@ -5606,7 +5606,7 @@ public class iTween : MonoBehaviour
 		}
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// When called from an OnDrawGizmos() function it will draw a curved path through the provided array of Transforms.
 	/// </summary>
 	/// <param name="path">
@@ -5624,7 +5624,7 @@ public class iTween : MonoBehaviour
 		}
 	}		
 	
-	/// <summary>
+	/// <summary>@brief
 	/// When called from an OnDrawGizmos() function it will draw a curved path through the provided array of Transforms.
 	/// </summary>
 	/// <param name="path">
@@ -5645,7 +5645,7 @@ public class iTween : MonoBehaviour
 		}
 	}	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Draws a curved path through the provided array of Vector3s with Gizmos.DrawLine().
 	/// </summary>
 	/// <param name="path">
@@ -5657,7 +5657,7 @@ public class iTween : MonoBehaviour
 		}
 	}		
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Draws a curved path through the provided array of Vector3s with Gizmos.DrawLine().
 	/// </summary>
 	/// <param name="path">
@@ -5672,7 +5672,7 @@ public class iTween : MonoBehaviour
 		}
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Draws a curved path through the provided array of Transforms with Gizmos.DrawLine().
 	/// </summary>
 	/// <param name="path">
@@ -5690,7 +5690,7 @@ public class iTween : MonoBehaviour
 		}
 	}		
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Draws a curved path through the provided array of Transforms with Gizmos.DrawLine().
 	/// </summary>
 	/// <param name="path">
@@ -5711,7 +5711,7 @@ public class iTween : MonoBehaviour
 		}
 	}	
 
-	/// <summary>
+	/// <summary>@brief
 	/// Draws a curved path through the provided array of Vector3s with Handles.DrawLine().
 	/// </summary>
 	/// <param name="path">
@@ -5723,7 +5723,7 @@ public class iTween : MonoBehaviour
 		}
 	}		
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Draws a curved path through the provided array of Vector3s with Handles.DrawLine().
 	/// </summary>
 	/// <param name="path">
@@ -5738,7 +5738,7 @@ public class iTween : MonoBehaviour
 		}
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Draws a curved path through the provided array of Transforms with Handles.DrawLine().
 	/// </summary>
 	/// <param name="path">
@@ -5756,7 +5756,7 @@ public class iTween : MonoBehaviour
 		}
 	}		
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Draws a curved path through the provided array of Transforms with Handles.DrawLine().
 	/// </summary>
 	/// <param name="path">
@@ -5781,7 +5781,7 @@ public class iTween : MonoBehaviour
 	//# RESUME UTILITIES AND OVERLOADS # 
 	//#################################	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Resume all iTweens on a GameObject.
 	/// </summary>
 	public static void Resume(GameObject target){
@@ -5791,7 +5791,7 @@ public class iTween : MonoBehaviour
 		}
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Resume all iTweens on a GameObject including its children.
 	/// </summary>
 	public static void Resume(GameObject target, bool includechildren){
@@ -5803,7 +5803,7 @@ public class iTween : MonoBehaviour
 		}
 	}	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Resume all iTweens on a GameObject of a particular type.
 	/// </summar
 	/// <param name="type">
@@ -5820,7 +5820,7 @@ public class iTween : MonoBehaviour
 		}
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Resume all iTweens on a GameObject of a particular type including its children.
 	/// </summar
 	/// <param name="type">
@@ -5842,7 +5842,7 @@ public class iTween : MonoBehaviour
 		}		
 	}	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Resume all iTweens in scene.
 	/// </summary>
 	public static void Resume(){
@@ -5853,7 +5853,7 @@ public class iTween : MonoBehaviour
 		}
 	}	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Resume all iTweens in scene of a particular type.
 	/// </summary>
 	/// <param name="type">
@@ -5877,7 +5877,7 @@ public class iTween : MonoBehaviour
 	//# PAUSE UTILITIES AND OVERLOADS # 
 	//#################################
 
-	/// <summary>
+	/// <summary>@brief
 	/// Pause all iTweens on a GameObject.
 	/// </summary>
 	public static void Pause(GameObject target){
@@ -5892,7 +5892,7 @@ public class iTween : MonoBehaviour
 		}
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Pause all iTweens on a GameObject including its children.
 	/// </summary>
 	public static void Pause(GameObject target, bool includechildren){
@@ -5904,7 +5904,7 @@ public class iTween : MonoBehaviour
 		}
 	}	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Pause all iTweens on a GameObject of a particular type.
 	/// </summar
 	/// <param name="type">
@@ -5926,7 +5926,7 @@ public class iTween : MonoBehaviour
 		}
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Pause all iTweens on a GameObject of a particular type including its children.
 	/// </summar
 	/// <param name="type">
@@ -5953,7 +5953,7 @@ public class iTween : MonoBehaviour
 		}		
 	}	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Pause all iTweens in scene.
 	/// </summary>
 	public static void Pause(){
@@ -5964,7 +5964,7 @@ public class iTween : MonoBehaviour
 		}
 	}	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Pause all iTweens in scene of a particular type.
 	/// </summary>
 	/// <param name="type">
@@ -5988,14 +5988,14 @@ public class iTween : MonoBehaviour
 	//# COUNT UTILITIES AND OVERLOADS # 
 	//#################################	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Count all iTweens in current scene.
 	/// </summary>
 	public static int Count(){
 		return(tweens.Count);
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Count all iTweens in current scene of a particular type.
 	/// </summary>
 	/// <param name="type">
@@ -6016,7 +6016,7 @@ public class iTween : MonoBehaviour
 		return(tweenCount);
 	}			
 
-	/// <summary>
+	/// <summary>@brief
 	/// Count all iTweens on a GameObject.
 	/// </summary>
 	public static int Count(GameObject target){
@@ -6024,7 +6024,7 @@ public class iTween : MonoBehaviour
 		return(tweens.Length);
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Count all iTweens on a GameObject of a particular type.
 	/// </summary>
 	/// <param name="type">
@@ -6047,7 +6047,7 @@ public class iTween : MonoBehaviour
 	//# STOP UTILITIES AND OVERLOADS # 
 	//################################	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Stop and destroy all Tweens in current scene.
 	/// </summary>
 	public static void Stop(){
@@ -6059,7 +6059,7 @@ public class iTween : MonoBehaviour
 		tweens.Clear();
 	}	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Stop and destroy all iTweens in current scene of a particular type.
 	/// </summary>
 	/// <param name="type">
@@ -6080,7 +6080,7 @@ public class iTween : MonoBehaviour
 	}		
 	
 	/* GFX47 MOD START */
-	/// <summary>
+	/// <summary>@brief
 	/// Stop and destroy all iTweens in current scene of a particular name.
 	/// </summary>
 	/// <param name="name">
@@ -6101,7 +6101,7 @@ public class iTween : MonoBehaviour
 	}
 	/* GFX47 MOD END */
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Stop and destroy all iTweens on a GameObject.
 	/// </summary>
 	public static void Stop(GameObject target){
@@ -6111,7 +6111,7 @@ public class iTween : MonoBehaviour
 		}
 	}
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Stop and destroy all iTweens on a GameObject including its children.
 	/// </summary>
 	public static void Stop(GameObject target, bool includechildren){
@@ -6123,7 +6123,7 @@ public class iTween : MonoBehaviour
 		}
 	}	
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Stop and destroy all iTweens on a GameObject of a particular type.
 	/// </summar
 	/// <param name="type">
@@ -6141,7 +6141,7 @@ public class iTween : MonoBehaviour
 	}
 	
 	/* GFX47 MOD START */
-	/// <summary>
+	/// <summary>@brief
 	/// Stop and destroy all iTweens on a GameObject of a particular name.
 	/// </summar
 	/// <param name="name">
@@ -6162,7 +6162,7 @@ public class iTween : MonoBehaviour
 	}
 	/* GFX47 MOD END */
 	
-	/// <summary>
+	/// <summary>@brief
 	/// Stop and destroy all iTweens on a GameObject of a particular type including its children.
 	/// </summar
 	/// <param name="type">
@@ -6185,7 +6185,7 @@ public class iTween : MonoBehaviour
 	}
 	
 	/* GFX47 MOD START */
-	/// <summary>
+	/// <summary>@brief
 	/// Stop and destroy all iTweens on a GameObject of a particular name including its children.
 	/// </summar
 	/// <param name="name">
@@ -6212,7 +6212,7 @@ public class iTween : MonoBehaviour
 	}
 	/* GFX47 MOD END */
 
-	/// <summary>
+	/// <summary>@brief
 	/// Universal interface to help in the creation of Hashtables.  Especially useful for C# users.
 	/// </summary>
 	/// <param name="args">

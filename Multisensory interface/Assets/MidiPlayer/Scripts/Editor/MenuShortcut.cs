@@ -8,7 +8,7 @@ namespace MidiPlayerTK
     using UnityEditor;
     using UnityEngine;
 
-    /// <summary>
+    /// <summary>@brief
     /// Window editor for the setup of MPTK
     /// </summary>
     public class MenuShortcut : EditorWindow

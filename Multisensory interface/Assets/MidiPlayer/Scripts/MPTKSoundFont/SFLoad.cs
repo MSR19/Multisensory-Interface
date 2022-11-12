@@ -12,7 +12,7 @@ namespace MidiPlayerTK
     {
         public SFData SfData;
         private BinaryReader fd;
-        /// <summary>
+        /// <summary>@brief
         /// Source=0 from SF2
         /// Source=1 from MPTK SF
         /// </summary>
@@ -46,7 +46,7 @@ namespace MidiPlayerTK
         //    fd = new BinaryReader(sfFile);
         //}
 
-        /// <summary>
+        /// <summary>@brief
         /// Read 4 bytes for the ID and 4 bytes for the length
         /// </summary>
         /// <returns></returns>
@@ -64,7 +64,7 @@ namespace MidiPlayerTK
             return chunk;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Read 4 bytes for the ID
         /// </summary>
         /// <returns></returns>
@@ -96,7 +96,7 @@ namespace MidiPlayerTK
             return (File_Chunk_ID.UNKN_ID);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// sound font file load functions
         /// </summary>
         /// <param name="id"></param>
@@ -951,7 +951,7 @@ namespace MidiPlayerTK
             fd.BaseStream.Seek(SFFile.SFSHDRSIZE, SeekOrigin.Current);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// "fixup" (inst # . inst ptr) instrument references in preset list
         /// when loading a SF, 
         ///     for a preset zone, instsamp contains an index to the inst[] 
@@ -1035,7 +1035,7 @@ namespace MidiPlayerTK
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// "fixup" (sample # . sample ptr) sample references in instrument list 
         /// when loading a SF, 
         ///     for a preset zone, instsamp contains an index to the inst[] 

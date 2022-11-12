@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MPTK.NAudio.Midi 
 {
-    /// <summary>
+    /// <summary>@brief
     /// Represents a MIDI time signature event
     /// </summary>
     public class TimeSignatureEvent : MetaEvent 
@@ -14,7 +14,7 @@ namespace MPTK.NAudio.Midi
         private byte ticksInMetronomeClick;
         private byte no32ndNotesInQuarterNote;
         
-        /// <summary>
+        /// <summary>@brief
         /// Reads a new time signature event from a MIDI stream
         /// </summary>
         /// <param name="br">The MIDI stream</param>
@@ -31,7 +31,7 @@ namespace MPTK.NAudio.Midi
             no32ndNotesInQuarterNote = br.ReadByte();
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a new TimeSignatureEvent
         /// </summary>
         /// <param name="absoluteTime">Time at which to create this event</param>
@@ -49,7 +49,7 @@ namespace MPTK.NAudio.Midi
             this.no32ndNotesInQuarterNote = (byte)no32ndNotesInQuarterNote;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a deep clone of this MIDI event.
         /// </summary>
         public override MidiEvent Clone()
@@ -57,7 +57,7 @@ namespace MPTK.NAudio.Midi
             return (TimeSignatureEvent)MemberwiseClone();
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Numerator (number of beats in a bar)
         /// </summary>
         public int Numerator
@@ -65,7 +65,7 @@ namespace MPTK.NAudio.Midi
             get { return numerator; }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Denominator (Beat unit),
         /// 1 means 2, 2 means 4 (crochet), 3 means 8 (quaver), 4 means 16 and 5 means 32
         /// </summary>
@@ -74,7 +74,7 @@ namespace MPTK.NAudio.Midi
             get { return denominator; }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Ticks in a metronome click
         /// </summary>
         public int TicksInMetronomeClick
@@ -82,7 +82,7 @@ namespace MPTK.NAudio.Midi
             get { return ticksInMetronomeClick; }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Number of 32nd notes in a quarter note
         /// </summary>
         public int No32ndNotesInQuarterNote
@@ -90,7 +90,7 @@ namespace MPTK.NAudio.Midi
             get { return no32ndNotesInQuarterNote; }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// The time signature
         /// </summary>
         public string TimeSignature 
@@ -120,7 +120,7 @@ namespace MPTK.NAudio.Midi
             }
         }
         
-        /// <summary>
+        /// <summary>@brief
         /// Describes this time signature event
         /// </summary>
         /// <returns>A string describing this event</returns>
@@ -130,7 +130,7 @@ namespace MPTK.NAudio.Midi
                 base.ToString(),TimeSignature,ticksInMetronomeClick,no32ndNotesInQuarterNote);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Calls base class export first, then exports the data 
         /// specific to this event
         /// <seealso cref="MidiEvent.Export">MidiEvent.Export</seealso>

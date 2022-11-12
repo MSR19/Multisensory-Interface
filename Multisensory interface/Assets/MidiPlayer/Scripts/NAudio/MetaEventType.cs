@@ -2,46 +2,46 @@ using System;
 
 namespace MPTK.NAudio.Midi
 {
-    /// <summary>
+    /// <summary>@brief
     /// MIDI MetaEvent Type
     /// </summary>
     public enum MetaEventType : byte 
     {
-        /// <summary>Track sequence number</summary>
+        /// <summary>@briefTrack sequence number</summary>
         TrackSequenceNumber = 0x00,
-        /// <summary>Text event</summary>
+        /// <summary>@briefText event</summary>
         TextEvent = 0x01,
-        /// <summary>Copyright</summary>
+        /// <summary>@briefCopyright</summary>
         Copyright = 0x02,
-        /// <summary>Sequence track name</summary>
+        /// <summary>@briefSequence track name</summary>
         SequenceTrackName = 0x03,
-        /// <summary>Track instrument name</summary>
+        /// <summary>@briefTrack instrument name</summary>
         TrackInstrumentName = 0x04,
-        /// <summary>Lyric</summary>
+        /// <summary>@briefLyric</summary>
         Lyric = 0x05,
-        /// <summary>Marker</summary>
+        /// <summary>@briefMarker</summary>
         Marker = 0x06,
-        /// <summary>Cue point</summary>
+        /// <summary>@briefCue point</summary>
         CuePoint = 0x07,
-        /// <summary>Program (patch) name</summary>
+        /// <summary>@briefProgram (patch) name</summary>
         ProgramName = 0x08,
-        /// <summary>Device (port) name</summary>
+        /// <summary>@briefDevice (port) name</summary>
         DeviceName = 0x09,
-        /// <summary>MIDI Channel (not official?)</summary>
+        /// <summary>@briefMIDI Channel (not official?)</summary>
         MidiChannel = 0x20,
-        /// <summary>MIDI Port (not official?)</summary>
+        /// <summary>@briefMIDI Port (not official?)</summary>
         MidiPort = 0x21,
-        /// <summary>End track</summary>
+        /// <summary>@briefEnd track</summary>
         EndTrack = 0x2F,
-        /// <summary>Set tempo</summary>
+        /// <summary>@briefSet tempo</summary>
         SetTempo = 0x51,
-        /// <summary>SMPTE offset</summary>
+        /// <summary>@briefSMPTE offset</summary>
         SmpteOffset = 0x54,
-        /// <summary>Time signature</summary>
+        /// <summary>@briefTime signature</summary>
         TimeSignature = 0x58,
-        /// <summary>Key signature</summary>
+        /// <summary>@briefKey signature</summary>
         KeySignature = 0x59,
-        /// <summary>Sequencer specific</summary>
+        /// <summary>@briefSequencer specific</summary>
         SequencerSpecific = 0x7F,
     }
 }

@@ -17,13 +17,13 @@ namespace MidiPlayerTK
         FLUID_SAMPLETYPE_LINKED = 8,
         FLUID_SAMPLETYPE_ROM = 0x8000,
     }
-    /// <summary>
+    /// <summary>@brief
     /// Sample from fluid_sample_t
     /// </summary>
     //[Serializable]
     public class HiSample// : ISerializable
     {
-        /// <summary>
+        /// <summary>@brief
         /// unique item id (see int note above)
         /// </summary>
         public int ItemId;
@@ -39,7 +39,7 @@ namespace MidiPlayerTK
         public int Correctedcoarseloopend;   // defined in instrument, used only when ave are extracted
         public uint SampleRate;
 
-        /// <summary>
+        /// <summary>@brief
         /// Contains the MIDI key number of the recorded pitch of the sample. 
         /// For example, a recording of an instrument playing middle C(261.62 Hz) should receive a value of 60. 
         /// This value is used as the default “root key” for the sample, so that in the example, a MIDI key-on command for note number 60 would reproduce the sound at its original pitch.

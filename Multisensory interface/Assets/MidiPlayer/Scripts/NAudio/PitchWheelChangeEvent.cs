@@ -4,14 +4,14 @@ using System.Text;
 
 namespace MPTK.NAudio.Midi 
 {
-    /// <summary>
+    /// <summary>@brief
     /// Represents a MIDI pitch wheel change event
     /// </summary>
     public class PitchWheelChangeEvent : MidiEvent 
     {
         private int pitch;
         
-        /// <summary>
+        /// <summary>@brief
         /// Reads a pitch wheel change event from a MIDI stream
         /// </summary>
         /// <param name="br">The MIDI stream to read from</param>
@@ -32,7 +32,7 @@ namespace MPTK.NAudio.Midi
             pitch = b1 + (b2 << 7); // 0x2000 is normal
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a new pitch wheel change event
         /// </summary>
         /// <param name="absoluteTime">Absolute event time</param>
@@ -44,7 +44,7 @@ namespace MPTK.NAudio.Midi
             Pitch = pitchWheel;
         }
         
-        /// <summary>
+        /// <summary>@brief
         /// Describes this pitch wheel change event
         /// </summary>
         /// <returns>String describing this pitch wheel change event</returns>
@@ -56,7 +56,7 @@ namespace MPTK.NAudio.Midi
                 this.pitch - 0x2000);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Pitch Wheel Value 0 is minimum, 0x2000 (8192) is default, 0x3FFF (16383) is maximum
         /// </summary>
         public int Pitch
@@ -75,7 +75,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Gets a short message
         /// </summary>
         /// <returns>Integer to sent as short message</returns>
@@ -84,7 +84,7 @@ namespace MPTK.NAudio.Midi
             return base.GetAsShortMessage() + ((pitch & 0x7f) << 8) + (((pitch >> 7) & 0x7f) << 16);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Calls base class export first, then exports the data 
         /// specific to this event
         /// <seealso cref="MidiEvent.Export">MidiEvent.Export</seealso>

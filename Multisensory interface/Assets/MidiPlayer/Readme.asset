@@ -12,25 +12,29 @@ MonoBehaviour:
   m_Name: Readme
   m_EditorClassIdentifier: 
   icon: {fileID: 2800000, guid: 201513b20d29c7f44b5c39122b37f370, type: 3}
-  title: Midi Player Tool Kit V2
+  title: Maestro Midi Player Tool Kit - V2
   sections:
-  - heading: Read the Manual
-    text: 'This is a tool kit project which has an accompanying written manual :'
-    linkText: Open the manual in your browser
+  - heading: Read the full documentation
+    text: ''
+    linkText: See the full How-To documentation
     url: https://paxstellar.fr/setup-mptk-quick-start-v2/
+  - heading: See the full API documentation
+    text: ''
+    linkText: See the full API documentation
+    url: https://mptkapi.paxstellar.com/annotated.html
   - heading: Feedback and Support
-    text: This project has a dedicated forum thread to accompany it. If you need help, visit the forum and ask!
+    text: For a better support, this package has a dedicated forum. If you need help, visit the forum and ask!
     linkText: Visit the dedicated Forum Thread
     url: https://forum.unity.com/threads/free-midi-player-tool-kit-available.526741/
   - heading: Free MPTK Store
-    text: Please, let a review. It's very important for me!
+    text: Please, let a review. We like your feedback!
     linkText: Visit the Free MPTK on Unity Store
     url: https://assetstore.unity.com/packages/tools/audio/midi-tool-kit-free-107994
   - heading: Pro MPTK Store
-    text: Please, let a review. It's very important for me!
+    text: Please, let a review. We like your feedback!
     linkText: Visit the Pro MPTK on Unity Store
     url: https://assetstore.unity.com/packages/tools/audio/midi-tool-kit-pro-115331
-  - heading: Special note for pro users
+  - heading: Special note for Pro users
     text: Why any soundfont or midi is published with the pro version?
     linkText: See a response here
     url: http://paxstellar.fr/2018/06/20/mptk-special-note-for-pro-uses/

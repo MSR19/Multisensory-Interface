@@ -4,14 +4,14 @@ using System.Text;
 
 namespace MPTK.NAudio.Midi 
 {
-    /// <summary>
+    /// <summary>@brief
     /// Represents a MIDI text event
     /// </summary>
     public class TextEvent : MetaEvent 
     {
         private string text;
         
-        /// <summary>
+        /// <summary>@brief
         /// Reads a new text event from a MIDI stream
         /// </summary>
         /// <param name="br">The MIDI stream</param>
@@ -22,7 +22,7 @@ namespace MPTK.NAudio.Midi
             text = byteEncoding.GetString(br.ReadBytes(length));
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a new TextEvent
         /// </summary>
         /// <param name="text">The text in this type</param>
@@ -35,7 +35,7 @@ namespace MPTK.NAudio.Midi
             this.text = text;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a deep clone of this MIDI event.
         /// </summary>
         public override MidiEvent Clone()
@@ -43,7 +43,7 @@ namespace MPTK.NAudio.Midi
             return (TextEvent)MemberwiseClone();
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// The contents of this text event
         /// </summary>
         public string Text
@@ -59,7 +59,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Describes this MIDI text event
         /// </summary>
         /// <returns>A string describing this event</returns>
@@ -68,7 +68,7 @@ namespace MPTK.NAudio.Midi
             return String.Format("{0} {1}",base.ToString(),text);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Calls base class export first, then exports the data 
         /// specific to this event
         /// <seealso cref="MidiEvent.Export">MidiEvent.Export</seealso>

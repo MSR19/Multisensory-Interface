@@ -8,12 +8,12 @@ using MidiPlayerTK;
 
 namespace DemoMPTK
 {
-    /// <summary>
+    /// <summary>@brief
     /// MPTK Demo component able to load a MIDI file from your list of MIDI file or from a folder and displaying the list of events.
     /// </summary>
     public class TestMidiFileLoad : MonoBehaviour
     {
-        /// <summary>
+        /// <summary>@brief
         /// </summary>
 
         // Manage skin
@@ -78,7 +78,7 @@ namespace DemoMPTK
         }
 
         //! [Example TheMostSimpleDemoForMidiLoader]
-        /// <summary>
+        /// <summary>@brief
         /// Load and display MIDI events in a few line of code.
         /// </summary>
         private void TheMostSimpleDemoForMidiLoader()

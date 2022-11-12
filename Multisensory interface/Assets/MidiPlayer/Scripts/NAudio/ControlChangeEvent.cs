@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MPTK.NAudio.Midi 
 {
-    /// <summary>
+    /// <summary>@brief
     /// Represents a MIDI control change event
     /// </summary>
     public class ControlChangeEvent : MidiEvent 
@@ -12,7 +12,7 @@ namespace MPTK.NAudio.Midi
         private MidiController controller;
         private byte controllerValue;
 
-        /// <summary>
+        /// <summary>@brief
         /// Reads a control change event from a MIDI stream
         /// </summary>
         /// <param name="br">Binary reader on the MIDI stream</param>
@@ -32,7 +32,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a control change event
         /// </summary>
         /// <param name="absoluteTime">Time</param>
@@ -46,7 +46,7 @@ namespace MPTK.NAudio.Midi
             this.ControllerValue = controllerValue;
         }
         
-        /// <summary>
+        /// <summary>@brief
         /// Describes this control change event
         /// </summary>
         /// <returns>A string describing this event</returns>
@@ -58,7 +58,7 @@ namespace MPTK.NAudio.Midi
                 this.controllerValue);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// <see cref="MidiEvent.GetAsShortMessage" />
         /// </summary>
         public override int GetAsShortMessage()
@@ -67,7 +67,7 @@ namespace MPTK.NAudio.Midi
             return base.GetAsShortMessage() + (c << 8) + (controllerValue << 16);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Calls base class export first, then exports the data 
         /// specific to this event
         /// <seealso cref="MidiEvent.Export">MidiEvent.Export</seealso>
@@ -79,7 +79,7 @@ namespace MPTK.NAudio.Midi
             writer.Write((byte)controllerValue);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// The controller number
         /// </summary>
         public MidiController Controller
@@ -98,7 +98,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// The controller value
         /// </summary>
         public int ControllerValue

@@ -3,7 +3,7 @@ using System.IO;
 
 namespace MPTK.NAudio.Midi
 {
-    /// <summary>
+    /// <summary>@brief
     /// Represents a MIDI key signature event event
     /// </summary>
     public class KeySignatureEvent : MetaEvent
@@ -11,7 +11,7 @@ namespace MPTK.NAudio.Midi
         private sbyte sharpsFlats;
         private byte majorMinor;
 
-        /// <summary>
+        /// <summary>@brief
         /// Reads a new track sequence number event from a MIDI stream
         /// </summary>
         /// <param name="br">The MIDI stream</param>
@@ -26,7 +26,7 @@ namespace MPTK.NAudio.Midi
             majorMinor = br.ReadByte(); // mi=major/minor (0=major, 1=minor)       }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a new Key signature event with the specified data
         /// </summary>
         public KeySignatureEvent(int sharpsFlats, int majorMinor, long absoluteTime)
@@ -36,7 +36,7 @@ namespace MPTK.NAudio.Midi
             this.majorMinor = (byte) majorMinor;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a deep clone of this MIDI event.
         /// </summary>
         public override MidiEvent Clone()
@@ -44,7 +44,7 @@ namespace MPTK.NAudio.Midi
             return (KeySignatureEvent)MemberwiseClone();
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Number of sharps or flats 
         /// </summary>
         public /*int*/ sbyte SharpsFlats // TBN Change
@@ -55,7 +55,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Major or Minor key
         /// </summary>
         public int MajorMinor
@@ -66,7 +66,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Describes this event
         /// </summary>
         /// <returns>String describing the event</returns>
@@ -75,7 +75,7 @@ namespace MPTK.NAudio.Midi
             return String.Format("{0} {1} {2}", base.ToString(), sharpsFlats, majorMinor);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Calls base class export first, then exports the data 
         /// specific to this event
         /// <seealso cref="MidiEvent.Export">MidiEvent.Export</seealso>

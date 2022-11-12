@@ -96,14 +96,14 @@ namespace DemoMPTK
         public int DegreeChord = 1;
         public int CurrentScale = 0;
 
-        /// <summary>
+        /// <summary>@brief
         /// Current note playing
         /// </summary>
         private MPTKEvent NotePlaying;
 
         private float LastTimeChange;
 
-        /// <summary>
+        /// <summary>@brief
         /// Popup to select an instrument
         /// </summary>
         private PopupListItem PopPatchInstrument;
@@ -122,7 +122,10 @@ namespace DemoMPTK
         public CustomStyle myStyle;
 
         private Vector2 scrollerWindow = Vector2.zero;
+        private int buttonLargeWidth = 500;
         private int buttonWidth = 250;
+        private int buttonSmallWidth = 166;
+        private int buttonTinyWidth = 100;
         private float spaceVertival = 0;
         private float widthFirstCol = 100;
         public bool IsplayingLoopNotes;
@@ -182,7 +185,25 @@ namespace DemoMPTK
 
         }
 
-        /// <summary>
+        // disabled
+        void xxxOnApplicationFocus(bool hasFocus)
+        {
+            Debug.Log("TestMidiStream OnApplicationFocus " + hasFocus);
+            if (!hasFocus)
+            {
+                midiStreamPlayer.MPTK_StopSynth();
+                ///midiStreamPlayer.CoreAudioSource.enabled = false;
+                midiStreamPlayer.CoreAudioSource.Stop();
+            }
+            else
+            {
+                //midiStreamPlayer.CoreAudioSource.enabled = true;
+                midiStreamPlayer.CoreAudioSource.Play();
+                midiStreamPlayer.MPTK_InitSynth();
+            }
+        }
+
+        /// <summary>@brief
         /// The call of this method is defined in MidiPlayerGlobal from the Unity editor inspector. 
         /// The method is called when SoundFont is loaded. We use it only to statistics purpose.
         /// </summary>
@@ -207,7 +228,7 @@ namespace DemoMPTK
 
         //! [ExampleOnEventEndLoadingSynth]
 
-        /// <summary>
+        /// <summary>@brief
         /// This methods is run when the synthesizer is ready if you defined OnEventSynthStarted or set event from Inspector in Unity.
         /// It's a good place to set some synth parameter's as defined preset by channel 
         /// </summary>
@@ -252,7 +273,7 @@ namespace DemoMPTK
         [Header("Test MPTK_ChannelPresetChange for changing preset")]
         public bool Test_MPTK_ChannelPresetChange = false;
 
-        /// <summary>
+        /// <summary>@brief
         /// Two method are avaliable for changing preset and bank : 
         ///         MPTK_ChannelPresetChange(channel, preset, bank)
         ///     or standard MIDI 
@@ -341,7 +362,7 @@ namespace DemoMPTK
             valueGenerator[iGenerator] = GenModifier.DefaultNormalizedVal((fluid_gen_type)indexGenerator[iGenerator]) * 100f;
             Debug.Log($"indexList:{indexList} indexGenerator:{indexGenerator[iGenerator]} valueGenerator:{valueGenerator[iGenerator]} {labelGenerator[iGenerator]}");
         }
-         
+
         void OnGUI()
         {
             GUIUtility.ScaleAroundPivot(scale, pivotPoint);
@@ -374,7 +395,7 @@ namespace DemoMPTK
                     //
                     // Select bank & Patch for Instrument
                     // ----------------------------------
-                    GUILayout.BeginVertical(myStyle.BacgDemos);
+                    GUILayout.BeginVertical(myStyle.BacgDemos1);
                     GUILayout.BeginHorizontal();
                     GUILayout.Label("Instrument", myStyle.TitleLabel3, GUILayout.Width(widthFirstCol));
 
@@ -425,7 +446,7 @@ namespace DemoMPTK
 
                     GUILayout.Label(" ", GUILayout.Width(42));
 
-                    bool newDrumKit = GUILayout.Toggle(DrumKit, "Activate Drum Mode", GUILayout.Width(buttonWidth * 2));
+                    bool newDrumKit = GUILayout.Toggle(DrumKit, "Activate Drum Mode", GUILayout.Width(buttonLargeWidth));
                     if (newDrumKit != DrumKit)
                     {
                         DrumKit = newDrumKit;
@@ -433,9 +454,12 @@ namespace DemoMPTK
                         StreamChannel = DrumKit ? 9 : 0;
                     }
                     GUILayout.EndHorizontal();
+                    GUILayout.EndVertical();
                 }
-                else
-                    GUILayout.BeginVertical(myStyle.BacgDemos);
+                //else
+                //    GUILayout.BeginVertical(myStyle.BacgDemos);
+
+                GUILayout.BeginVertical(myStyle.BacgDemos1);
 
                 GUILayout.BeginHorizontal();
                 //! [Example MPTK_ChannelPresetChange]
@@ -467,7 +491,7 @@ namespace DemoMPTK
                 //! [Example MPTK_ChannelPresetChange]
                 //GUILayout.EndHorizontal();
 
-               // GUILayout.BeginHorizontal(GUILayout.Width(500));
+                // GUILayout.BeginHorizontal(GUILayout.Width(500));
                 GUILayout.Label("The first found is selected if not found", myStyle.TitleLabel3);
                 GUILayout.EndHorizontal();
 
@@ -488,25 +512,25 @@ namespace DemoMPTK
 
                 GUILayout.BeginHorizontal(GUILayout.Width(350));
                 GUILayout.Label("One Shot", myStyle.TitleLabel3, GUILayout.Width(widthFirstCol));
-                if (GUILayout.Button("Play", myStyle.BtStandard, GUILayout.Width(buttonWidth * 0.666f)))
+                if (GUILayout.Button("Play", myStyle.BtStandard, GUILayout.Width(buttonSmallWidth)))
                 {
                     // Stop current note if playing
                     StopOneNote();
                     // Play one note 
                     PlayOneNote();
                 }
-                if (GUILayout.Button("Stop", myStyle.BtStandard, GUILayout.Width(buttonWidth * 0.666f)))
+                if (GUILayout.Button("Stop", myStyle.BtStandard, GUILayout.Width(buttonSmallWidth)))
                 {
                     StopOneNote();
                     StopChord();
                 }
 
-                if (GUILayout.Button("Clear", myStyle.BtStandard, GUILayout.Width(buttonWidth * 0.666f)))
+                if (GUILayout.Button("Clear", myStyle.BtStandard, GUILayout.Width(buttonSmallWidth)))
                 {
                     midiStreamPlayer.MPTK_ClearAllSound(true);
                 }
 
-                if (GUILayout.Button("Re-init", myStyle.BtStandard, GUILayout.Width(buttonWidth * 0.666f)))
+                if (GUILayout.Button("Re-init", myStyle.BtStandard, GUILayout.Width(buttonSmallWidth)))
                 {
                     midiStreamPlayer.MPTK_InitSynth();
                     CurrentPreset = CurrentPatchDrum = 0;
@@ -559,7 +583,7 @@ namespace DemoMPTK
 
                 GUILayout.BeginHorizontal(GUILayout.Width(350));
                 GUILayout.Label("Loop Notes", myStyle.TitleLabel3, GUILayout.Width(widthFirstCol));
-                if (GUILayout.Button("Start / Stop", IsplayingLoopNotes ? myStyle.BtSelected : myStyle.BtStandard, GUILayout.Width(buttonWidth * 0.666f))) IsplayingLoopNotes = !IsplayingLoopNotes;
+                if (GUILayout.Button("Start / Stop", IsplayingLoopNotes ? myStyle.BtSelected : myStyle.BtStandard, GUILayout.Width(buttonSmallWidth))) IsplayingLoopNotes = !IsplayingLoopNotes;
                 StartNote = (int)Slider("From", StartNote, 0, 127, true);
                 EndNote = (int)Slider("To", EndNote, 0, 127, true);
                 GUILayout.EndHorizontal();
@@ -568,7 +592,7 @@ namespace DemoMPTK
 
                 GUILayout.BeginHorizontal(GUILayout.Width(350));
                 GUILayout.Label("Loop Presets", myStyle.TitleLabel3, GUILayout.Width(widthFirstCol));
-                if (GUILayout.Button("Start / Stop", IsplayingLoopPresets ? myStyle.BtSelected : myStyle.BtStandard, GUILayout.Width(buttonWidth * 0.666f))) IsplayingLoopPresets = !IsplayingLoopPresets;
+                if (GUILayout.Button("Start / Stop", IsplayingLoopPresets ? myStyle.BtSelected : myStyle.BtStandard, GUILayout.Width(buttonSmallWidth))) IsplayingLoopPresets = !IsplayingLoopPresets;
                 StartPreset = (int)Slider("From", StartPreset, 0, 127, true);
                 EndPreset = (int)Slider("To", EndPreset, 0, 127, true);
                 GUILayout.EndHorizontal();
@@ -721,6 +745,23 @@ namespace DemoMPTK
                     AttenuationChange = expAttenuation;
                     midiStreamPlayer.MPTK_PlayEvent(new MPTKEvent() { Command = MPTKCommand.ControlChange, Controller = MPTKController.VOLUME_MSB, Value = AttenuationChange, Channel = StreamChannel });
                 }
+
+                // Change modulation. Sustain 
+                // The Sustain Pedal CC64 is one of the most commont MIDI CC messages, used to hold played notes
+                // while the sustain pedal is active/depressed. Values of 0-63 indicate OFF. Values 64-127 indicate ON.
+                // https://www.presetpatch.com/midi-cc-list.aspx
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Sustain switch", myStyle.LabelRight, GUILayout.Width(120), GUILayout.Height(25));
+                bool sustain = midiStreamPlayer.MPTK_ChannelControllerGet(StreamChannel, (int)MPTKController.Sustain) < 64 ? false : true;
+                if (GUILayout.Button(sustain ? "Sustain On" : "Sustain Off", sustain ? myStyle.BtSelected : myStyle.BtStandard, GUILayout.Width(buttonTinyWidth)))
+                    if (sustain)
+                        midiStreamPlayer.MPTK_PlayEvent(new MPTKEvent()
+                        { Command = MPTKCommand.ControlChange, Controller = MPTKController.Sustain, Value = 0, Channel = StreamChannel });
+                    else
+                        midiStreamPlayer.MPTK_PlayEvent(new MPTKEvent()
+                        { Command = MPTKCommand.ControlChange, Controller = MPTKController.Sustain, Value = 100, Channel = StreamChannel });
+                GUILayout.EndHorizontal();
+
 
                 GUILayout.EndHorizontal();
                 GUILayout.EndVertical(); // end ControlChange modification
@@ -888,7 +929,7 @@ namespace DemoMPTK
 
         //#if MPTK_PRO
 
-        /// <summary>
+        /// <summary>@brief
         /// Common UI for building and playing a chord or a scale from the library of scale
         /// See in GUI "Play Chord From Degree" and "Play Range From Lib"
         /// </summary>
@@ -965,12 +1006,61 @@ namespace DemoMPTK
             return ret;
         }
 
+        private MPTKEvent[] eventsMidi;
+        // blues en C minor: C,D#,F,F#,G,A# http://patrick.murris.com/musique/gammes_piano.htm?base=3&scale=0%2C3%2C5%2C6%2C7%2C10&octaves=1
+        private int[] keysToNote = { 60, 63, 65, 66, 67, 70, 72, 75, 77 };
+
         // Update is called once per frame
         void Update()
         {
+
             // Check that SoundFont is loaded and add a little wait (0.5 s by default) because Unity AudioSource need some time to be started
             if (!MidiPlayerGlobal.MPTK_IsReady())
                 return;
+
+            // Better in Start(), it's here only for the demo clarity
+            if (eventsMidi == null)
+                eventsMidi = new MPTKEvent[10];
+
+            for (int key = 0; key < 9; key++)
+            {
+                // Check if key 1 to 9 is down (top alpha keyboard)
+                if (Input.GetKeyDown(KeyCode.Alpha1 + key))
+                {
+                    // Create a new note and play
+                    eventsMidi[key] = new MPTKEvent()
+                    {
+                        Command = MPTKCommand.NoteOn,
+                        Channel = StreamChannel,
+                        Duration = -1,
+                        Value = keysToNote[key],
+                        Velocity = 100
+                    };
+                    // Send the note-on to the MIDI synth
+                    midiStreamPlayer.MPTK_PlayEvent(eventsMidi[key]);
+                }
+
+                // If the note is active and the corresponding key is up then stop the note
+                if (eventsMidi[key] != null && Input.GetKeyUp(KeyCode.Alpha1 + key))
+                {
+                    midiStreamPlayer.MPTK_StopEvent(eventsMidi[key]);
+                    eventsMidi[key] = null;
+                }
+            }
+
+            // Change preset with arrow key
+            if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                if (Input.GetKeyDown(KeyCode.DownArrow)) CurrentPreset--;
+                if (Input.GetKeyDown(KeyCode.UpArrow)) CurrentPreset++;
+                CurrentPreset = Mathf.Clamp(CurrentPreset, 0, 127);
+                midiStreamPlayer.MPTK_PlayEvent(new MPTKEvent()
+                {
+                    Command = MPTKCommand.PatchChange,
+                    Value = CurrentPreset,
+                    Channel = StreamChannel,
+                });
+            }
 
 #if MPTK_PRO
             if (PitchChange != DEFAULT_PITCH)
@@ -1024,7 +1114,7 @@ namespace DemoMPTK
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Play music depending the parameters set
         /// </summary>
         /// <param name="stopCurrent">stop current note playing</param>
@@ -1073,7 +1163,7 @@ namespace DemoMPTK
         MPTKChordBuilder ChordPlaying;
         MPTKChordBuilder ChordLibPlaying;
 
-        /// <summary>
+        /// <summary>@brief
         /// Play note from a scale
         /// </summary>
         private void PlayScale()
@@ -1151,7 +1241,7 @@ namespace DemoMPTK
         private void StopChord(){}
 #endif
         //! [ExampleMPTK_PlayEvent]
-        /// <summary>
+        /// <summary>@brief
         /// Send the note to the player. Notes are plays in a thread, so call returns immediately.
         /// The note is stopped automatically after the Duration defined.
         /// </summary>

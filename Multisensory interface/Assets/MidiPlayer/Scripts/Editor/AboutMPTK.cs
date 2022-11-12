@@ -13,10 +13,8 @@ namespace MidiPlayerTK
 
         private int winWidth = 838;
         private int winHeight = 450;
-        static float lineHeight = 0f;
         static Vector2 scrollPosAnalyze = Vector2.zero;
-        static GUIStyle stylePanel;
-        static GUIStyle styleLabelUpperLeft;
+    
 
         public override Vector2 GetWindowSize()
         {
@@ -37,31 +35,17 @@ namespace MidiPlayerTK
             }
         }
 
+
+      
         public override void OnGUI(Rect rect)
         {
-            if (lineHeight <= 0f)
-            {
-                float gray2 = 0.1f;
-                float gray4 = 0.65f;
-                int borderSize = 1; // Border size in pixels
-                RectOffset rectBorder = new RectOffset(borderSize, borderSize, borderSize, borderSize);
-                GUIStyle styleRichTextBorder = new GUIStyle(EditorStyles.label);
-                lineHeight = styleRichTextBorder.lineHeight;
-                stylePanel = new GUIStyle("box");
-                stylePanel.normal.background = ToolsEditor.MakeTex(10, 10, new Color(gray4, gray4, gray4, 1f), rectBorder, new Color(gray2, gray2, gray2, 1f));
-                stylePanel.alignment = TextAnchor.MiddleCenter;
-                styleLabelUpperLeft = new GUIStyle(EditorStyles.label);
-                styleLabelUpperLeft.alignment = TextAnchor.UpperLeft;
-                styleLabelUpperLeft.normal.textColor = Color.black;
-                styleLabelUpperLeft.hover.textColor = Color.black;
-            }
-
+            MidiCommonEditor.LoadSkinAndStyle(false);
             try
             {
                 float xCol0 = 5;
                 float xCol1 = 20;
                 float xCol2 = 120;
-                float yStart = 5;
+                float yStart = 0;
                 float ySpace = 18;
                 float colWidth = 230;
                 float colHeight = 17;
@@ -74,6 +58,7 @@ namespace MidiPlayerTK
 
                 GUIStyle style = new GUIStyle("Label");
                 style.fontSize = 16;
+                style.normal.textColor = Color.black;
                 style.fontStyle = FontStyle.Bold;
 
                 try
@@ -89,9 +74,9 @@ namespace MidiPlayerTK
                 {
                     MidiPlayerGlobal.ErrorDetail(ex);
                 }
-                GUIContent cont = new GUIContent("Maestro Midi Player Tool Kit");
-                EditorGUI.LabelField(new Rect(xCol0, yStart, 300, 30), cont, style);
-                EditorGUI.LabelField(new Rect(xCol0, yStart + 8, 300, colHeight), "___________________________________");
+                GUIContent cont = new GUIContent("Maestro - Midi Player Tool Kit");
+                EditorGUI.LabelField(new Rect(xCol0, yStart-5, 300, 30), cont, style);
+                EditorGUI.LabelField(new Rect(xCol0, yStart + 8, 800, colHeight), "_________________________________________________________________________________________________________________________________________________");
 
                 yStart += 15;
                 EditorGUI.LabelField(new Rect(xCol1, yStart += ySpace, colWidth, colHeight), "Version:");
@@ -160,7 +145,7 @@ namespace MidiPlayerTK
                     0,
                     0,
                     2 * wList,
-                    121 * lineHeight + spaceV);
+                    121 * MidiCommonEditor.lineHeight + spaceV);
 
                 Rect fondRect = new Rect(
                     xCol0,
@@ -168,11 +153,11 @@ namespace MidiPlayerTK
                     wList,
                     heightList);
 
-                GUI.Box(fondRect, "", stylePanel);
+                GUI.Box(fondRect, "", MidiCommonEditor.stylePanel);
 
                 scrollPosAnalyze = GUI.BeginScrollView(listVisibleRect, scrollPosAnalyze, listContentRect);
                 if (!string.IsNullOrEmpty(textVersion))
-                    GUI.Box(listContentRect, textVersion, styleLabelUpperLeft);
+                    GUI.Box(listContentRect, textVersion, MidiCommonEditor.styleLabelUpperLeft);
                 GUI.EndScrollView();
             }
             catch (System.Exception ex)

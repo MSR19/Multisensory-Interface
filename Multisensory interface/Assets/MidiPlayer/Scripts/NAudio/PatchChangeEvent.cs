@@ -4,14 +4,14 @@ using System.Text;
 
 namespace MPTK.NAudio.Midi
 {
-    /// <summary>
+    /// <summary>@brief
     /// Represents a MIDI patch change event
     /// </summary>
     public class PatchChangeEvent : MidiEvent
     {
         private byte patch;
 
-        /// <summary>
+        /// <summary>@brief
         /// Gets the default MIDI instrument names
         /// </summary>
         public static string GetPatchName(int patchNumber)
@@ -43,7 +43,7 @@ namespace MPTK.NAudio.Midi
             "Guitar Fret Noise","Breath Noise","Seashore","Bird Tweet","Telephone Ring","Helicopter","Applause","Gunshot" 
         };
 
-        /// <summary>
+        /// <summary>@brief
         /// Reads a new patch change event from a MIDI stream
         /// </summary>
         /// <param name="br">Binary reader for the MIDI stream</param>
@@ -57,7 +57,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a new patch change event
         /// </summary>
         /// <param name="absoluteTime">Time of the event</param>
@@ -69,7 +69,7 @@ namespace MPTK.NAudio.Midi
             this.Patch = patchNumber;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// The Patch Number
         /// </summary>
         public int Patch
@@ -88,7 +88,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Describes this patch change event
         /// </summary>
         /// <returns>String describing the patch change event</returns>
@@ -99,7 +99,7 @@ namespace MPTK.NAudio.Midi
                 GetPatchName(this.patch));
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Gets as a short message for sending with the midiOutShortMsg API
         /// </summary>
         /// <returns>short message</returns>
@@ -108,7 +108,7 @@ namespace MPTK.NAudio.Midi
             return base.GetAsShortMessage() + (this.patch << 8);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Calls base class export first, then exports the data 
         /// specific to this event
         /// <seealso cref="MidiEvent.Export">MidiEvent.Export</seealso>

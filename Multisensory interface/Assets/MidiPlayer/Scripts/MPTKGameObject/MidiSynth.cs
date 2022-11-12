@@ -20,6 +20,10 @@ using MEC;
 using System.Runtime.InteropServices;
 using System.Threading;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 #if MPTK_PRO && UNITY_ANDROID && UNITY_OBOE
 using Oboe.Stream;
 #endif
@@ -51,8 +55,10 @@ namespace MidiPlayerTK
         Order7,
     }
 
-    /// <summary>
-    /// Contains all the functions to build a wave table synth: load SoundFont and samples, process midi event, play voices, controllers, generators ...\n 
+    /// <summary> 
+    /// Base class wich contains all the stuff to build a Wave Table Synth. Not for use directly.\n
+    /// 
+    /// Load SoundFont and samples, process midi event, play voices, controllers, generators ...\n 
     /// This class is inherited by others class to build these prefabs: MidiStreamPlayer, MidiFilePlayer, MidiInReader.\n
     /// <b>It is not recommended to instanciate directly this class, rather add prefabs to the hierarchy of your scene.</b> 
     /// </summary>
@@ -60,6 +66,7 @@ namespace MidiPlayerTK
     public partial class MidiSynth : MonoBehaviour, IMixerProcessor
     {
 #else
+    //[ExecuteAlways]
     public partial class MidiSynth : MonoBehaviour
     {
 #endif
@@ -73,7 +80,7 @@ namespace MidiPlayerTK
         [HideInInspector] // defined at startup by script
         public AudioChorusFilter ChorusFilter;
 
-        /// <summary>
+        /// <summary>@brief 
         /// Time in millisecond from the start of play
         /// </summary>
         protected double timeMidiFromStartPlay = 0d;
@@ -86,7 +93,7 @@ namespace MidiPlayerTK
         [Range(1, 100)]
         public int DevicePerformance = 40;
 
-        /// <summary>
+        /// <summary>@brief 
         /// Time in millisecond for the current midi playing position
         /// </summary>
         protected double lastTimeMidi = 0d;
@@ -105,40 +112,40 @@ namespace MidiPlayerTK
 
         // @endcond
 
-        /// <summary>
+        /// <summary>@brief 
         /// Reset channel information when MIDI start playing. V2.89.0
         /// </summary>
         [Tooltip("Extended channel information as volume, forced instrument, can be resetted when a MIDI is starting playing")]
         public bool MPTK_ResetChannel = true;
 
         //[HideInInspector]
-        /// <summary>
+        /// <summary>@brief 
         /// Preset are often composed with 2 or more samples, classically for left and right channel. Check this to play only the first sample found
         /// </summary>  
         public bool playOnlyFirstWave;
 
-        /// <summary>
+        /// <summary>@brief 
         /// Should accept change Preset for Drum canal 10 ? \n
         /// Disabled by default. Could sometimes create bad sound with midi files not really compliant with the MIDI norm.
         /// </summary>
         [HideInInspector]
         public bool MPTK_EnablePresetDrum;
 
-        /// <summary>
+        /// <summary>@brief 
         /// V2.83. If the same note is hit twice on the same channel, then the older voice process is advanced to the release stage.\n
         /// It's the default Midi processing. 
         /// </summary>
         [HideInInspector]
         public bool MPTK_ReleaseSameNote = true;
 
-        /// <summary>
+        /// <summary>@brief 
         /// V2.83 Find the exclusive class of this voice. If set, kill all voices that match the exclusive class\n 
         /// and are younger than the first voice process created by this noteon event.
         /// </summary>
         [HideInInspector]
         public bool MPTK_KillByExclusiveClass = true;
 
-        /// <summary>
+        /// <summary>@brief 
         ///  V2.83 When the value is true, NoteOff and Duration for non-looped samples are ignored and the samples play through to the end.
         /// </summary>
         public bool MPTK_KeepPlayingNonLooped
@@ -147,7 +154,7 @@ namespace MidiPlayerTK
             set { keepPlayingNonLooped = value; }
         }
 
-        /// <summary>
+        /// <summary>@brief 
         /// When a note is stopped with a noteoff or when the duration is over, note continue to play for a short time depending the instrument.\n  
         /// This parameter is a multiplier to increase or decrease the default release time defined in the SoundFont for each instrument.\n 
         /// Recommended values between 0.1 and 10. Default is 1 (no modification of the release time).\n
@@ -157,7 +164,7 @@ namespace MidiPlayerTK
         [Range(0.1f, 10f), HideInInspector]
         public float MPTK_ReleaseTimeMod = 1f;
 
-        /// <summary>
+        /// <summary>@brief 
         /// When amplitude is below this value the playing of sample is stopped (voice_off). \n
         /// Can be increase for better performance but with degraded quality because sample could be stopped earlier.
         /// Remember: Amplitude can varying between 0 and 1.
@@ -166,7 +173,7 @@ namespace MidiPlayerTK
         [Tooltip("Sample is stopped when amplitude is below this value")]
         public float MPTK_CutOffVolume = 0.05f; //V2.872 from 0.1f to 0.05f // replace amplitude_that_reaches_noise_floor 
 
-        /// <summary>
+        /// <summary>@brief 
         /// V2.873 - A lean startup of the volume of the synth is useful to avoid weird sound at the beginning of the application (in some cases).\n
         /// This parameter sets the speed of the increase of the volume of the audio source.\n
         /// Set to 1 for an immediate full volume at start.
@@ -175,13 +182,13 @@ namespace MidiPlayerTK
         [Tooltip("Lean startup of the volume of the synth is usefull to avoid weird sound at the beginning of the application. Set to 1 for an immediate full volume at startup.")]
         public float MPTK_LeanSynthStarting = 0.05f;
 
-        /// <summary>
+        /// <summary>@brief 
         /// Voice buffering is important to get better performance. But you can disable this fonction with this parameter.
         /// </summary>
         [Tooltip("Enable bufferring Voice to enhance performance.")]
         public bool MPTK_AutoBuffer = true;
 
-        /// <summary>
+        /// <summary>@brief 
         /// Free voices older than MPTK_AutoCleanVoiceLimit are removed when count is over than MPTK_AutoCleanVoiceTime
         /// </summary>
         [Tooltip("Auto Clean Voice Greater Than")]
@@ -192,19 +199,19 @@ namespace MidiPlayerTK
         [Range(1000, 100000)]
         public float MPTK_AutoCleanVoiceTime;
 
-        /// <summary>
+        /// <summary>@brief 
         /// Apply real time modulatoreffect defined in the SoundFont: pitch bend, control change, enveloppe modulation
         /// </summary>
         [HideInInspector] // defined in custom inspector
         public bool MPTK_ApplyRealTimeModulator;
 
-        /// <summary>
+        /// <summary>@brief 
         /// Apply LFO effect defined in the SoundFont
         /// </summary>
         [HideInInspector] // defined in custom inspector
         public bool MPTK_ApplyModLfo;
 
-        /// <summary>
+        /// <summary>@brief 
         /// Apply vibrato effect defined in the SoundFont
         /// </summary>
         [HideInInspector] // defined in custom inspector
@@ -234,7 +241,7 @@ namespace MidiPlayerTK
 
         [Header("MIDI Sequencer Statistics")]
 
-        /// <summary>
+        /// <summary>@brief 
         /// Delta time in milliseconds between calls of the MIDI sequencer
         /// </summary>
         public double StatDeltaThreadMidiMS = 0d;
@@ -243,17 +250,17 @@ namespace MidiPlayerTK
         public float StatDeltaThreadMidiAVG;
         public MovingAverage StatDeltaThreadMidiMA;
 
-        /// <summary>
+        /// <summary>@brief 
         /// Time to read MIDI Events
         /// </summary>
         public float StatReadMidiMS;
 
-        /// <summary>
+        /// <summary>@brief 
         /// Time to enqueue MIDI events to the Unity thread
         /// </summary>
         public float StatEnqueueMidiMS;
 
-        /// <summary>
+        /// <summary>@brief 
         /// Time to process MIDI event (create voice)
         /// </summary>
         public float StatProcessMidiMS;
@@ -261,13 +268,13 @@ namespace MidiPlayerTK
 
         [Header("MIDI Synth Statistics")]
 
-        /// <summary>
+        /// <summary>@brief 
         /// Delta time in milliseconds between call to the MIDI Synth (OnAudioFilterRead). \n
         /// This value is constant during playing. Directly related to the buffer size and the synth rate values.
         /// </summary>
         public double StatDeltaAudioFilterReadMS;
 
-        /// <summary>
+        /// <summary>@brief 
         /// Time in milliseconds for the whole MIDI Synth processing (OnAudioFilterRead)
         /// </summary>
         public float StatAudioFilterReadMS;
@@ -276,13 +283,13 @@ namespace MidiPlayerTK
         public float StatAudioFilterReadAVG;
         public MovingAverage StatAudioFilterReadMA;
 
-        /// <summary>
+        /// <summary>@brief 
         /// Time to process samples in active list of voices
         /// </summary>
         public float StatSampleWriteMS;
         public float StatSampleWriteAVG;
         public MovingAverage StatSampleWriteMA;
-        /// <summary>
+        /// <summary>@brief 
         /// Time to process active and free voices
         /// </summary>
         public float StatProcessListMS;
@@ -295,13 +302,13 @@ namespace MidiPlayerTK
 
 #if DEBUG_STATUS_STAT
         [Header("Voice Status Count Clean / On / Sustain / Off / Release")]
-        /// <summary>
+        /// <summary>@brief 
         /// Voice Status Count 
         /// </summary>
         public int[] StatusStat;
 #endif
 
-        /// <summary>
+        /// <summary>@brief 
         /// Time in millisecond for the last OnAudioFilter
         /// </summary>
         protected double lastTimePlayCore = 0d;
@@ -329,7 +336,7 @@ namespace MidiPlayerTK
 
         // @endcond
 
-        /// <summary>
+        /// <summary>@brief 
         /// If true then MIDI events are read and play from a dedicated thread.\n
         /// If false, MidiSynth will use AudioSource gameobjects to play sound.\n
         /// This properties must be defined before running the application from the inspector.\n
@@ -339,7 +346,7 @@ namespace MidiPlayerTK
         [HideInInspector]
         public bool MPTK_CorePlayer;
 
-        /// <summary>
+        /// <summary>@brief 
         /// If true then rate synth and buffer size will be automatically defined by Unity in accordance of the capacity of the hardware. -  V2.89.0 - \n
         /// Look at Unity menu "Edit / Project Settings..." and select between best latency and best performance.\n
         /// If false, then rate and buffer size can be defined manually ... but with the risk of bad audio quality. It's more an experimental capacities!
@@ -347,7 +354,7 @@ namespace MidiPlayerTK
         [HideInInspector]
         public bool MPTK_AudioSettingFromUnity;
 
-        /// <summary>
+        /// <summary>@brief 
         /// Get the the current synth rate or set free value (only if MPTK_EnableFreeSynthRate is true).
         /// </summary>
         public int MPTK_SynthRate
@@ -388,7 +395,7 @@ namespace MidiPlayerTK
             }
         }
 
-        /// <summary>
+        /// <summary>@brief 
         /// Apply new audio setting: rate or buffer size.
         /// It is recommended to use the audio setting from Unity.
         /// </summary>
@@ -407,13 +414,13 @@ namespace MidiPlayerTK
             }
         }
 
-        /// <summary>
+        /// <summary>@brief 
         /// Allow direct setting of the Synth Rate
         /// </summary>
         [HideInInspector]
         public bool MPTK_EnableFreeSynthRate = false;
 
-        /// <summary>
+        /// <summary>@brief 
         /// Set or Get sample rate output of the synth. -1:default, 0:24000, 1:36000, 2:48000, 3:60000, 4:72000, 5:84000, 6:96000.\n 
         /// It's better to stop playing before changing on fly to avoid bad noise.
         /// </summary>
@@ -470,7 +477,7 @@ namespace MidiPlayerTK
 
         private int[] tabDspBufferSize = new int[] { 64, 128, 256, 512, 1024, 2048 };
 
-        /// <summary>
+        /// <summary>@brief 
         /// Set or Get synth buffer size  -1:default,  0:64, 1;128, 2:256, 3:512, 4:1024, 5:2048.\n 
         /// The change is global for all prefab. It's better to stop playing for all prefab before changing on fly to avoid bad noise or crash.
         /// </summary>
@@ -522,7 +529,7 @@ namespace MidiPlayerTK
         private int indexBuffSize = -1;
 
 
-        /// <summary>
+        /// <summary>@brief 
         /// If true (default) then MIDI events are sent automatically to the midi player.\n
         /// Set to false if you want to process events without playing sound. \n
         /// OnEventNotesMidi Unity Event can be used to process each notes.
@@ -530,13 +537,13 @@ namespace MidiPlayerTK
         [HideInInspector]
         public bool MPTK_DirectSendToPlayer;
 
-        /// <summary>
+        /// <summary>@brief 
         /// Should accept change tempo from MIDI Events ? 
         /// </summary>
         [HideInInspector]
         public bool MPTK_EnableChangeTempo;
 
-        /// <summary>
+        /// <summary>@brief 
         /// If MPTK_Spatialize is enabled, the volume of the audio source depends on the distance between the audio source and the listener. \n
         /// Beyong this distance, the volume is set to 0 and the midi player is paused. No effect if MPTK_Spatialize is disabled.
         /// </summary>
@@ -611,7 +618,7 @@ namespace MidiPlayerTK
         [HideInInspector]
         private float maxDistance;
 
-        /// <summary>
+        /// <summary>@brief 
         /// [obsolete] replaced by MPTK_Spatialize"); V2.83
         /// </summary>
         [HideInInspector]
@@ -621,9 +628,14 @@ namespace MidiPlayerTK
             set { Debug.LogWarning("MPTK_PauseOnDistance is obsolete, replaced by MPTK_Spatialize"); spatialize = value; }
         }
 
-        /// <summary>
+        /// <summary>@brief 
         /// Should the Spatialization effect must be enabled?\n
         /// See here how to setup spatialization with Unity https://paxstellar.fr/midi-file-player-detailed-view-2/#Foldout-Spatialization-Parameters
+        /// if MPTK_Spatialize is true:\n
+        ///     AudioSource.maxDistance = MPTK_MaxDistance\n
+        ///     AudioSource.spatialBlend = 1\n
+        ///     AudioSource.spatialize = true\n
+        ///     AudioSource.spatializePostEffects = true\n
         /// </summary>
         [HideInInspector]
         public bool MPTK_Spatialize
@@ -636,7 +648,7 @@ namespace MidiPlayerTK
             }
         }
 
-        /// <summary>
+        /// <summary>@brief 
         /// Contains each Midi Synth for each channel or track when the prefab MidiSpatializer is used and IsMidiChannelSpace=true.\n
         /// Warning: only one MidiSpatializer can be used in a hierarchy.
         /// </summary>
@@ -644,7 +656,7 @@ namespace MidiPlayerTK
 
         private int spatialSynthIndex = -1;
 
-        /// <summary>
+        /// <summary>@brief 
         /// Index of the MidiSynth for the dedicated Channel or Track when the prefab MidiSpatializer is used.\n
         /// If MPTK_ModeSpatializer = Channel then represent the playing channel.\n
         /// If MPTK_ModeSpatializer = Track then represent the playing track.\n
@@ -658,14 +670,14 @@ namespace MidiPlayerTK
             }
         }
 
-        /// <summary>
+        /// <summary>@brief 
         /// Should change pan from MIDI Events or from SoundFont ?\n
         /// Pan is disabled when Spatialization is activated.
         /// </summary>
         [HideInInspector]
         public bool MPTK_EnablePanChange;
 
-        /// <summary>
+        /// <summary>@brief 
         /// Global Volume. apply to all channels.\n
         /// Must be >=0 and <= 1
         /// </summary>
@@ -686,7 +698,7 @@ namespace MidiPlayerTK
         [HideInInspector]
         protected float volumeStartStop = 1f;
 
-        /// <summary>
+        /// <summary>@brief 
         /// Transpose note from -24 to 24
         /// </summary>
         [HideInInspector]
@@ -696,7 +708,7 @@ namespace MidiPlayerTK
             set { if (value >= -24 && value <= 24) transpose = value; else Debug.LogWarning("Set Transpose value not valid : " + value); }
         }
 
-        /// <summary>
+        /// <summary>@brief 
         /// Transpose will apply to all channels except this one. Set to -1 to apply to all channel. V2.89.0\n
         /// Default is 9 because generally we don't want to transpose drum channel.
         /// </summary>
@@ -707,7 +719,7 @@ namespace MidiPlayerTK
             set { if (value < 16 && value >= -1) transExcludedChannel = value; else Debug.LogWarning("Set Transpose Excluded Channel value not valid : " + value); }
         }
 
-        /// <summary>
+        /// <summary>@brief 
         /// Log for each wave to be played
         /// </summary>
         [HideInInspector]
@@ -715,32 +727,32 @@ namespace MidiPlayerTK
 
         [Header("Voice Statistics")]
 
-        /// <summary>
+        /// <summary>@brief 
         /// Count of the active voices (playing) - Readonly
         /// </summary>
         public int MPTK_StatVoiceCountActive;
 
-        /// <summary>
+        /// <summary>@brief 
         /// Count of the free voices for reusing on need.\n
         /// Voice older than AutoCleanVoiceTime are removed but only when count is over than AutoCleanVoiceLimit - Readonly
         /// </summary>
         public int MPTK_StatVoiceCountFree;
 
-        /// <summary>
+        /// <summary>@brief 
         /// Percentage of voice reused during the synth life. 0: any reuse, 100:all voice reused (unattainable, of course!)
         /// </summary>
         public float MPTK_StatVoiceRatioReused;
 
-        /// <summary>
+        /// <summary>@brief 
         /// Count of voice played since the start of the synth
         /// </summary>
         public int MPTK_StatVoicePlayed;
 
-    
+
         // @cond NODOC
 
         /*protected*/
-        /// <summary>
+        /// <summary>@brief 
         /// Don't used this method. It will be soon deprecated. Prefer MPTK_MidiLoaded.
         /// </summary>
         public MidiLoad midiLoaded;
@@ -751,7 +763,7 @@ namespace MidiPlayerTK
         [SerializeField]
         [HideInInspector]
         protected bool playPause = false;
-        /// <summary>
+        /// <summary>@brief 
         /// Distance to the listener.\n
         /// Calculated only if MPTK_PauseOnDistance = true
         /// </summary>
@@ -762,11 +774,11 @@ namespace MidiPlayerTK
         [HideInInspector]
         public int transpose = 0, transExcludedChannel = 9;
 
-        public mptk_channel[] MptkChannels;          
-        public fluid_channel[] Channels;       
-        private List<fluid_voice> ActiveVoices;  
+        public mptk_channel[] MptkChannels;
+        public fluid_channel[] Channels;
+        private List<fluid_voice> ActiveVoices;
 
-        private List<fluid_voice> FreeVoices; 
+        private List<fluid_voice> FreeVoices;
         protected Queue<SynthCommand> QueueSynthCommand;
         protected Queue<List<MPTKEvent>> QueueMidiEvents;
 
@@ -774,12 +786,12 @@ namespace MidiPlayerTK
         {
             public enum enCmd { StartEvent, StopEvent, ClearAllVoices, NoteOffAll }
             public enCmd Command;
-            public int IdSession; 
+            public int IdSession;
             public MPTKEvent MidiEvent;
         }
 
         [HideInInspector]
-        public int FLUID_BUFSIZE = 64; 
+        public int FLUID_BUFSIZE = 64;
 
         [HideInInspector]
         public fluid_interp InterpolationMethod = fluid_interp.Linear;
@@ -818,14 +830,14 @@ namespace MidiPlayerTK
 
         // @endcond
 
-        /// <summary>
+        /// <summary>@brief 
         /// Should play on a weak device (cheaper smartphone) ? Apply only with AudioSource mode (MPTK_CorePlayer=False).\n
         /// Playing MIDI files with WeakDevice activated could cause some bad interpretation of MIDI Event, consequently bad sound.
         /// </summary>
         [Tooltip("Apply only with AudioSource mode (no Core Audio)")]
         public bool MPTK_WeakDevice;
 
-        /// <summary>
+        /// <summary>@brief 
         /// [Only when CorePlayer=False] Define a minimum release time at noteoff in 100 iem nanoseconds.\n
         /// Default 50 ms is a good tradeoff. Below some unpleasant sound could be heard. Useless when MPTK_CorePlayer is true.
         /// </summary>
@@ -839,7 +851,7 @@ namespace MidiPlayerTK
 
         //[Header("Events associated to the synth")]
         [HideInInspector]
-        /// <summary>
+        /// <summary>@brief 
         /// Unity event fired at awake of the synthesizer. Name of the gameobject component is passed as a parameter.\n
         /// Setting this callback function by script (AddListener) is not recommended. It's better to set callback function from the inspector.
         /// @image html SetOnEventSynth.png
@@ -857,7 +869,7 @@ namespace MidiPlayerTK
         public EventSynthClass OnEventSynthAwake;
 
         [HideInInspector]
-        /// <summary>
+        /// <summary>@brief 
         /// Unity event fired at start of the synthesizer. Name of the gameobject component is passed as a parameter.\n
         /// Setting this callback function by script (AddListener) is not recommended. It's better to set callback function from the inspector.
         /// @image html SetOnEventSynth.png
@@ -962,18 +974,20 @@ namespace MidiPlayerTK
 
 
             IdSynth = lastIdSynth++;
-            /*if (VerboseSynth)*/
-            //Debug.Log($"Awake MidiSynth IdSynth:{IdSynth}");
+            if (VerboseSynth)
+                Debug.Log($"Awake MidiSynth IdSynth:{IdSynth}");
             try
             {
                 if (OnEventSynthAwake != null)
                     OnEventSynthAwake.Invoke(this.name);
-                MidiPlayerGlobal.InitPath();
             }
             catch (System.Exception ex)
             {
-                MidiPlayerGlobal.ErrorDetail(ex);
+                Debug.LogError("OnEventSynthAwake: exception detected. Check the callback code");
+                Debug.LogException(ex);
             }
+
+            MidiPlayerGlobal.InitPath();
 
             // V2.83 Move these init from Start to Awake
             if (!MPTK_CorePlayer && AudiosourceTemplate == null)
@@ -1003,19 +1017,21 @@ namespace MidiPlayerTK
         {
             if (OnEventSynthAwake == null) OnEventSynthAwake = new EventSynthClass();
             if (OnEventSynthStarted == null) OnEventSynthStarted = new EventSynthClass();
-            
+
             left_buf = new float[FLUID_BUFSIZE];
             right_buf = new float[FLUID_BUFSIZE];
 
-            /* if (VerboseSynth) */
-            //Debug.Log($"Start MidiSynth IdSynth:{IdSynth}");
+            if (VerboseSynth)
+                Debug.Log($"Start MidiSynth IdSynth:{IdSynth}");
             try
             {
 #if MPTK_PRO
                 BuildSpatialSynth();
 #endif
-
-                Routine.RunCoroutine(ThreadLeanStartAudio(CoreAudioSource), Segment.FixedUpdate);
+                if (Application.isPlaying)
+                    Routine.RunCoroutine(ThreadLeanStartAudio(CoreAudioSource), Segment.FixedUpdate);
+                else
+                    Routine.RunCoroutine(ThreadLeanStartAudio(CoreAudioSource), Segment.EditorUpdate);
 
 #if CANT_CHANGE_AUDIO_CONFIG
                 // Get default value defined with Unity: Edit / Project Settings / Audio
@@ -1072,8 +1088,17 @@ namespace MidiPlayerTK
                 InitOboe();
 #endif
 
-                if (OnEventSynthStarted != null)
-                    OnEventSynthStarted.Invoke(this.name);
+                try
+                {
+                    if (OnEventSynthStarted != null)
+                        OnEventSynthStarted.Invoke(this.name);
+
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogError("OnEventSynthStarted: exception detected. Check the callback code");
+                    Debug.LogException(ex);
+                }
             }
             catch (System.Exception ex)
             {
@@ -1100,7 +1125,7 @@ namespace MidiPlayerTK
             yield return 0;
         }
 
-        /// <summary>
+        /// <summary>@brief 
         /// Get current audio configuration
         /// </summary>
         /// <param name="deviceWasChanged"></param>
@@ -1139,7 +1164,7 @@ namespace MidiPlayerTK
             }
         }
 
-        /// <summary>
+        /// <summary>@brief 
         /// Initialize the synthetizer: channel, voices, modulator.\n
         /// It's not usefull to call this method if you are using prefabs (MidiFilePlayer, MidiStreamPlayer, ...).\n
         /// Each gameObjects created from these prefabs have their own, autonomous and isolated synth.
@@ -1215,7 +1240,7 @@ namespace MidiPlayerTK
                 (int)fluid_mod_flags.FLUID_MOD_GC                                 /* CC=0 */
                 | (int)fluid_mod_flags.FLUID_MOD_SWITCH                           /* type=3 */
                 | (int)fluid_mod_flags.FLUID_MOD_UNIPOLAR                         /* P=0 */
-                                                                                  // do not remove       | FLUID_MOD_NEGATIVE                         /* D=1 */
+                // do not remove       | FLUID_MOD_NEGATIVE                         /* D=1 */
                 | (int)fluid_mod_flags.FLUID_MOD_POSITIVE                         /* D=0 */
             );
             fluid_mod_set_dest(default_vel2filter_mod, (int)fluid_gen_type.GEN_FILTERFC);        /* Target: Initial filter cutoff */
@@ -1347,7 +1372,7 @@ namespace MidiPlayerTK
             state = fluid_synth_status.FLUID_SYNTH_PLAYING;
         }
 
-        /// <summary>
+        /// <summary>@brief 
         /// Start the MIDI sequencer: each midi events are read and play in a dedicated thread.\n
         /// This thread is automatically started by prefabs MidiFilePlayer, MidiListPlayer, MidiExternalPlayer.
         /// </summary>
@@ -1364,7 +1389,7 @@ namespace MidiPlayerTK
             else if (VerboseSynth) Debug.LogFormat("MPTK_InitSequencerMidi: thread is already alive");
         }
 
-        /// <summary>
+        /// <summary>@brief 
         /// Stop processing samples by the synth and the MIDI sequencer.
         /// </summary>
         public void MPTK_StopSynth()
@@ -1372,7 +1397,7 @@ namespace MidiPlayerTK
             state = fluid_synth_status.FLUID_SYNTH_STOPPED;
         }
 
-        /// <summary>
+        /// <summary>@brief 
         /// Clear all sound by sending note off. \n
         /// That could take some seconds because release time for sample need to be played.
         /// @code
@@ -1384,7 +1409,10 @@ namespace MidiPlayerTK
         /// <param name="_idSession">clear only for sample playing with this session, -1 for all (default)</param>
         public void MPTK_ClearAllSound(bool destroyAudioSource = false, int _idSession = -1)
         {
-            Routine.RunCoroutine(ThreadClearAllSound(true), Segment.RealtimeUpdate);
+            if (Application.isPlaying)
+                Routine.RunCoroutine(ThreadClearAllSound(true), Segment.RealtimeUpdate);
+            else
+                Routine.RunCoroutine(ThreadClearAllSound(true), Segment.EditorUpdate);
         }
 
         public IEnumerator<float> ThreadClearAllSound(bool destroyAudioSource = false, int _idSession = -1)
@@ -1439,7 +1467,7 @@ namespace MidiPlayerTK
         }
 
 
-        /// <summary>
+        /// <summary>@brief 
         /// Wait until all notes are off.\n
         /// That could take some seconds due to the samples release time.\n
         /// Therefore, the method exit after a timeout of 3 seconds.\n
@@ -1614,7 +1642,7 @@ namespace MidiPlayerTK
 
         // @endcond
 
-        /// <summary>
+        /// <summary>@brief 
         /// Reset voices statistics 
         /// </summary>
         public void MPTK_ResetStat()
@@ -1688,7 +1716,7 @@ namespace MidiPlayerTK
             mod.Amount = amount;
         }
 
-        /// <summary>
+        /// <summary>@brief 
         /// Build an information string about the channel. It's also a good pretext to display an example of Channel API. \n
         /// Exemple of return 
         /// @li Channel:2	Enabled	[Preset:18, Bank:0]		'Rock Organ'			Count:1		Volume:1
@@ -1727,7 +1755,7 @@ namespace MidiPlayerTK
             return info;
         }
 
-        /// <summary>
+        /// <summary>@brief 
         /// Disable (mute) or enable (unmute) a MIDI channel.
         /// </summary>
         /// <param name="channel">must be between 0 and 15</param>
@@ -1738,7 +1766,7 @@ namespace MidiPlayerTK
                 MptkChannels[channel].enabled = enable;
         }
 
-        /// <summary>
+        /// <summary>@brief 
         /// Is channel is enabled or disabled.
         /// </summary>
         /// <param name="channel">channel, must be between 0 and 15</param>
@@ -1751,7 +1779,7 @@ namespace MidiPlayerTK
                 return false;
         }
 
-        /// <summary>
+        /// <summary>@brief 
         /// Get count of notes played since the start of the MIDI.
         /// </summary>
         /// <param name="channel">must be between 0 and 15</param>
@@ -1763,7 +1791,7 @@ namespace MidiPlayerTK
                 return 0;
         }
 
-        /// <summary>
+        /// <summary>@brief 
         /// Set the volume for a channel as a percentage. 
         /// </summary>
         /// <param name="channel">must be between 0 and 15 or -1 to apply to all channels</param>
@@ -1786,7 +1814,7 @@ namespace MidiPlayerTK
             }
         }
 
-        /// <summary>
+        /// <summary>@brief 
         /// Get the volume of the channel
         /// </summary>
         /// <param name="channel">must be between 0 and 15</param>
@@ -1799,7 +1827,7 @@ namespace MidiPlayerTK
                 return 0f;
         }
 
-        /// <summary>
+        /// <summary>@brief 
         /// Get channel preset index.
         /// </summary>
         /// <param name="channel">must be between 0 and 15</param>
@@ -1811,7 +1839,7 @@ namespace MidiPlayerTK
                 return -1;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Get the current bank associated to the channel.\n
         /// Each MIDI channel can play a different preset and bank.\n
         /// </summary>
@@ -1824,7 +1852,7 @@ namespace MidiPlayerTK
                 return -1;
         }
 
-        /// <summary>
+        /// <summary>@brief 
         /// Get the current preset name for the channel.\n
         /// Each MIDI channel can play a different preset.\n
         /// </summary>
@@ -1844,7 +1872,27 @@ namespace MidiPlayerTK
             }
         }
 
-        /// <summary>
+        /// <summary>@brief 
+        /// Get the current preset name for the channel.\n
+        /// Each MIDI channel can play a different preset.\n
+        /// </summary>
+        /// <param name="channel">MIDI channel must be between 0 and 15</param>
+        public int MPTK_ChannelControllerGet(int channel, int controller)
+        {
+            try
+            {
+                if (CheckParamChannel(channel) && controller >= 0 && controller <= 127)
+                    return Channels[channel].cc[controller];
+                return 0;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>@brief 
         /// Get channel length. The midi norm is 16, but MPTK can manage up to 32 channels (experimental).
         /// </summary>
         /// <param name="channel">must be between 0 and 15</param>
@@ -1879,7 +1927,7 @@ namespace MidiPlayerTK
             return true;
         }
 
-        /// <summary>
+        /// <summary>@brief 
         /// Set forced preset on the channel. MIDI will allways playing with this preset even if a MIDI Preset Change message is received.\n
         /// Set to -1 to disable this behavior.
         /// </summary>
@@ -1901,7 +1949,7 @@ namespace MidiPlayerTK
             }
             return -1;
         }
-        /// <summary>
+        /// <summary>@brief 
         /// Set a Preset on a channel to force the MIDI Synth to always playing with this instrument even if MIDI 'Preset Change' or 'Bank change' messages are received.\n
         /// Set Preset to -1 to restore the Preset and Bank defined in the MIDI file.
         /// </summary>
@@ -1948,7 +1996,8 @@ namespace MidiPlayerTK
         /// @endcode
         public bool MPTK_ChannelForcedPresetSet(int channel, int preset, int bank = -1)
         {
-            if (VerboseVoice) Debug.Log($"MPTK_ChannelForcedPresetSet Channel{channel} ForceTo:{preset} Last:{MptkChannels[channel].lastPreset} Bank:{bank}");
+            /*if (VerboseVoice)*/
+            Debug.Log($"MPTK_ChannelForcedPresetSet Channel{channel} ForceTo:{preset} Last:{MptkChannels[channel].lastPreset} Bank:{bank}");
 
             if (CheckParamChannel(channel))
             {
@@ -1995,7 +2044,7 @@ namespace MidiPlayerTK
             return false;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Change the Preset and/or Bank associated to a Channel.\n
         /// The new value of the bank or preset are registered in the channel even if the preset or bannk is not found.\n
         /// Each channel can have a different bank/preset set.\n
@@ -2045,7 +2094,7 @@ namespace MidiPlayerTK
 
         // @cond NODOC
 
-        /// <summary>
+        /// <summary>@brief 
         /// Allocate a synthesis voice. This function is called by a soundfont's preset in response to a noteon event.\n
         /// The returned voice comes with default modulators installed(velocity-to-attenuation, velocity to filter, ...)\n
         /// Note: A single noteon event may create any number of voices, when the preset is layered. Typically 1 (mono) or 2 (stereo).
@@ -2110,6 +2159,12 @@ namespace MidiPlayerTK
                         //if (MidiPlayerGlobal.MPTK_LoadWaveAtStartup)
                         {
                             voice.sample = DicAudioWave.GetWave(hiSample.Name);
+                            if (voice.sample == null)
+                            {
+                                MidiPlayerGlobal.LoadWave(hiSample);
+                                voice.sample = DicAudioWave.GetWave(hiSample.Name);
+                            }
+
                         }
                         //else - non, on ne peut pas utiliser AudioClip et Resources endehors du main thread d'unity
                         //{
@@ -2168,6 +2223,7 @@ namespace MidiPlayerTK
                     voice.VoiceAudio.transform.SetParent(AudiosourceTemplate.transform.parent);
                     voice.VoiceAudio.name = "VoiceAudioId_" + voice.IdVoice;
                     voice.VoiceAudio.Audiosource.clip = clip;
+                    //voice.VoiceAudio.Audiosource.loop
                     // seems to have no effect, issue open with Unity
                     voice.VoiceAudio.hideFlags = VerboseVoice ? HideFlags.None : HideFlags.HideInHierarchy;
                 }
@@ -2296,7 +2352,7 @@ namespace MidiPlayerTK
                 voice.fluid_voice_kill_excl();
             }
         }
-        /// <summary>
+        /// <summary>@brief 
         ///  Start a synthesis voice. This function is called by a soundfont's preset in response to a noteon event after the voice  has been allocated with fluid_synth_alloc_voice() and initialized.
         /// Exclusive classes are processed here.
         /// </summary>
@@ -2757,7 +2813,7 @@ namespace MidiPlayerTK
             Channels[chan].fluid_channel_cc(num, val);
         }
 
-        /// <summary>
+        /// <summary>@brief 
         /// tell all synthesis activ voices on this channel to update their synthesis parameters after a control change.
         /// </summary>
         /// <param name="chan"></param>
@@ -2773,7 +2829,7 @@ namespace MidiPlayerTK
             }
         }
 
-        /// <summary>
+        /// <summary>@brief 
         /// Tell all synthesis processes on this channel to update their synthesis parameters after an all control off message (i.e. all controller have been reset to their default value).
         /// </summary>
         /// <param name="chan"></param>
@@ -2836,7 +2892,7 @@ namespace MidiPlayerTK
             }
         }
 
-        /// <summary>
+        /// <summary>@brief 
         /// Play a list of MIDI events 
         /// </summary>
         /// <param name="midievents">List of MIDI events to play</param>
@@ -2859,7 +2915,7 @@ namespace MidiPlayerTK
         public int startNote;
         public int countNote;
 #endif
-        /// <summary>
+        /// <summary>@brief 
         /// Play one MIDI event
         /// @snippet MusicView.cs Example PlayNote
         /// </summary>
@@ -2885,7 +2941,7 @@ namespace MidiPlayerTK
             }
         }
 
-        /// <summary>
+        /// <summary>@brief 
         /// V2.86 Play immediately one MIDI event.\n
         /// Like MPTK_PlayEvent but take time to process the event before returning to the caller.
         /// @snippet MusicView.cs ExampleMPTK_PlayEvent
@@ -3380,7 +3436,7 @@ namespace MidiPlayerTK
             // Play notes read from the midi file
             if (midievents != null && midievents.Count > 0)
             {
-                //lock (this) // V2.83 - no there is already a lock around PlayMidi()
+                //lock (this) // V2.83 - there is already a lock around PlayMidi()
                 {
                     QueueMidiEvents.Enqueue(midievents);
                 }

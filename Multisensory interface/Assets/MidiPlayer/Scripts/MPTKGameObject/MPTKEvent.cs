@@ -7,30 +7,30 @@ using UnityEngine;
 
 namespace MidiPlayerTK
 {
-    /// <summary>
+    /// <summary>@brief
     /// MIDI command codes. Defined the action to be done with the message: note on/off, change instrument, ...\n
     /// Depending of the command selected, others properties must be set; Value, Channel, ...\n
     /// </summary>
     public enum MPTKCommand : byte
     {
-        /// <summary>
+        /// <summary>@brief
         /// Note Off\n
         /// Stop the note defined with the Value and the Channel\n
         /// MPTKEvent#Value contains the note to stop 60=C5.\n
-        /// MPTKEvent#Channel the midi channel between 0 and 16\n
+        /// MPTKEvent#Channel the midi channel between 0 and 15\n
         /// </summary>
         NoteOff = 0x80,
 
-        /// <summary>
+        /// <summary>@brief
         /// Note On.\n
         /// MPTKEvent#Value contains the note to play 60=C5.\n
         /// MPTKEvent#Duration the duration of the note in millisecond, -1 for infinite\n
-        /// MPTKEvent#Channel the midi channel between 0 and 16\n
+        /// MPTKEvent#Channel the midi channel between 0 and 15\n
         /// MPTKEvent#Velocity between 0 and 127\n
         /// </summary>
         NoteOn = 0x90,
 
-        /// <summary>
+        /// <summary>@brief
         /// Key After-touch\n
         /// \n
         /// \n
@@ -38,25 +38,25 @@ namespace MidiPlayerTK
         KeyAfterTouch = 0xA0,
 
 
-        /// <summary>
+        /// <summary>@brief
         /// Control change.\n
         /// MPTKEvent#Controller contains the controller to change. See #MPTKController (Modulation, Pan, Bank Select ...).\n
         /// MPTKEvent#Value contains the value of the controller between 0 and 127.
         /// </summary>
         ControlChange = 0xB0,
 
-        /// <summary>
+        /// <summary>@brief
         /// Patch change.\n
         /// MPTKEvent#Value contains patch/preset/instrument to select between 0 and 127. 
         /// </summary>
         PatchChange = 0xC0,
 
-        /// <summary>
+        /// <summary>@brief
         /// Channel after-touch\n
         /// </summary>
         ChannelAfterTouch = 0xD0,
 
-        /// <summary>
+        /// <summary>@brief
         /// Pitch wheel change\n
         /// MPTKEvent#Value contains the Pitch Wheel Value between 0 and 16383.\n
         /// Higher values transpose pitch up, and lower values transpose pitch down.\n
@@ -68,43 +68,43 @@ namespace MidiPlayerTK
         /// </summary>
         PitchWheelChange = 0xE0,
 
-        /// <summary>
+        /// <summary>@brief
         /// Sysex message\n
         /// </summary>
         Sysex = 0xF0,
 
-        /// <summary>
+        /// <summary>@brief
         /// Eox (comes at end of a sysex message)
         /// </summary>
         Eox = 0xF7,
 
-        /// <summary>
+        /// <summary>@brief
         /// Timing clock \n
         /// (used when synchronization is required)
         /// </summary>
         TimingClock = 0xF8,
 
-        /// <summary>
+        /// <summary>@brief
         /// Start sequence\n
         /// </summary>
         StartSequence = 0xFA,
 
-        /// <summary>
+        /// <summary>@brief
         /// Continue sequence\n
         /// </summary>
         ContinueSequence = 0xFB,
 
-        /// <summary>
+        /// <summary>@brief
         /// Stop sequence\n
         /// </summary>
         StopSequence = 0xFC,
 
-        /// <summary>
+        /// <summary>@brief
         /// Auto-Sensing\n
         /// </summary>
         AutoSensing = 0xFE,
 
-        /// <summary>
+        /// <summary>@brief
         /// Meta-event\n
         /// MPTKEvent#Meta defined the type of meta event. See #MPTKMeta (TextEvent, Lyric, TimeSignature, ...).\n
         /// @li    if MPTKEvent#Meta = SetTempo, MPTKEvent#Value contains new Microseconds Per Quarter Note and MPTKEvent#Duration contains new tempo (quarter per minute).
@@ -115,7 +115,7 @@ namespace MidiPlayerTK
         MetaEvent = 0xFF,
     }
 
-    /// <summary>
+    /// <summary>@brief
     /// Midi Controller list.\n
     /// Each MIDI CC operates at 7-bit resolution, meaning it has 128 possible values. The values start at 0 and go to 127.\n
     /// Some instruments can receive higher resolution data for their MIDI control assignments. These high res assignments are defined by combining two separate CCs,\n
@@ -125,31 +125,41 @@ namespace MidiPlayerTK
     /// </summary>
     public enum MPTKController : byte
     {
-        /// <summary>Bank Select (MSB)</summary>
+        /// <summary>@brief
+        /// Bank Select (MSB)
+        /// </summary>
         BankSelectMsb = 0,
 
-        /// <summary>Modulation (MSB)</summary>
+        /// <summary>@brief
+        /// Modulation (MSB)
+        /// </summary>
         Modulation = 1,
 
-        /// <summary>Breath Controller</summary>
+        /// <summary>@brief
+        /// Breath Controller
+        /// </summary>
         BreathController = 2,
 
-        /// <summary>Foot controller (MSB)</summary>
+        /// <summary>@brief
+        /// Foot controller (MSB)
+        /// </summary>
         FootController = 4,
 
         PORTAMENTO_TIME_MSB = 0x05,
 
         DATA_ENTRY_MSB = 6,
 
-        /// <summary>Channel volume (was MainVolume before v2.88.2</summary>
+        /// <summary>@brief
+        /// Channel volume (was MainVolume before v2.88.2
+        /// </summary>
         VOLUME_MSB = 7,
 
         BALANCE_MSB = 8,
 
-        /// <summary>Pan MSB</summary>
+        /// <summary>@brief Pan MSB</summary>
         Pan = 10, //0xA
 
-        /// <summary>Expression (EXPRESSION_MSB)</summary>
+        /// <summary>@brief Expression (EXPRESSION_MSB)</summary>
         Expression = 11, // 0xB
 
         EFFECTS1_MSB = 12, //0x0C,
@@ -160,7 +170,7 @@ namespace MidiPlayerTK
         GPC3_MSB = 18, //0x12,
         GPC4_MSB = 19, // 0x13,
 
-        /// <summary>Bank Select LSB *** not implemented ***\n
+        /// <summary>@brief Bank Select LSB *** not implemented ***\n
         /// MPTK bank style is FLUID_BANK_STYLE_GS (see fluidsynth), bank = CC0/MSB (CC32/LSB ignored)
         /// </summary>
         BankSelectLsb = 32, // 0x20
@@ -188,19 +198,19 @@ namespace MidiPlayerTK
         GPC3_LSB = 50, // 0x32,
         GPC4_LSB = 51, // 0x33,
 
-        /// <summary>Sustain (SUSTAIN_SWITCH)</summary>
+        /// <summary>@brief Sustain (SUSTAIN_SWITCH)</summary>
         Sustain = 64, // 0x40
 
-        /// <summary>Portamento On/Off (PORTAMENTO_SWITCH) </summary>
+        /// <summary>@brief Portamento On/Off (PORTAMENTO_SWITCH) </summary>
         Portamento = 65, // 0x41
 
-        /// <summary>Sostenuto On/Off (SOSTENUTO_SWITCH)</summary>
+        /// <summary>@brief Sostenuto On/Off (SOSTENUTO_SWITCH)</summary>
         Sostenuto = 66, // 0x42
 
-        /// <summary>Soft Pedal On/Off (SOFT_PEDAL_SWITCH)</summary>
+        /// <summary>@brief Soft Pedal On/Off (SOFT_PEDAL_SWITCH)</summary>
         SoftPedal = 67, // 0x43
 
-        /// <summary>Legato Footswitch (LEGATO_SWITCH)</summary>
+        /// <summary>@brief Legato Footswitch (LEGATO_SWITCH)</summary>
         LegatoFootswitch = 68, // 0x44
 
         HOLD2_SWITCH = 69, // 0x45,
@@ -232,39 +242,39 @@ namespace MidiPlayerTK
         DATA_ENTRY_INCR = 96, // 0x60,
         DATA_ENTRY_DECR = 97, // 0x61,
 
-        /// <summary>
+        /// <summary>@brief
         /// Non Registered Parameter Number LSB\n
         /// http://www.philrees.co.uk/nrpnq.htm
         /// </summary>
         NRPN_LSB = 98, // 0x62,
 
-        /// <summary>
+        /// <summary>@brief
         /// Non Registered Parameter Number MSB\n
         /// http://www.philrees.co.uk/nrpnq.htm
         /// </summary>
         NRPN_MSB = 99, // 0x63,
 
-        /// <summary>
+        /// <summary>@brief
         /// Registered Parameter Number LSB\n
         /// http://www.philrees.co.uk/nrpnq.htm
         /// </summary>
         RPN_LSB = 100, // 0x64,
 
-        /// <summary>
+        /// <summary>@brief
         /// Registered Parameter Number MSB\n
         /// http://www.philrees.co.uk/nrpnq.htm
         /// </summary>
         RPN_MSB = 101, // 0x65,
 
-        /// <summary>All sound off (ALL_SOUND_OFF)</summary>
+        /// <summary@brief >All sound off (ALL_SOUND_OFF)</summary>
         AllSoundOff = 120, // 0x78,
 
-        /// <summary>Reset all controllers (ALL_CTRL_OFF)</summary>
+        /// <summary>@brief Reset all controllers (ALL_CTRL_OFF)</summary>
         ResetAllControllers = 121, // 0x79
 
         LOCAL_CONTROL = 122, // 0x7A,
 
-        /// <summary>All notes off (ALL_NOTES_OFF)</summary>
+        /// <summary>@brief All notes off (ALL_NOTES_OFF)</summary>
         AllNotesOff = 123, // 0x7B
 
         OMNI_OFF = 124, // 0x7C,
@@ -274,7 +284,7 @@ namespace MidiPlayerTK
     }
 
 
-    /// <summary>
+    /// <summary>@brief
     /// General MIDI RPN event numbers (LSB, MSB = 0)
     /// The only confusing part of using parameter numbers, initially, is that there are two parts to using them.\n
     /// First you need to tell the synthesizer what parameter you want to change, then you need to tell it how to change the parameter. \n
@@ -287,7 +297,7 @@ namespace MidiPlayerTK
     /// </summary>
     public enum midi_rpn_event
     {
-        /// <summary>
+        /// <summary>@brief
         /// Change pitch bend sensitivity
         /// </summary>
         RPN_PITCH_BEND_RANGE = 0x00,
@@ -299,53 +309,54 @@ namespace MidiPlayerTK
         RPN_MODULATION_DEPTH_RANGE = 0x05
     }
 
-    /// <summary>
+    /// <summary>@brief
     /// MIDI MetaEvent Type
     /// </summary>
     public enum MPTKMeta : byte
     {
-        /// <summary>Track sequence number</summary>
+        /// <summary>@brief Track sequence number</summary>
         TrackSequenceNumber = 0x00,
-        /// <summary>Text event</summary>
+        /// <summary>@brief Text event</summary>
         TextEvent = 0x01,
-        /// <summary>Copyright</summary>
+        /// <summary>@brief Copyright</summary>
         Copyright = 0x02,
-        /// <summary>Sequence track name</summary>
+        /// <summary>@brief Sequence track name</summary>
         SequenceTrackName = 0x03,
-        /// <summary>Track instrument name</summary>
+        /// <summary>@brief Track instrument name</summary>
         TrackInstrumentName = 0x04,
-        /// <summary>Lyric</summary>
+        /// <summary>@brief Lyric</summary>
         Lyric = 0x05,
-        /// <summary>Marker</summary>
+        /// <summary>@brief Marker</summary>
         Marker = 0x06,
-        /// <summary>Cue point</summary>
+        /// <summary>@brief Cue point</summary>
         CuePoint = 0x07,
-        /// <summary>Program (patch) name</summary>
+        /// <summary>@brief Program (patch) name</summary>
         ProgramName = 0x08,
-        /// <summary>Device (port) name</summary>
+        /// <summary>@brief Device (port) name</summary>
         DeviceName = 0x09,
-        /// <summary>MIDI Channel (not official?)</summary>
+        /// <summary>@brief MIDI Channel (not official?)</summary>
         MidiChannel = 0x20,
-        /// <summary>MIDI Port (not official?)</summary>
+        /// <summary>@brief MIDI Port (not official?)</summary>
         MidiPort = 0x21,
-        /// <summary>End track</summary>
+        /// <summary>@brief End track</summary>
         EndTrack = 0x2F,
-        /// <summary>Set tempo</summary>
+        /// <summary>@brief Set tempo</summary>
         SetTempo = 0x51,
-        /// <summary>SMPTE offset</summary>
+        /// <summary>@brief MPTE offset</summary>
         SmpteOffset = 0x54,
-        /// <summary>Time signature (typo error, deprecated!) </summary>
+        /// <summary>@brief Time signature (typo error, deprecated!) </summary>
         TimeSignmature = 0x58,
-        /// <summary>Time signature</summary>
+        /// <summary>@brief Time signature</summary>
         TimeSignature = 0x58,
-        /// <summary>Key signature</summary>
+        /// <summary>@brief Key signature</summary>
         KeySignature = 0x59,
-        /// <summary>Sequencer specific</summary>
+        /// <summary>@brief Sequencer specific</summary>
         SequencerSpecific = 0x7F,
     }
 
     /// <summary>
-    /// Midi Event class for MPTK. This class is more simple to use that the standard Midi structure.\n
+    /// Description of a MIDI Event. The heart of MPTK! Essential to handling MIDI by script from all others classes as MidiStreamPlayer, MidiFilePlayer, MidiFileLoader, ...\n
+    /// 
     /// The main property is #Command, the content and role of other properties (as #Value) depend on the value of #Command. Look at the #Value property.\n
     /// With this class, you can: play and stop a note, change instrument (preset, patch, ...), change some control as modulation (Pro) ...\n
     /// Use this class in relation with these classes:
@@ -379,56 +390,62 @@ namespace MidiPlayerTK
             return this.MemberwiseClone();
         }
 
-        /// <summary>
-        /// Track index of the event in the midi. Track 0 is the first track 'MTrk' read from the midi file.
+        /// <summary>@brief
+        /// Track index of the event in the midi. \n
+        /// There is any impact on the music played. \n
+        /// It's just a cool way to regroup MIDI events in a ... track like in a sequencer.\n
+        /// Track 0 is the first track read from the midi file.
         /// </summary>
         public long Track;
 
-        /// <summary>
-        /// Time in Midi Tick (part of a Beat) of the Event since the start of playing the midi file. This time is independent of the Tempo or Speed. Not used for MidiStreamPlayer.
+        /// <summary>@brief
+        /// Time in Midi Tick (part of a Beat) of the Event since the start of playing the midi file.\n
+        /// This time is independent of the Tempo or Speed. Not used for MidiStreamPlayer nor MidiInReader.
         /// </summary>
         public long Tick;
 
-        /// <summary>
+        /// <summary>@brief
         /// Event Index in the midi list (defined only when Midi events are read from a Midi stream)
         /// </summary>
         public int Index;
 
-        /// <summary>
+        /// <summary>@brief
         /// V2.86 Time in System.DateTime when the Event is created or read from the Midi file.\n
-        /// Not to be confused with Tick properties which is a position inside a Midi file. Sure, the name of this properties was a bad idea, could be renamed in a future version ;-)
+        /// Not to be confused with Tick properties which is a position inside a Midi file.\n
+        /// Sure, the name of this properties was a bad idea, could be renamed in a future version ;-)
         /// Can be read from a system thread.
         /// </summary>
         public long TickTime;
 
-        /// <summary>
-        /// V2.88 Real time in milliseconds of this event from the start of the midi depending the tempo change.
+        /// <summary>@brief
+        /// V2.88 Real time in milliseconds of this event from the start of the midi depending the tempo change.\n
+        /// Not used for MidiStreamPlayer nor MidiInReader.
         /// </summary>
         public float RealTime;
 
-        /// <summary>
+        /// <summary>@brief
         /// Midi Command code. Defined the type of message. See #MPTKCommand (Note On, Control Change, Patch Change...)
         /// </summary>
         public MPTKCommand Command;
 
-        /// <summary>
+        /// <summary>@brief
         /// Controller code. When the #Command is ControlChange, contains the code fo the controller to change (Modulation, Pan, Bank Select ...).\n
         /// #Value properties will contains the value of the controller. See #MPTKController.
         /// </summary>
         public MPTKController Controller;
 
-        /// <summary>
+        /// <summary>@brief
         /// MetaEvent Code. When the #Command is MetaEvent, contains the code of the meta event (Lyric, TimeSignature, ...).\n
         /// Others properties will contains the value of the meta. See #MPTKMeta (TextEvent, Lyric, TimeSignature, ...).\n
         /// </summary>
         public MPTKMeta Meta;
 
-        /// <summary>
+        /// <summary>@brief
         /// Information hold by textual meta event when #Command = MetaEvent
         /// </summary>
         public string Info;
 
-        /// <summary>
+        /// <summary>@brief
         /// Contains a value in relation with the #Command.
         ///! <ul>
         ///! <li>#Command = NoteOn
@@ -466,17 +483,17 @@ namespace MidiPlayerTK
         /// </summary>
         public int Value;
 
-        /// <summary>
+        /// <summary>@brief
         /// Midi channel fom 0 to 15 (9 for drum)
         /// </summary>
         public int Channel;
 
-        /// <summary>
+        /// <summary>@brief
         /// Velocity between 0 and 127. Used only if #Command equal NoteOn.
         /// </summary>
         public int Velocity;
 
-        /// <summary>
+        /// <summary>@brief
         /// Contains a value in relation with the #Command.
         ///! <ul>
         ///! <li>Command = NoteOn
@@ -504,30 +521,37 @@ namespace MidiPlayerTK
         /// </summary>
         public long Duration;
 
+        public long durationTicks; // read only
+
         /// <summary>
+        /// Get duration of the event in ticks (length note in ticks). Read-only. Only available when reading a MIDI file. Added V 3.89.5.
+        /// </summary>
+        public long DurationTicks => durationTicks; 
+
+        /// <summary>@brief
         /// Short delay before playing the note in millisecond. New with V2.82, works only in Core mode.\n
         /// Apply only on NoteOn event.
         /// </summary>
         public long Delay;
 
-        /// <summary>
+        /// <summary>@brief
         /// Duration of the note in Midi Tick. MidiFilePlayer.MPTK_NoteLength can be used to convert this duration.\n
         /// Not used for MidiStreamPlayer, length is set only when reading a Midi file.
         /// https://en.wikipedia.org/wiki/Note_value
         /// </summary>
         public int Length;
 
-        /// <summary>
+        /// <summary>@brief
         /// Note length as https://en.wikipedia.org/wiki/Note_value
         /// </summary>
         public enum EnumLength { Whole, Half, Quarter, Eighth, Sixteenth }
 
-        /// <summary>
+        /// <summary>@brief
         /// Origin of the message. Midi ID if from Midi Input else zero. V2.83: rename source to Source et set public.
         /// </summary>
         public uint Source;
 
-        /// <summary>
+        /// <summary>@brief
         /// Associate an Id with this event.\n
         /// When reading a Midi file with MidiFilePlayer: this Id is unique for all Midi events played for this Midi.\n
         /// Consequently, when switching Midi, MPTK_ClearAllSound is able to clear (note-off) only the voices associated with this Midi file.\n
@@ -537,17 +561,17 @@ namespace MidiPlayerTK
         public int IdSession;
 
 
-        /// <summary>
+        /// <summary>@brief
         /// V2.87 Tag information for application purpose
         /// </summary>
         public object Tag;
 
-        /// <summary>
+        /// <summary>@brief
         /// List of voices associated to this Event for playing a NoteOn event.
         /// </summary>
         public List<fluid_voice> Voices;
 
-        /// <summary>
+        /// <summary>@brief
         /// Check if playing of this midi event is over (all voices are OFF)
         /// </summary>
         public bool IsOver
@@ -577,20 +601,20 @@ namespace MidiPlayerTK
             TickTime = DateTime.UtcNow.Ticks;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// V2.86 Delta time in system ticks (calculated with DateTime.UtcNow.Ticks) since the creation of this event.\n
         /// Mainly useful to evaluate MPTK latency. One system ticks equal 100 nano second.\n
         /// look for MidiSynth#StatSynthLatency, MidiSynth#StatSynthLatencyLAST, ....
         /// </summary>
         public long MPTK_DeltaTimeTick { get { return DateTime.UtcNow.Ticks - TickTime; } }
 
-        /// <summary>
+        /// <summary>@brief
         /// V2.86 Delta time in milliseconds since the creation of this event. Mainly useful to evaluate MPTK latency.\n
         /// Look for MidiSynth#StatSynthLatency, MidiSynth#StatSynthLatencyLAST, ....
         /// </summary>
         public long MPTK_DeltaTimeMillis { get { return MPTK_DeltaTimeTick / fluid_voice.Nano100ToMilli; } }
 
-        /// <summary>
+        /// <summary>@brief
         /// Create a MPTK Midi event from a midi input message
         /// </summary>
         /// <param name="data"></param>
@@ -643,7 +667,7 @@ namespace MidiPlayerTK
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Build a packet midi message from a MPTKEvent. Example:  0x00403C90 for a noton (90h, 3Ch note,  40h volume)
         /// </summary>
         /// <returns></returns>
@@ -681,7 +705,7 @@ namespace MidiPlayerTK
             return data;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Build a string description of the Midi event. V2.83 removes \n on each returns string
         /// </summary>
         /// <returns></returns>

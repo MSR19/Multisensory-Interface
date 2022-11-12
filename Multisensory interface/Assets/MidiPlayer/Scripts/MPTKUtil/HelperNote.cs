@@ -7,35 +7,23 @@ using UnityEngine;
 namespace MidiPlayerTK
 {
     /// <summary>
-    /// Class contains some static methods about notes helper.
+    /// Some useful methods to get the label of a note.
     /// </summary>
     public class HelperNoteLabel
     {
-
         public int Midi;
         public string Label;
         public bool Sharp = false;
-        //public float Ratio;
-        //public float Frequence;
 
         static List<HelperNoteLabel> ListNote;
         static List<HelperNoteLabel> ListEcart;
         static public float _ratioHalfTone = 0.0594630943592952645618252949463f;
 
-        //static public float RatioFromHauteur(int hauteur)
-        //{
-        //    int index = hauteur + 39;
-        //    if (index < 0 || index >= ListNote.Count)
-        //        return 1f;
-        //    else
-        //        return ListNote[index].Ratio;
-        //}
-
-            /// <summary>
-            /// Is this note is a sharp ?
-            /// </summary>
-            /// <param name="midi"></param>
-            /// <returns></returns>
+        /// <summary>@brief
+        /// Is this note is a sharp ?
+        /// </summary>
+        /// <param name="midi"></param>
+        /// <returns></returns>
         static public bool IsSharp(int midi)
         {
             try
@@ -53,7 +41,7 @@ namespace MidiPlayerTK
             return false;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Get the label of the note
         /// </summary>
         /// <param name="midi"></param>
@@ -75,7 +63,7 @@ namespace MidiPlayerTK
             return "xx";
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Get the label from a delta
         /// </summary>
         /// <param name="ecart"></param>
@@ -270,7 +258,7 @@ namespace MidiPlayerTK
         static public float _ratioHalfTone = 1.0594630943592952645618252949463f;
         static public float _rationCents = 1.0005777895f;
 
-        /// <summary>
+        /// <summary>@brief
         /// 
         /// </summary>
         /// <param name="delta">from -60 to 60</param>

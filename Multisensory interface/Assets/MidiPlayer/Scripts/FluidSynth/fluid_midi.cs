@@ -174,7 +174,7 @@ namespace MidiPlayerTK
     //    public byte channel;    /* MIDI channel */
     //    public int param1;      /* First parameter */
     //    public int param2;      /* Second parameter */
-    //    /// <summary>
+    //    /// <summary>@brief
     //    /// MPTK specific - Note duration in ms. Set to -1 to indefinitely
     //    /// </summary>
     //    public int Duration;

@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace MidiPlayerTK
 {
-    /// <summary>
+    /// <summary>@brief
     /// ImBank of an ImSoundFont
     /// </summary>
     public class ImBank

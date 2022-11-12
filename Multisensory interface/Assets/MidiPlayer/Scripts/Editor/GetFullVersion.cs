@@ -31,6 +31,8 @@ namespace MidiPlayerTK
                 float colWidth = 230;
                 float colHeight = 17;
 
+                MidiCommonEditor.LoadSkinAndStyle(false);
+
                 GUIStyle style16Bold = new GUIStyle("Label");
                 style16Bold.fontSize = 16;
                 style16Bold.fontStyle = FontStyle.Bold;

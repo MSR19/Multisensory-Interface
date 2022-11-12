@@ -6,13 +6,16 @@ namespace MidiPlayerTK
 {
     //using MonoProjectOptim;
     using UnityEditor;
+    using UnityEditor.Compilation;
     using UnityEngine;
 
-    /// <summary>
+    /// <summary>@brief
     /// Window editor for the setup of MPTK
     /// </summary>
-    public class MidiFileSetupWindow : EditorWindow
+    [ExecuteInEditMode, InitializeOnLoadAttribute]
+    public partial class MidiFileSetupWindow : EditorWindow
     {
+        private MidiEditorLib MidiPlayerEditor;
 
         private static MidiFileSetupWindow window;
 
@@ -26,179 +29,96 @@ namespace MidiPlayerTK
         static float titleHeight = 18; //label title above list
 
         static int itemHeight = 25;
-        static int buttonWidth = 150;
-        static int buttonShortWidth = 50;
-        static int buttonHeight = 18;
-        static float espace = 5;
+        const int BUTTON_WIDTH = 150;
+        const int BUTTON_SHORT_WIDTH = 50;
+        const int BUTTON_HEIGHT = 18;
+        const float ESPACE = 5;
 
         static float xpostitlebox = 2;
         static float ypostitlebox = 5;
 
-        static string midifile;
-
-        static GUIStyle styleWindow;
-        static GUIStyle stylePanel;
-        static GUIStyle styleBold;
-        static GUIStyle styleRed;
-        static GUIStyle styleRichText;
-        static GUIStyle styleRichTextBorder;
-        static GUIStyle styleLabelFontCourier;
-        static GUIStyle styleLabelLeft;
-        static GUIStyle styleLabelRight;
-        static GUIStyle styleLabelCenter;
-        static GUIStyle styleMiniButton;
-        static GUIStyle styleListTitle;
-        static GUIStyle styleListRow;
-        static GUIStyle styleListRowSelected;
-        static GUIStyle styleListLabel;
-        static GUIStyle styleToggle;
-
         static public CustomStyle myStyle;
-        static private List<string> infoEvents;
-        static public int PageToDisplay = 0;
-        const int MAXLINEPAGE = 100;
-        static bool withMeta = false, withNoteOn = false, withNoteOff = false, withPatchChange = false;
-        static bool withControlChange = false, withAfterTouch = false, withOthers = false;
 
-        static int IndexEditItem;
+        private bool autoPlay = false;
 
-        //private Texture buttonIconView;
-        private Texture buttonIconHelp;
-        private Texture buttonIconDelete;
+        List<MPTKGui.StyleItem> ColumnFiles;
+        private static Rect listMidiVisibleRect;
+
 
         // % (ctrl on Windows, cmd on macOS), # (shift), & (alt).
         [MenuItem("MPTK/Midi File Setup &M", false, 10)]
         public static void Init()
         {
             // Get existing open window or if none, make a new one:
-            try 
+            try
             {
-                window = GetWindow<MidiFileSetupWindow>(true, "Midi File Setup");
-                if (window == null) return;
-
-                //UnityEditor.Compilation.CompilationPipeline.assemblyCompilationStarted += (string s) =>
-                //{
-                //    Debug.Log($"CompilationPipeline_assemblyCompilationStarted {s}");
-                //    if (window != null)
-                //        window.Close(); 
-                //};
-                  
-                window.minSize = new Vector2(828, 400);
-
-                //Debug.Log($"Init {window.position} name:{window.name}" );
-
-                int borderSize = 1; // Border size in pixels
-                RectOffset rectBorder = new RectOffset(borderSize, borderSize, borderSize, borderSize);
-
-                if (EditorStyles.boldLabel == null) return;
-
-                styleBold = new GUIStyle(EditorStyles.boldLabel);
-                styleBold.fontStyle = FontStyle.Bold;
-                styleBold.alignment = TextAnchor.UpperLeft;
-                styleBold.normal.textColor = Color.black;
-
-                styleMiniButton = new GUIStyle(EditorStyles.miniButtonMid);
-                styleMiniButton.fixedWidth = 16;
-                styleMiniButton.fixedHeight = 16;
-
-                float gray1 = 0.5f;
-                float gray2 = 0.1f;
-                float gray3 = 0.7f;
-                float gray4 = 0.65f;
-                float gray5 = 0.5f;
-
-                styleWindow = new GUIStyle("box");
-                styleWindow.normal.background = ToolsEditor.MakeTex(10, 10, new Color(gray5, gray5, gray5, 1f), rectBorder, new Color(gray2, gray2, gray2, 1f));
-                styleWindow.alignment = TextAnchor.MiddleCenter;
-
-                stylePanel = new GUIStyle("box");
-                stylePanel.normal.background = ToolsEditor.MakeTex(10, 10, new Color(gray4, gray4, gray4, 1f), rectBorder, new Color(gray2, gray2, gray2, 1f));
-                stylePanel.alignment = TextAnchor.MiddleCenter;
-
-                styleListTitle = new GUIStyle("box");
-                styleListTitle.normal.background = ToolsEditor.MakeTex(10, 10, new Color(gray1, gray1, gray1, 1f), rectBorder, new Color(gray2, gray2, gray2, 1f));
-                styleListTitle.normal.textColor = Color.black;
-                styleListTitle.alignment = TextAnchor.MiddleCenter;
-
-                styleListRow = new GUIStyle("box");
-                styleListRow.normal.background = ToolsEditor.MakeTex(10, 10, new Color(gray3, gray3, gray3, 1f), rectBorder, new Color(gray2, gray2, gray2, 1f));
-                styleListRow.alignment = TextAnchor.MiddleCenter;
-
-                styleListRowSelected = new GUIStyle("box");
-                styleListRowSelected.normal.background = ToolsEditor.MakeTex(10, 10, new Color(.6f, .8f, .6f, 1f), rectBorder, new Color(gray2, gray2, gray2, 1f));
-                styleListRowSelected.alignment = TextAnchor.MiddleCenter;
-
-                styleListLabel = new GUIStyle("label");
-                styleListLabel.alignment = TextAnchor.UpperLeft;
-                styleListLabel.normal.textColor = Color.black;
-
-                styleToggle = new GUIStyle("toggle");
-                //styleToggle.normal.background = ToolsEditor.MakeTex(10, 10, new Color(gray1, gray1, gray1, 1f), rectBorder, new Color(gray2, gray2, gray2, 1f));
-                styleToggle.normal.textColor = Color.black;
-                styleToggle.hover.textColor = Color.black;
-                styleToggle.active.textColor = Color.black;
-                styleToggle.focused.textColor = Color.black;
-                //styleToggle.alignment = TextAnchor.MiddleCenter;
-
-                styleRed = new GUIStyle(EditorStyles.label);
-                styleRed.normal.textColor = new Color(188f / 255f, 56f / 255f, 56f / 255f);
-                //styleRed.fontStyle = FontStyle.Bold;
-
-                styleRichText = new GUIStyle(EditorStyles.label);
-                styleRichText.richText = true;
-                styleRichText.alignment = TextAnchor.UpperLeft;
-                styleRichText.normal.textColor = Color.black;
-
-                styleRichTextBorder = new GUIStyle(EditorStyles.label);
-                styleRichTextBorder.richText = true;
-                styleRichTextBorder.alignment = TextAnchor.MiddleLeft;
-                styleRichTextBorder.normal.textColor = Color.black;
-                styleRichTextBorder.normal.background = ToolsEditor.MakeTex(500, 600, new Color(gray5, gray5, gray5, 1f), rectBorder, new Color(gray2, gray2, gray2, 1f));
-
-                styleLabelRight = new GUIStyle(EditorStyles.label);
-                styleLabelRight.alignment = TextAnchor.MiddleRight;
-                styleLabelRight.normal.textColor = Color.black;
-
-                styleLabelCenter = new GUIStyle(EditorStyles.label);
-                styleLabelCenter.alignment = TextAnchor.MiddleCenter;
-                styleLabelCenter.normal.textColor = Color.black;
-
-                styleLabelLeft = new GUIStyle(EditorStyles.label);
-                styleLabelLeft.alignment = TextAnchor.MiddleLeft;
-                styleLabelLeft.normal.textColor = Color.black;
-
-                // Load and set Font
-                Font myFont = (Font)Resources.Load("Courier", typeof(Font));
-                styleLabelFontCourier = new GUIStyle(EditorStyles.label);
-                styleLabelFontCourier.font = myFont;
-                styleLabelFontCourier.alignment = TextAnchor.UpperLeft;
-                styleLabelFontCourier.normal.textColor = Color.black;
-                styleLabelFontCourier.hover.textColor = Color.black;
+                //if (window != null)
+                {
+                    //window = ScriptableObject.CreateInstance(typeof(MidiFileSetupWindow)) as MidiFileSetupWindow;
+                    window = GetWindow<MidiFileSetupWindow>(true, "Midi File Setup");
+                    if (window == null) return;
+                    window.minSize = new Vector2(828, 100);
+                    window.Show();
+                    window.titleContent = new GUIContent("Midi File Setup");
+                    //Debug.Log($"Init {window.position} name:{window.name}");
+                }
             }
             catch (Exception /*ex*/)
             {
                 //MidiPlayerGlobal.ErrorDetail(ex);
             }
         }
-           
+
+        private void Awake()
+        {
+            //Debug.Log($"Awake");
+            CompilationPipeline.compilationStarted += CompileStarted;
+            MidiPlayerEditor = new MidiEditorLib("MidiEditorPlayer");
+            IndexEditItem = -1;
+            InitPlayer();
+        }
+
+        private void CompileStarted(object obj)
+        {
+            // Don't appreciate recompilation when window is open
+            Close(); // call OnDestroy
+        }
 
         private void OnEnable()
         {
-            //buttonIconView = Resources.Load<Texture2D>("Textures/eye");
-            buttonIconDelete = Resources.Load<Texture2D>("Textures/Delete_32x32");
-            buttonIconHelp = Resources.Load<Texture2D>("Textures/question-mark");
+            //Debug.Log($"OnEnable");
+            EditorApplication.playModeStateChanged += LogPlayModeState;
+        }
+        private void LogPlayModeState(PlayModeStateChange state)
+        {
+            //Debug.Log(">>> LogPlayModeState MidiSequencerWindow" + state);
+            if (state == PlayModeStateChange.ExitingEditMode)
+            {
+                Close(); // call OnDestroy
+            }
+            //Debug.Log("<<< LogPlayModeState MidiSequencerWindow" + state);
         }
 
-        private void OnLostFocus()
+        //        private void OnLostFocus()
+        //        {
+        //#if UNITY_2017_1_OR_NEWER
+        //            // Trig an  error before v2017...
+        //            if (Application.isPlaying)
+        //            {
+        //                window.Close();
+        //            }
+        //#endif
+        //        }
+
+        void OnDestroy()
         {
-#if UNITY_2017_1_OR_NEWER
-            // Trig an  error before v2017...
-            if (Application.isPlaying)
-            {
-                window.Close();
-            }
-#endif
+            EditorApplication.playModeStateChanged -= LogPlayModeState;
+            if (MidiPlayerEditor != null) //strangely, this property can be null when window is close
+                MidiPlayerEditor.DestroyMidiObject();
+            //else
+            //    Debug.LogWarning("MidiPlayerEditor is null");
         }
+
         private void OnFocus()
         {
             // Load description of available soundfont
@@ -221,42 +141,46 @@ namespace MidiPlayerTK
         {
             try
             {
-                if (window == null) Init();
+                if (window == null)
+                {
+                    Init();
+                }
+                MidiCommonEditor.LoadSkinAndStyle();
                 float startx = 5;
                 float starty = 7;
                 //Log.Write("test");
 
                 //if (myStyle == null)                    myStyle = new CustomStyle();
-                GUI.Box(new Rect(0, 0, window.position.width, window.position.height), "", styleWindow);
+                GUI.Box(new Rect(0, 0, window.position.width, window.position.height), "", MidiCommonEditor.styleWindow);
 
                 GUIContent content = new GUIContent() { text = "Setup Midi files - Version " + ToolsEditor.version, tooltip = "" };
-                EditorGUI.LabelField(new Rect(startx, starty, 500, itemHeight), content, styleBold);
+                EditorGUI.LabelField(new Rect(startx, starty, 500, itemHeight), content, MidiCommonEditor.styleBold);
 
                 content = new GUIContent() { text = "Doc & Contact", tooltip = "Get some help" };
-                Rect rect = new Rect(window.position.size.x - buttonWidth - 5, starty, buttonWidth, buttonHeight);
+                Rect rect = new Rect(window.position.size.x - BUTTON_WIDTH - 5, starty, BUTTON_WIDTH, BUTTON_HEIGHT);
                 if (GUI.Button(rect, content))
                     PopupWindow.Show(rect, new AboutMPTK());
 
-                starty += buttonHeight + espace;
+                starty += BUTTON_HEIGHT + ESPACE;
 
-                widthRight = window.position.size.x - widthLeft - 2 * espace - startx;
-                heightList = window.position.size.y - 3 * espace - starty;
+                widthRight = window.position.size.x - widthLeft - 2 * ESPACE - startx;
+                heightList = window.position.size.y - 3 * ESPACE - starty;
 
                 ShowListMidiFiles(startx, starty, widthLeft, heightList);
-                ShowMidiAnalyse(startx + widthLeft + espace, starty, widthRight, heightList);
+                if (!autoPlay)
+                    ShowMidiAnalyse(startx + widthLeft + ESPACE, starty, widthRight, heightList);
+                else
+                    ShowMidiPlayer(startx + widthLeft + ESPACE, starty, widthRight, heightList);
 
             }
             catch (ExitGUIException) { }
             catch (Exception /*ex*/)
             {
-       //         MidiPlayerGlobal.ErrorDetail(ex);
+                //         MidiPlayerGlobal.ErrorDetail(ex);
             }
         }
 
-        ToolsEditor.DefineColumn[] columnSF;
-        private static Rect listMidiVisibleRect;
-
-        /// <summary>
+        /// <summary>@brief
         /// Display, add, remove Midi file
         /// </summary>
         /// <param name="startX"></param>
@@ -266,47 +190,62 @@ namespace MidiPlayerTK
             try
             {
                 Event e = Event.current;
-                if (e.type == EventType.KeyDown)
+                if (e.type == EventType.KeyDown && IndexEditItem >= 0)
                 {
                     //Debug.Log("Ev.KeyDown: " + e);
-                    if (e.keyCode == KeyCode.DownArrow || e.keyCode == KeyCode.UpArrow || e.keyCode == KeyCode.End || e.keyCode == KeyCode.Home)
+                    if (e.keyCode == KeyCode.Space || e.keyCode == KeyCode.DownArrow || e.keyCode == KeyCode.UpArrow || e.keyCode == KeyCode.End || e.keyCode == KeyCode.Home)
                     {
+                        int selected_index = IndexEditItem;
+                        if (e.keyCode == KeyCode.Space)
+                        {
+                            autoPlay = !autoPlay;
+                            if (!autoPlay)
+                                MidiPlayerEditor.MidiPlayer.MPTK_Stop();
+                            else
+                                PlayMidiFileSelected(IndexEditItem);
+                        }
                         if (e.keyCode == KeyCode.End)
-                            IndexEditItem = MidiPlayerGlobal.CurrentMidiSet.MidiFiles.Count - 1;
+                            selected_index = MidiPlayerGlobal.CurrentMidiSet.MidiFiles.Count - 1;
 
                         if (e.keyCode == KeyCode.Home)
-                            IndexEditItem = 0;
+                            selected_index = 0;
 
                         if (e.keyCode == KeyCode.DownArrow)
                         {
-                            IndexEditItem++;
-                            if (IndexEditItem >= MidiPlayerGlobal.CurrentMidiSet.MidiFiles.Count)
-                                IndexEditItem = 0;
+                            selected_index++;
+                            if (selected_index >= MidiPlayerGlobal.CurrentMidiSet.MidiFiles.Count)
+                                selected_index = 0;
                         }
 
                         if (e.keyCode == KeyCode.UpArrow)
                         {
-                            IndexEditItem--;
-                            if (IndexEditItem < 0)
-                                IndexEditItem = MidiPlayerGlobal.CurrentMidiSet.MidiFiles.Count - 1;
+                            selected_index--;
+                            if (selected_index < 0)
+                                selected_index = MidiPlayerGlobal.CurrentMidiSet.MidiFiles.Count - 1;
                         }
 
+                        if (selected_index != -1 && selected_index != IndexEditItem)
+                        {
+                            IndexEditItem = selected_index;
+                            if (autoPlay)
+                                PlayMidiFileSelected(IndexEditItem);
+                        }
                         SetMidiSelectedVisible();
                         ReadEvents();
                         GUI.changed = true;
                         Repaint();
                     }
                 }
-                if (columnSF == null)
+                if (ColumnFiles == null)
                 {
-                    columnSF = new ToolsEditor.DefineColumn[2];
-                    columnSF[0].Width = 60; columnSF[0].Caption = "Index"; columnSF[0].PositionCaption = 10f;
-                    columnSF[1].Width = 300; columnSF[1].Caption = "Midi Name"; columnSF[1].PositionCaption = 5f;
-                    //columnSF[2].Width = 70; columnSF[2].Caption = "Read"; columnSF[2].PositionCaption = 0f;
-                    //columnSF[3].Width = 60; columnSF[3].Caption = "Remove"; columnSF[3].PositionCaption = -9f;
+                    ColumnFiles = new List<MPTKGui.StyleItem>();
+                    ColumnFiles.Add(new MPTKGui.StyleItem() { Width = 60, Caption = "Index", Offset = 0f });
+                    ColumnFiles.Add(new MPTKGui.StyleItem() { Width = 406, Caption = "Midi Name", Offset = -1f });
+                    //ColumnFiles.Add(new ToolsGUI.DefineColumn() { Width = 70, Caption = "Read", PositionCaption = 0f });
+                    //ColumnFiles.Add(new ToolsGUI.DefineColumn() { Width = 60, Caption = "Remove", PositionCaption = -9f });
                 }
 
-                GUI.Box(new Rect(startX, startY, width, height), "", stylePanel);
+                GUI.Box(new Rect(startX, startY, width, height), "", MidiCommonEditor.stylePanel);
 
                 float localstartX = 0;
                 float localstartY = 0;
@@ -320,9 +259,9 @@ namespace MidiPlayerTK
 
                 localstartX += xpostitlebox;
                 localstartY += ypostitlebox;
-                GUI.Label(new Rect(startX + localstartX + 5, startY + localstartY, 160, titleHeight), content, styleBold);
+                GUI.Label(new Rect(startX + localstartX + 5, startY + localstartY, 160, titleHeight), content, MidiCommonEditor.styleBold);
 
-                string searchMidi = EditorGUI.TextField(new Rect(startX + localstartX + 5 + 170 + espace, startY + localstartY - 2, 225, titleHeight), "Search in list:");
+                string searchMidi = EditorGUI.TextField(new Rect(startX + localstartX + 5 + 110 + ESPACE, startY + localstartY - 2, 200, titleHeight), "Search in list:");
                 if (!string.IsNullOrEmpty(searchMidi))
                 {
                     int index = MidiPlayerGlobal.CurrentMidiSet.MidiFiles.FindIndex(s => s.ToLower().Contains(searchMidi.ToLower()));
@@ -334,32 +273,15 @@ namespace MidiPlayerTK
                     }
                 }
 
-                localstartY += titleHeight;
-
-                // Help at right
-                if (GUI.Button(new Rect(startX + localstartX + width - 65, startY + localstartY - 18, 35, 35), buttonIconHelp))
+                // Help
+                if (GUI.Button(new Rect(startX + localstartX + 5 + 110 + 300 + ESPACE, startY + localstartY - 2, 70, BUTTON_HEIGHT), MPTKGui.IconHelp))
                     Application.OpenURL("https://paxstellar.fr/setup-mptk-add-midi-files-v2/");
 
-                float btWidth = 100;
-                float posx = startX + localstartX + espace;
-                float posy = startY + localstartY;
-                if (GUI.Button(new Rect(posx, posy, btWidth, buttonHeight), "Add a Midi File"))
-                    AddMidifile();
-                posx += btWidth + espace;
-
-                btWidth = 120;
-                if (GUI.Button(new Rect(posx, posy, btWidth, buttonHeight), "Add From Folder"))
-                    AddMidiFromFolder();
-                posx += btWidth + espace;
-
-                btWidth = 100;
-                if (GUI.Button(new Rect(posx, posy, btWidth, buttonHeight), "Open Folder"))
-                    Application.OpenURL("file://" + PathToDBMidi());
-                posx += btWidth + 8 * espace;
+                localstartY += titleHeight;
 
                 // Bt remove
                 if (IndexEditItem >= 0 && IndexEditItem < MidiPlayerGlobal.CurrentMidiSet.MidiFiles.Count)
-                    if (GUI.Button(new Rect(posx, posy, 30, buttonHeight), new GUIContent(buttonIconDelete, $"Remove {MidiPlayerGlobal.CurrentMidiSet.MidiFiles[IndexEditItem]}")))
+                    if (GUI.Button(new Rect(startX + localstartX + width - 50, startY + localstartY - 1, 40, BUTTON_HEIGHT), new GUIContent(MPTKGui.IconDelete, $"Remove {MidiPlayerGlobal.CurrentMidiSet.MidiFiles[IndexEditItem]}")))
                     {
                         if (EditorUtility.DisplayDialog(
                             "Remove Midi File",
@@ -374,23 +296,55 @@ namespace MidiPlayerTK
                         }
                     }
 
-                localstartY += buttonHeight + espace;
+                float btWidth = 100;
+                float posx = startX + localstartX + ESPACE;
+                float posy = startY + localstartY;
+                if (GUI.Button(new Rect(posx, posy, btWidth, BUTTON_HEIGHT), "Add a Midi File"))
+                    AddMidifile();
+                posx += btWidth + ESPACE;
+
+                btWidth = 120;
+                if (GUI.Button(new Rect(posx, posy, btWidth, BUTTON_HEIGHT), "Add From Folder"))
+                    AddMidiFromFolder();
+                posx += btWidth + ESPACE;
+
+                btWidth = 100;
+                if (GUI.Button(new Rect(posx, posy, btWidth, BUTTON_HEIGHT), "Open Folder"))
+                    Application.OpenURL("file://" + PathToDBMidi());
+                posx += btWidth + ESPACE;
+
+                btWidth = 100;
+                bool togglePlay = GUI.Toggle(new Rect(posx, posy, btWidth, BUTTON_HEIGHT), autoPlay, "Midi Auto Play", MidiCommonEditor.styleToggle);
+                //Debug.Log(togglePlay);
+                if (togglePlay != autoPlay)
+                {
+                    autoPlay = togglePlay;
+
+                    if (!autoPlay)
+                        MidiPlayerEditor.MidiPlayer.MPTK_Stop();
+                    else
+                        PlayMidiFileSelected(IndexEditItem);
+                }
+                //posx += btWidth + 6 * espace;
+
+
+                localstartY += BUTTON_HEIGHT + ESPACE;
 
                 // Draw title list box
-                GUI.Box(new Rect(startX + localstartX + espace, startY + localstartY, width - 35, itemHeight), "", styleListTitle);
-                float boxX = startX + localstartX + espace;
-                foreach (ToolsEditor.DefineColumn column in columnSF)
+                GUI.Box(new Rect(startX + localstartX + ESPACE, startY + localstartY, width - 35, itemHeight), "", MidiCommonEditor.styleListTitle);
+                float boxX = startX + localstartX + ESPACE;
+                foreach (MPTKGui.StyleItem column in ColumnFiles)
                 {
-                    GUI.Label(new Rect(boxX + column.PositionCaption, startY + localstartY, column.Width, itemHeight), column.Caption, styleLabelLeft);
+                    GUI.Label(new Rect(boxX + column.Offset, startY + localstartY, column.Width, itemHeight), column.Caption, MidiCommonEditor.styleListTitle);
                     boxX += column.Width;
                 }
 
-                localstartY += itemHeight + espace;
+                localstartY += itemHeight + ESPACE;
 
                 if (MidiPlayerGlobal.CurrentMidiSet.MidiFiles != null)
                 {
                     listMidiVisibleRect = new Rect(startX + localstartX, startY + localstartY - 6, width - 10, height - localstartY);
-                    Rect listMidiContentRect = new Rect(0, 0, width - 25, MidiPlayerGlobal.CurrentMidiSet.MidiFiles.Count * itemHeight + 5);
+                    Rect listMidiContentRect = new Rect(0, 0, width - 35, MidiPlayerGlobal.CurrentMidiSet.MidiFiles.Count * itemHeight + 5);
 
                     scrollPosMidiFile = GUI.BeginScrollView(listMidiVisibleRect, scrollPosMidiFile, listMidiContentRect, false, true);
                     //Debug.Log($"scrollPosMidiFile:{scrollPosMidiFile.y} listVisibleRect:{listMidiVisibleRect.height} listContentRect:{listMidiContentRect.height}");
@@ -402,22 +356,25 @@ namespace MidiPlayerTK
                     {
                         boxX = 5;
 
-                        if (GUI.Button(new Rect(espace, boxY, width - 35, itemHeight), "", IndexEditItem == i ? styleListRowSelected : styleListRow))
+                        if (GUI.Button(new Rect(ESPACE, boxY, width - 35, itemHeight), MidiPlayerGlobal.CurrentMidiSet.MidiFiles[i], IndexEditItem == i ? MidiCommonEditor.styleListRowSelected : MidiCommonEditor.styleListRow))
                         {
                             IndexEditItem = i;
                             ReadEvents();
+                            if (autoPlay)
+                                PlayMidiFileSelected(IndexEditItem);
+
                         }
 
                         // col 0 - Index
-                        float colw = columnSF[0].Width;
-                        EditorGUI.LabelField(new Rect(boxX + 1, boxY + 2, colw, itemHeight - 5), i.ToString(), styleLabelCenter);
+                        float colw = ColumnFiles[0].Width;
+                        EditorGUI.LabelField(new Rect(boxX, boxY + 0, colw, itemHeight - 0), i.ToString(), MidiCommonEditor.styleListRowCenter);
                         boxX += colw;
 
                         // col 1 - Name
-                        colw = columnSF[1].Width;
-                        content = new GUIContent() { text = MidiPlayerGlobal.CurrentMidiSet.MidiFiles[i], tooltip = MidiPlayerGlobal.CurrentMidiSet.MidiFiles[i] };
-                        EditorGUI.LabelField(new Rect(boxX + 5, boxY + 2, colw, itemHeight - 5), content, styleLabelLeft);
-                        boxX += colw;
+                        //colw = columnSF[1].Width;
+                        //content = new GUIContent() { text = MidiPlayerGlobal.CurrentMidiSet.MidiFiles[i], tooltip = MidiPlayerGlobal.CurrentMidiSet.MidiFiles[i] };
+                        //EditorGUI.LabelField(new Rect(boxX + 5, boxY + 2, colw, itemHeight - 5), content, MidiCommonEditor.styleLabelLeft);
+                        //boxX += colw;
 
                         // col 2 - Select
                         //colw = columnSF[2].Width;
@@ -429,8 +386,8 @@ namespace MidiPlayerTK
                         //boxX += colw;
 
                         // col 3 - remove
-                        //colw = columnSF[3].Width;
-                        //if (GUI.Button(new Rect(boxX, boxY + 3, 30, buttonHeight), new GUIContent(buttonIconDelete, "Remove Midi File")))
+                        //colw = columnSF[2].Width;
+                        //if (GUI.Button(new Rect(boxX, boxY + 3, 30, itemHeight), EditorTools.IconDelete))
                         //{
                         //    DeleteResource(MidiLoad.BuildOSPath(MidiPlayerGlobal.CurrentMidiSet.MidiFiles[i]));
                         //    AssetDatabase.Refresh();
@@ -438,7 +395,7 @@ namespace MidiPlayerTK
                         //    ToolsEditor.CheckMidiSet();
                         //    AssetDatabase.Refresh();
                         //}
-                        //boxX += colw;
+                        boxX += colw;
 
                         boxY += itemHeight - 1;
                     }
@@ -451,191 +408,16 @@ namespace MidiPlayerTK
             }
         }
 
-        /// <summary>
-        /// Display analyse of midifile
-        /// </summary>
-        /// <param name="startX"></param>
-        /// <param name="startY"></param>
-        private void ShowMidiAnalyse(float startX, float startY, float width, float height)
-        {
-            try
-            {
-                GUI.Box(new Rect(startX, startY, width, height), "", stylePanel);
-
-                if (infoEvents != null && infoEvents.Count > 0)
-                {
-                    float posx = startX + espace;
-                    float posy = startY + espace;
-                    int toggleLargeWidth = 70;
-                    int toggleSmallWidth = 55;
-
-                    if (GUI.Button(new Rect(posx, posy, buttonShortWidth, buttonHeight), "All"))
-                    {
-                        withMeta = withNoteOn = withNoteOff = withControlChange = withPatchChange = withAfterTouch = withOthers = true;
-                        ReadEvents();
-                    }
-                    posx += buttonShortWidth + espace;
-
-                    if (GUI.Button(new Rect(posx, posy, buttonShortWidth, buttonHeight), "None"))
-                    {
-                        withMeta = withNoteOn = withNoteOff = withControlChange = withPatchChange = withAfterTouch = withOthers = false;
-                        ReadEvents();
-                    }
-                    posx += buttonShortWidth + espace;
-
-                    bool filter = GUI.Toggle(new Rect(posx, posy, toggleSmallWidth, buttonHeight), withMeta, "Meta", styleToggle);
-                    if (filter != withMeta)
-                    {
-                        withMeta = filter;
-                        ReadEvents();
-                    }
-
-                    posx += toggleSmallWidth + espace;
-
-                    filter = GUI.Toggle(new Rect(posx, posy, toggleLargeWidth, buttonHeight), withNoteOn, "Note On", styleToggle);
-                    if (filter != withNoteOn)
-                    {
-                        withNoteOn = filter;
-                        ReadEvents();
-                    }
-                    posx += toggleLargeWidth + espace;
-
-                    filter = GUI.Toggle(new Rect(posx, posy, toggleLargeWidth, buttonHeight), withNoteOff, "Note Off", styleToggle);
-                    if (filter != withNoteOff)
-                    {
-                        withNoteOff = filter;
-                        ReadEvents();
-                    }
-                    posx += toggleLargeWidth + espace;
-
-                    filter = GUI.Toggle(new Rect(posx, posy, toggleLargeWidth, buttonHeight), withControlChange, "Control", styleToggle);
-                    if (filter != withControlChange)
-                    {
-                        withControlChange = filter;
-                        ReadEvents();
-                    }
-                    posx += toggleLargeWidth + espace;
-
-                    filter = GUI.Toggle(new Rect(posx, posy, toggleSmallWidth, buttonHeight), withPatchChange, "Patch", styleToggle);
-                    if (filter != withPatchChange)
-                    {
-                        withPatchChange = filter;
-                        ReadEvents();
-                    }
-                    posx += toggleSmallWidth + espace;
-
-                    filter = GUI.Toggle(new Rect(posx, posy, toggleSmallWidth, buttonHeight), withAfterTouch, "Touch", styleToggle);
-                    if (filter != withAfterTouch)
-                    {
-                        withAfterTouch = filter;
-                        ReadEvents();
-                    }
-                    posx += toggleSmallWidth + espace;
-
-                    filter = GUI.Toggle(new Rect(posx, posy, toggleSmallWidth, buttonHeight), withOthers, "Others", styleToggle);
-                    if (filter != withOthers)
-                    {
-                        withOthers = filter;
-                        ReadEvents();
-                    }
-                    posx += toggleSmallWidth + espace;
-
-                    if (PageToDisplay < 0) PageToDisplay = 0;
-                    if (PageToDisplay * MAXLINEPAGE > infoEvents.Count) PageToDisplay = infoEvents.Count / MAXLINEPAGE;
-
-                    string infoToDisplay = "";
-                    for (int i = PageToDisplay * MAXLINEPAGE; i < (PageToDisplay + 1) * MAXLINEPAGE; i++)
-                        if (i < infoEvents.Count)
-                        {
-                            if (i < 11)
-                                // The ten first lines are global info on the midi, not events
-                                infoToDisplay += infoEvents[i] + "\n";
-                            else
-                                infoToDisplay += /*(i - 10).ToString() + " " +*/ infoEvents[i] + "\n";
-                        }
-
-                    infoToDisplay += "\nI: Event Index\n";
-                    infoToDisplay += "A: Absolute time in ticks\n";
-                    infoToDisplay += "D: Delta time in ticks from the last event\n";
-                    infoToDisplay += "R: Real time in seconds of the event with tempo change taken into account\n";
-                    infoToDisplay += "T: MIDI Track of this event\n";
-                    infoToDisplay += "C: MIDI Channel of this event\n";
-
-                    posx = startX + espace;
-                    posy = startY + espace + buttonHeight + espace;
-
-                    if (GUI.Button(new Rect(posx, posy, buttonShortWidth, buttonHeight), "<<")) PageToDisplay = 0;
-
-                    posx += buttonShortWidth + espace;
-                    if (GUI.Button(new Rect(posx, posy, buttonShortWidth, buttonHeight), "<")) PageToDisplay--;
-
-                    posx += buttonShortWidth + espace;
-                    GUI.Label(new Rect(posx, posy, buttonWidth / 2, buttonHeight),
-                        "Page " + (PageToDisplay + 1).ToString() + " / " + (infoEvents.Count / MAXLINEPAGE + 1).ToString(), styleLabelLeft);
-
-                    posx += buttonWidth / 2 + espace;
-                    if (GUI.Button(new Rect(posx, posy, buttonShortWidth, buttonHeight), ">")) PageToDisplay++;
-
-                    posx += buttonShortWidth + espace;
-                    if (GUI.Button(new Rect(posx, posy, buttonShortWidth, buttonHeight), ">>")) PageToDisplay = infoEvents.Count / MAXLINEPAGE;
-
-                    float wList = widthRight - 6 * espace;
-                    Rect listVisibleRect = new Rect(
-                        startX + espace,
-                        startY + 2 * buttonHeight + 3 * espace,
-                        wList + 4 * espace,
-                        heightList - 2 * buttonHeight - 4 * espace);
-
-                    Rect listContentRect = new Rect(
-                        0,
-                        0,
-                        wList,
-                        MAXLINEPAGE * styleRichTextBorder.lineHeight + espace);
-
-                    Rect fondRect = new Rect(
-                        startX + espace,
-                        startY + 2 * buttonHeight + 3 * espace,
-                        wList - 0 * espace,
-                        heightList - 2 * buttonHeight - 4 * espace);
-
-                    GUI.Box(fondRect, "", stylePanel);
-
-                    scrollPosAnalyze = GUI.BeginScrollView(listVisibleRect, scrollPosAnalyze, listContentRect);
-                    GUI.Box(listContentRect, infoToDisplay, styleLabelFontCourier);
-
-                    GUI.EndScrollView();
-                }
-                else
-                {
-                    GUIContent content = new GUIContent() { text = "No Midi file analysed", tooltip = "" };
-                    EditorGUI.LabelField(new Rect(startX + xpostitlebox, startY + ypostitlebox, 300, itemHeight), content, styleBold);
-                }
-            }
-            catch (Exception ex)
-            {
-                MidiPlayerGlobal.ErrorDetail(ex);
-            }
-        }
-
-        static private void ReadEvents()
-        {
-            midifile = MidiPlayerGlobal.CurrentMidiSet.MidiFiles[IndexEditItem];
-            infoEvents = MidiScan.GeneralInfo(midifile, withNoteOn, withNoteOff, withControlChange, withPatchChange, withAfterTouch, withMeta, withOthers);
-            infoEvents.Insert(0, "Open midi file: " + midifile);
-            infoEvents.Insert(0, "DB Midi index: " + IndexEditItem);
-            PageToDisplay = 0;
-            scrollPosAnalyze = Vector2.zero;
-        }
-
-
-        /// <summary>
+        /// <summary>@brief
         /// Add a new Midi file from desktop
         /// </summary>
         private static void AddMidifile()
         {
             try
             {
-                string selectedFile = EditorUtility.OpenFilePanelWithFilters("Open and import Midi file", ToolsEditor.lastDirectoryMidi, new string[] { "Midi files", "mid,midi", "Karoke files", "kar", "All", "*" });
+                string selectedFile = EditorUtility.OpenFilePanelWithFilters(
+                    "Open and import Midi file", ToolsEditor.lastDirectoryMidi,
+                    new string[] { "Midi files", "mid,midi", "Karoke files", "kar", "All", "*" });
                 if (!string.IsNullOrEmpty(selectedFile))
                 {
                     // selectedFile contins also the folder 
@@ -655,7 +437,7 @@ namespace MidiPlayerTK
         }
 
 
-        /// <summary>
+        /// <summary>@brief
         /// Add Midi files from a folder
         /// </summary>
         private static void AddMidiFromFolder()
@@ -701,7 +483,16 @@ namespace MidiPlayerTK
             try
             {
                 midifile = new MidiLoad();
-                if (!midifile.MPTK_LoadFile(selectedFile))
+
+                bool ok = true;
+                using (Stream sfFile = new FileStream(selectedFile, FileMode.Open, FileAccess.Read))
+                {
+                    byte[] data = new byte[sfFile.Length];
+                    sfFile.Read(data, 0, (int)sfFile.Length);
+                    ok = midifile.MPTK_Load(data, false);
+                }
+
+                if (!ok)
                 {
                     EditorUtility.DisplayDialog("Midi Not Loaded", "Try to open " + selectedFile + "\nbut this file seems not a valid midi file", "ok");
                     return;
@@ -756,8 +547,12 @@ namespace MidiPlayerTK
         {
             if (MidiPlayerGlobal.CurrentMidiSet.MidiFiles.Count > 0)
             {
-                float contentHeight = MidiPlayerGlobal.CurrentMidiSet.MidiFiles.Count * itemHeight;
-                scrollPosMidiFile.y = contentHeight * ((float)IndexEditItem / (float)MidiPlayerGlobal.CurrentMidiSet.MidiFiles.Count) - listMidiVisibleRect.height / 2f;
+                if (IndexEditItem >= 0 && IndexEditItem < MidiPlayerGlobal.CurrentMidiSet.MidiFiles.Count)
+                {
+                    float contentHeight = MidiPlayerGlobal.CurrentMidiSet.MidiFiles.Count * itemHeight;
+                    scrollPosMidiFile.y = contentHeight *
+                        ((float)IndexEditItem / (float)MidiPlayerGlobal.CurrentMidiSet.MidiFiles.Count) - listMidiVisibleRect.height / 2f;
+                }
             }
         }
 

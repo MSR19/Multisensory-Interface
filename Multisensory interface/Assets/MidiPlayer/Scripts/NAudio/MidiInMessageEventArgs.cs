@@ -2,12 +2,12 @@ using System;
 
 namespace MPTK.NAudio.Midi
 {
-    /// <summary>
+    /// <summary>@brief
     /// MIDI In Message Information
     /// </summary>
     public class MidiInMessageEventArgs : EventArgs
     {
-        /// <summary>
+        /// <summary>@brief
         /// Create a new MIDI In Message EventArgs
         /// </summary>
         /// <param name="message"></param>
@@ -26,17 +26,17 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// The Raw message received from the MIDI In API
         /// </summary>
         public int RawMessage { get; private set; }
 
-        /// <summary>
+        /// <summary>@brief
         /// The raw message interpreted as a MidiEvent
         /// </summary>
         public MidiEvent MidiEvent { get; private set; }
 
-        /// <summary>
+        /// <summary>@brief
         /// The timestamp in milliseconds for this message
         /// </summary>
         public int Timestamp { get; private set; }

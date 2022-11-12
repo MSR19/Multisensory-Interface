@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace MPTK.NAudio.Midi
 {
-    /// <summary>
+    /// <summary>@brief
     /// Class able to read a MIDI file
     /// </summary>
     public class MidiFile
@@ -18,7 +18,7 @@ namespace MPTK.NAudio.Midi
         private ushort deltaTicksPerQuarterNote;
         private bool strictChecking;
 
-        /// <summary>
+        /// <summary>@brief
         /// MIDI File format
         /// </summary>
         public int FileFormat
@@ -27,7 +27,7 @@ namespace MPTK.NAudio.Midi
         }
 
         // TBN Change
-        /// <summary>
+        /// <summary>@brief
         /// Opens a MIDI file for creating from a MidiEventCollection
         /// </summary>
         /// <param name="filename">Name of MIDI file</param>
@@ -39,7 +39,7 @@ namespace MPTK.NAudio.Midi
 
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Opens a MIDI file for reading
         /// </summary>
         /// <param name="filename">Name of MIDI file</param>
@@ -48,7 +48,7 @@ namespace MPTK.NAudio.Midi
         {
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Opens a MIDI file for reading
         /// </summary>
         /// <param name="filename">Name of MIDI file</param>
@@ -66,7 +66,7 @@ namespace MPTK.NAudio.Midi
 
 
 
-        /// <summary>
+        /// <summary>@brief
         /// Opens a MIDI file for reading from an array of bytes
         /// </summary>
         /// <param name="bytes">contains with midi data</param>
@@ -187,7 +187,7 @@ namespace MPTK.NAudio.Midi
         }
 
 
-        /// <summary>
+        /// <summary>@brief
         /// The collection of events in this MIDI file
         /// </summary>
         public MidiEventCollection Events
@@ -195,7 +195,7 @@ namespace MPTK.NAudio.Midi
             get { return events; }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Number of tracks in this MIDI file
         /// </summary>
         public int Tracks
@@ -203,7 +203,7 @@ namespace MPTK.NAudio.Midi
             get { return events.Tracks; }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Delta Ticks Per Quarter Note
         /// </summary>
         public int DeltaTicksPerQuarterNote
@@ -243,7 +243,7 @@ namespace MPTK.NAudio.Midi
             return (ushort)(((i & 0xFF00) >> 8) | ((i & 0x00FF) << 8));
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Describes the MIDI file
         /// </summary>
         /// <returns>A string describing the MIDI file and its events</returns>
@@ -262,7 +262,7 @@ namespace MPTK.NAudio.Midi
             return sb.ToString();
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Exports a MIDI file
         /// </summary>
         /// <param name="filename">Filename to export to</param>

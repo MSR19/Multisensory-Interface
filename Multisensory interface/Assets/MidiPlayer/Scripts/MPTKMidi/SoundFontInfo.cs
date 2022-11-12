@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace MidiPlayerTK
 {
-    /// <summary>
+    /// <summary>@brief
     /// Define parameter and information for the SF to avoid loading all a SF 
     /// </summary>
     public class SoundFontInfo
@@ -20,7 +20,7 @@ namespace MidiPlayerTK
         public long WaveSize;
         //public int xDefaultBankNumber;
         //public int xDrumKitBankNumber;
-        /// <summary>
+        /// <summary>@brief
         /// Path + Filename to the original SF2 files.  
         /// SF2 are stored here : Application.persistentDataPath + MidiPlayerGlobal.PathSF2
         /// </summary>

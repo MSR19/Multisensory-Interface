@@ -1,7 +1,7 @@
 using UnityEngine;
 namespace MidiPlayerTK
 {
-    /// <summary>
+    /// <summary>@brief
     /// Used in TestMidiFilePlayerMulti demo. Useful to draw gizmos to debug camera path (no interest directly for MPTK)
     /// </summary>
     public class LookTarget : MonoBehaviour

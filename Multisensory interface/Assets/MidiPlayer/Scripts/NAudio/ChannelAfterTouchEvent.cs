@@ -3,14 +3,14 @@ using System.IO;
 
 namespace MPTK.NAudio.Midi
 {
-    /// <summary>
+    /// <summary>@brief
     /// Represents a MIDI Channel AfterTouch Event.
     /// </summary>
     public class ChannelAfterTouchEvent : MidiEvent
     {
         private byte afterTouchPressure;
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a new ChannelAfterTouchEvent from raw MIDI data
         /// </summary>
         /// <param name="br">A binary reader</param>
@@ -24,7 +24,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a new Channel After-Touch Event
         /// </summary>
         /// <param name="absoluteTime">Absolute time</param>
@@ -36,7 +36,7 @@ namespace MPTK.NAudio.Midi
             AfterTouchPressure = afterTouchPressure;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Calls base class export first, then exports the data 
         /// specific to this event
         /// <seealso cref="MidiEvent.Export">MidiEvent.Export</seealso>
@@ -47,7 +47,7 @@ namespace MPTK.NAudio.Midi
             writer.Write(afterTouchPressure);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// The aftertouch pressure value
         /// </summary>
         public int AfterTouchPressure

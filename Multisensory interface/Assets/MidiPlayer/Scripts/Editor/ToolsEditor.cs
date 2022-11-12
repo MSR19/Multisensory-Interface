@@ -45,7 +45,6 @@ namespace MidiPlayerTK
 
     public class ToolsEditor
     {
-        public static Color ButtonColor = new Color(.7f, .9f, .7f, 1f);
         public static string lastDirectoryMidi = "";
         public static string forumSite = "https://forum.unity.com/threads/midi-player-tool-kit-good-news-for-your-rhythm-game.526741/";
         public static string paxSite = "https://www.paxstellar.com";
@@ -55,62 +54,13 @@ namespace MidiPlayerTK
         public static string DiscordSite = "https://discord.gg/NhjXPTdeWk";
 
 #if MPTK_PRO
-        public static string version = "2.89.1 Pro";
+        public static string version = "2.89.5 Pro";
 #else
-        public static string version = "2.89.1 Free"; 
+        public static string version = "2.89.5 Free"; 
 #endif
-        public static string releaseDate = "September, 19 2021";
+        public static string releaseDate = "September, 24 2022";
 
-        public struct DefineColumn
-        {
-            public float Width;
-            public float PositionCaption;
-            public string Caption;
-        }
-
-        public static Texture2D SetColor(Texture2D tex2, Color32 color)
-        {
-            var fillColorArray = tex2.GetPixels32();
-            for (var i = 0; i < fillColorArray.Length; ++i)
-                fillColorArray[i] = color;
-            tex2.SetPixels32(fillColorArray);
-            tex2.Apply();
-            return tex2;
-        }
-
-        public static Texture2D MakeTex(int width, int height, Color textureColor, RectOffset border, Color bordercolor)
-        {
-            int widthInner = width;
-            width += border.left;
-            width += border.right;
-
-            Color[] pix = new Color[width * (height + border.top + border.bottom)];
-
-            for (int i = 0; i < pix.Length; i++)
-            {
-                if (i < (border.bottom * width))
-                    pix[i] = bordercolor;
-                else if (i >= ((border.bottom * width) + (height * width)))  //Border Top
-                    pix[i] = bordercolor;
-                else
-                { //Center of Texture
-
-                    if ((i % width) < border.left) // Border left
-                        pix[i] = bordercolor;
-                    else if ((i % width) >= (border.left + widthInner)) //Border right
-                        pix[i] = bordercolor;
-                    else
-                        pix[i] = textureColor;    //Color texture
-                }
-            }
-
-            Texture2D result = new Texture2D(width, height + border.top + border.bottom);
-            result.SetPixels(pix);
-            result.Apply();
-            return result;
-        }
-
-        /// <summary>
+        /// <summary>@brief
         /// Update list SoundFont and Midi
         /// </summary>
         public static void CheckMidiSet()
@@ -127,52 +77,51 @@ namespace MidiPlayerTK
             {
                 string folder = System.IO.Path.Combine(Application.dataPath + "/", MidiPlayerGlobal.PathToSoundfonts);
                 //Debug.Log($"CheckMidiSet {MidiPlayerGlobal.PathToSoundfonts}");
-                if (System.IO.Directory.Exists(folder))
+                if (!Directory.Exists(folder))
+                    Directory.CreateDirectory(folder);
+
+                bool tobesaved = false;
+                string[] fileEntries = System.IO.Directory.GetFiles(folder, "*" + MidiPlayerGlobal.ExtensionSoundFileDot, System.IO.SearchOption.AllDirectories);
+
+                // Check if sf has been removed by user in resource
+                int isf = 0;
+                while (isf < MidiPlayerGlobal.CurrentMidiSet.SoundFonts.Count)
                 {
-                    bool tobesaved = false;
-                    string[] fileEntries = System.IO.Directory.GetFiles(folder, "*" + MidiPlayerGlobal.ExtensionSoundFileDot, System.IO.SearchOption.AllDirectories);
-
-                    // Check if sf has been removed by user in resource
-                    int isf = 0;
-                    while (isf < MidiPlayerGlobal.CurrentMidiSet.SoundFonts.Count)
+                    bool found = false;
+                    foreach (string filepath in fileEntries)
                     {
-                        bool found = false;
-                        foreach (string filepath in fileEntries)
-                        {
-                            string filename = System.IO.Path.GetFileNameWithoutExtension(filepath);
-                            if (filename == MidiPlayerGlobal.CurrentMidiSet.SoundFonts[isf].Name)
-                                found = true;
-                        }
-                        if (!found)
-                        {
-                            MidiPlayerGlobal.CurrentMidiSet.SoundFonts.RemoveAt(isf);
-                            tobesaved = true;
-                        }
-                        else
-                            isf++;
+                        string filename = System.IO.Path.GetFileNameWithoutExtension(filepath);
+                        if (filename == MidiPlayerGlobal.CurrentMidiSet.SoundFonts[isf].Name)
+                            found = true;
                     }
-
-                    // Active sound font exists in midiset ?
-                    if (MidiPlayerGlobal.CurrentMidiSet != null && MidiPlayerGlobal.ImSFCurrent != null)
+                    if (!found)
                     {
-                        if (MidiPlayerGlobal.CurrentMidiSet.SoundFonts != null && MidiPlayerGlobal.CurrentMidiSet.SoundFonts.Find(s => s.Name == MidiPlayerGlobal.ImSFCurrent.SoundFontName) == null)
-                        {
-                            // no the current SF has been remove from resource, define first SF  as active or nothing if no SF exists
-                            if (MidiPlayerGlobal.CurrentMidiSet.SoundFonts.Count >= 0)
-                            {
-                                MidiPlayerGlobal.CurrentMidiSet.SetActiveSoundFont(0);
-                                MidiPlayerGlobal.LoadCurrentSF();
-                                //LoadImSF();
-                            }
-                            else
-                                MidiPlayerGlobal.CurrentMidiSet.SetActiveSoundFont(-1);
-                            tobesaved = true;
-                        }
+                        MidiPlayerGlobal.CurrentMidiSet.SoundFonts.RemoveAt(isf);
+                        tobesaved = true;
                     }
-                    if (tobesaved)
-                        MidiPlayerGlobal.CurrentMidiSet.Save();
+                    else
+                        isf++;
                 }
 
+                // Active sound font exists in midiset ?
+                if (MidiPlayerGlobal.CurrentMidiSet != null && MidiPlayerGlobal.ImSFCurrent != null)
+                {
+                    if (MidiPlayerGlobal.CurrentMidiSet.SoundFonts != null && MidiPlayerGlobal.CurrentMidiSet.SoundFonts.Find(s => s.Name == MidiPlayerGlobal.ImSFCurrent.SoundFontName) == null)
+                    {
+                        // no the current SF has been remove from resource, define first SF  as active or nothing if no SF exists
+                        if (MidiPlayerGlobal.CurrentMidiSet.SoundFonts.Count >= 0)
+                        {
+                            MidiPlayerGlobal.CurrentMidiSet.SetActiveSoundFont(0);
+                            MidiPlayerGlobal.LoadCurrentSF();
+                            //LoadImSF();
+                        }
+                        else
+                            MidiPlayerGlobal.CurrentMidiSet.SetActiveSoundFont(-1);
+                        tobesaved = true;
+                    }
+                }
+                if (tobesaved)
+                    MidiPlayerGlobal.CurrentMidiSet.Save();
             }
             catch (System.Exception ex)
             {
@@ -327,7 +276,7 @@ namespace MidiPlayerTK
                 MidiPlayerGlobal.ErrorDetail(ex);
             }
         }
-        /// <summary>
+        /// <summary>@brief
         /// Renum midi files
         /// </summary>
         public static void RenumMidiFile()

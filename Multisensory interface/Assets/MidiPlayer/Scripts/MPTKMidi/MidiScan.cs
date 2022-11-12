@@ -10,12 +10,12 @@ using System.IO;
 
 namespace MidiPlayerTK
 {
-    /// <summary>
+    /// <summary>@brief
     /// Scan a midifile and return information
     /// </summary>
     public class MidiScan
     {
-        /// <summary>
+        /// <summary>@brief
         /// Return information about a midifile : patch change, copyright, ...
         /// </summary>
         /// <param name="pathfilename"></param>
@@ -41,8 +41,20 @@ namespace MidiPlayerTK
                     Info.Add(string.Format("Quarters count in a beat:{0}", midifile.MPTK_NumberQuarterBeat));
                     Info.Add(string.Format("Ticks per Quarter Note: {0}", midifile.midifile.DeltaTicksPerQuarterNote));
                     Info.Add("");
-                    //if (false)
+
+                    if (withNoteOn || withNoteOff || withControlChange || withPatchChange || withAfterTouch || withMeta || withOthers)
                     {
+                        Info.Add("Legend MIDI event");
+                        Info.Add("I: Event Index");
+                        Info.Add("A: Absolute time in ticks");
+                        Info.Add("D: Delta time in ticks from the last event");
+                        Info.Add("R: Real time in seconds of the event with tempo change taken into account");
+                        Info.Add("T: MIDI Track of this event");
+                        Info.Add("C: MIDI Channel of this event");
+                        Info.Add("");
+                        Info.Add("*** Raw scan of the MIDI file ***");
+                        Info.Add("");
+
                         foreach (TrackMidiEvent trackEvent in midifile.MPTK_MidiEvents)
                         {
                             switch (trackEvent.Event.CommandCode)

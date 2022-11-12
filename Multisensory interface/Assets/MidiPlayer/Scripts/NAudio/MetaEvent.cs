@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MPTK.NAudio.Midi 
 {
-    /// <summary>
+    /// <summary>@brief
     /// Represents a MIDI meta event
     /// </summary>
     public class MetaEvent : MidiEvent 
@@ -12,7 +12,7 @@ namespace MPTK.NAudio.Midi
         private MetaEventType metaEvent;
         internal int metaDataLength;
 
-        /// <summary>
+        /// <summary>@brief
         /// Gets the type of this meta event
         /// </summary>
         public MetaEventType MetaEventType
@@ -23,14 +23,14 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Empty constructor
         /// </summary>
         protected MetaEvent()
         {
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Custom constructor for use by derived types, who will manage the data themselves
         /// </summary>
         /// <param name="metaEventType">Meta event type</param>
@@ -43,7 +43,7 @@ namespace MPTK.NAudio.Midi
             this.metaDataLength = metaDataLength;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a deep clone of this MIDI event.
         /// </summary>
         public override MidiEvent Clone()
@@ -51,7 +51,7 @@ namespace MPTK.NAudio.Midi
             return new MetaEvent(metaEvent, metaDataLength, AbsoluteTime);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Reads a meta-event from a stream
         /// </summary>
         /// <param name="br">A binary reader based on the stream of MIDI data</param>
@@ -116,7 +116,7 @@ namespace MPTK.NAudio.Midi
             return me;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Describes this meta event
         /// </summary>
         public override string ToString() 
@@ -124,7 +124,7 @@ namespace MPTK.NAudio.Midi
             return AbsoluteTime + " " + metaEvent;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// <see cref="MidiEvent.Export"/>
         /// </summary>
         public override void Export(ref long absoluteTime, BinaryWriter writer)

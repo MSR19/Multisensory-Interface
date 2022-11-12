@@ -4,14 +4,14 @@ using System.Text;
 
 namespace MPTK.NAudio.Midi 
 {
-    /// <summary>
+    /// <summary>@brief
     /// Represents a MIDI tempo event
     /// </summary>
     public class TempoEvent : MetaEvent 
     {
         private int microsecondsPerQuarterNote;
         
-        /// <summary>
+        /// <summary>@brief
         /// Reads a new tempo event from a MIDI stream
         /// </summary>
         /// <param name="br">The MIDI stream</param>
@@ -25,7 +25,7 @@ namespace MPTK.NAudio.Midi
             microsecondsPerQuarterNote = (br.ReadByte() << 16) + (br.ReadByte() << 8) + br.ReadByte();
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a new tempo event with specified settings
         /// </summary>
         /// <param name="microsecondsPerQuarterNote">Microseconds per quarter note</param>
@@ -36,7 +36,7 @@ namespace MPTK.NAudio.Midi
             this.microsecondsPerQuarterNote = microsecondsPerQuarterNote;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a deep clone of this MIDI event.
         /// </summary>
         public override MidiEvent Clone()
@@ -44,7 +44,7 @@ namespace MPTK.NAudio.Midi
             return (TempoEvent)MemberwiseClone();
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Describes this tempo event
         /// </summary>
         /// <returns>String describing the tempo event</returns>
@@ -56,7 +56,7 @@ namespace MPTK.NAudio.Midi
                 (60000000 / microsecondsPerQuarterNote));
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Microseconds per quarter note
         /// </summary>
         public int MicrosecondsPerQuarterNote
@@ -65,7 +65,7 @@ namespace MPTK.NAudio.Midi
             set { microsecondsPerQuarterNote = value; }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Tempo: quarter per minute
         /// </summary>
         public double Tempo
@@ -74,7 +74,7 @@ namespace MPTK.NAudio.Midi
             set { microsecondsPerQuarterNote = (int) (60000000.0/value); }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Calls base class export first, then exports the data 
         /// specific to this event
         /// <seealso cref="MidiEvent.Export">MidiEvent.Export</seealso>

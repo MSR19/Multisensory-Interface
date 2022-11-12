@@ -10,14 +10,17 @@ using MEC;
 namespace MidiPlayerTK
 {
     /// <summary>
-    /// This class, associated with the prefab MidiFileLoader is useful for loading all or a part of the MIDI events from a Midi file.\n 
+    /// Load all or a part of the MIDI events from a MIDI file to a list of MPTKEvent. This class must be used with the prefab MidiFileLoader.\n 
+    /// 
     /// No sequencer, no synthetizer, no music playing capabilities, just loading and decoding a MIDI file to the more easy class MPTKEvent.\n 
-    /// MIDI can be loaded from the MidiDB list (see Unity menu MPTK / Midi Player Setup) or from a folder on the desktop (Pro).
+    /// MIDI can be loaded from the MidiDB list (see Unity menu MPTK / Midi Player Setup) or from a folder on the desktop (Pro).\n
+    /// For more information see here https://paxstellar.fr/prefab-midifileloader/\n
     /// @snippet TestMidiFileLoad.cs Example TheMostSimpleDemoForMidiLoader
     /// </summary>
+    [HelpURL("https://paxstellar.fr/prefab-midifileloader/")]
     public partial class MidiFileLoader : MonoBehaviour
     {
-        /// <summary>
+        /// <summary>@brief
         /// Midi name to load. Use the exact name defined in Unity resources folder MidiDB without any path or extension.
         /// Tips: Add Midi files to your project with the Unity menu MPTK or add it directly in the ressource folder and open Midi File Setup to automatically integrate Midi in MPTK.
         /// </summary>
@@ -40,7 +43,7 @@ namespace MidiPlayerTK
         [HideInInspector]
         private string midiNameToPlay;
 
-        /// <summary>
+        /// <summary>@brief
         /// Index Midi. Find the Index of Midi file from the popup in MidiFileLoader inspector.\n
         /// Tips: Add Midi files to your project with the Unity menu MPTK or add it directly in the ressource folder and open Midi File Setup to automatically integrate Midi in MPTK.\n
         /// return -1 if not found
@@ -90,17 +93,17 @@ namespace MidiPlayerTK
         [HideInInspector]
         private int midiIndexToPlay;
 
-        /// <summary>
+        /// <summary>@brief
         /// Log midi events
         /// </summary>
         public bool MPTK_LogEvents;
 
-        /// <summary>
+        /// <summary>@brief
         /// Should keep note off event Events ? 
         /// </summary>
         public bool MPTK_KeepNoteOff;
 
-        /// <summary>
+        /// <summary>@brief
         /// When set to true, meta MIDI event End Track are keep. Default is false.\n
         /// If set to true, the duration of the MIDI taken into account the End Track Event.
         /// </summary>
@@ -111,12 +114,12 @@ namespace MidiPlayerTK
         // remove after v2.88
         //public bool MPTK_EnableChangeTempo;
 
-        /// <summary>
+        /// <summary>@brief
         /// Initial tempo read in the Midi.
         /// </summary>
         public double MPTK_InitialTempo;
 
-        /// <summary>
+        /// <summary>@brief
         /// Duration of the midi. 
         /// </summary>
         public TimeSpan MPTK_Duration;
@@ -124,19 +127,19 @@ namespace MidiPlayerTK
         // V2.88 removed Real Duration of the midi calculated with the midi change tempo events find inside the midi file.
         //public TimeSpan MPTK_RealDuration;
 
-        /// <summary>
+        /// <summary>@brief
         /// Duration (milliseconds) of the midi. 
         /// </summary>
         public float MPTK_DurationMS { get { try { if (midiLoaded != null) return midiLoaded.MPTK_DurationMS; } catch (System.Exception ex) { MidiPlayerGlobal.ErrorDetail(ex); } return 0f; } }
 
 
-        /// <summary>
+        /// <summary>@brief
         /// Last tick position in Midi: Time of the last midi event in sequence expressed in number of "ticks".\n
         /// MPTK_TickLast / MPTK_DeltaTicksPerQuarterNote equal the duration time of a quarter-note regardless the defined tempo.
         /// </summary>
         public long MPTK_TickLast;
 
-        /// <summary>
+        /// <summary>@brief
         /// From TimeSignature event: The numerator counts the number of beats in a measure.\n
         /// For example a numerator of 4 means that each bar contains four beats.\n
         /// This is important to know because usually the first beat of each bar has extra emphasis.\n
@@ -144,14 +147,14 @@ namespace MidiPlayerTK
         /// </summary>
         public int MPTK_NumberBeatsMeasure;
 
-        /// <summary>
+        /// <summary>@brief
         /// From TimeSignature event: number of quarter notes in a beat.\n
         /// Equal 2 Power TimeSigDenominator.\n
         /// https://paxstellar.fr/2020/09/11/midi-timing/
         /// </summary>
         public int MPTK_NumberQuarterBeat;
 
-        /// <summary>
+        /// <summary>@brief
         /// From TimeSignature event: The numerator counts the number of beats in a measure.\n
         /// For example a numerator of 4 means that each bar contains four beats.\n
         /// This is important to know because usually the first beat of each bar has extra emphasis.\n
@@ -160,7 +163,7 @@ namespace MidiPlayerTK
         /// </summary>
         public int MPTK_TimeSigNumerator;
 
-        /// <summary>
+        /// <summary>@brief
         /// From TimeSignature event: The denominator specifies the number of quarter notes in a beat.\n
         ///   2 represents a quarter-note,\n
         ///   3 represents an eighth-note, etc.\n
@@ -168,13 +171,13 @@ namespace MidiPlayerTK
         /// </summary>
         public int MPTK_TimeSigDenominator;
 
-        /// <summary>
+        /// <summary>@brief
         /// From KeySignature event: Values between -7 and 7 and specifies the key signature in terms of number of flats (if negative) or sharps (if positive)
         /// https://www.recordingblogs.com/wiki/midi-key-signature-meta-message
         /// </summary>
         public int MPTK_KeySigSharpsFlats;
 
-        /// <summary>
+        /// <summary>@brief
         /// From KeySignature event: Specifies the scale of the MIDI file.
         /// @li 0 the scale is major.
         /// @li 1 the scale is minor.
@@ -182,7 +185,7 @@ namespace MidiPlayerTK
         /// </summary>
         public int MPTK_KeySigMajorMinor;
 
-        /// <summary>
+        /// <summary>@brief
         /// From TimeSignature event: The standard MIDI clock ticks every 24 times every quarter note (crotchet)\n
         /// So a MPTK_TicksInMetronomeClick value of 24 would mean that the metronome clicks once every quarter note.\n
         /// A MPTK_TicksInMetronomeClick value of 6 would mean that the metronome clicks once every 1/8th of a note (quaver).\n
@@ -190,14 +193,14 @@ namespace MidiPlayerTK
         /// </summary>
         public int MPTK_TicksInMetronomeClick;
 
-        /// <summary>
+        /// <summary>@brief
         /// From TimeSignature event: This value specifies the number of 1/32nds of a note happen every MIDI quarter note.\n
         /// It is usually 8 which means that a quarter note happens every quarter note.\n
         /// https://paxstellar.fr/2020/09/11/midi-timing/
         /// </summary>
         public int MPTK_No32ndNotesInQuarterNote;
 
-        /// <summary>
+        /// <summary>@brief
         /// From the SetTempo event: The tempo is given in micro seconds per quarter beat. \n
         /// To convert this to BPM we needs to use the following equation:BPM = 60,000,000/[tt tt tt]\n
         /// Warning: this value can change during the playing when a change tempo event is find. \n
@@ -205,14 +208,14 @@ namespace MidiPlayerTK
         /// </summary>
         public int MPTK_MicrosecondsPerQuarterNote;
 
-        /// <summary>
+        /// <summary>@brief
         /// From Midi Header: Delta Ticks Per Quarter Note. \n
         /// Represent the duration time in "ticks" which make up a quarter-note. \n
         /// For instance, if 96, then a duration of an eighth-note in the file would be 48.
         /// </summary>
         public int MPTK_DeltaTicksPerQuarterNote;
 
-        /// <summary>
+        /// <summary>@brief
         /// Count of track read in the Midi file.\n
         /// Not to be confused with channel. A track can contains midi events for different channel.
         /// </summary>
@@ -220,7 +223,7 @@ namespace MidiPlayerTK
 
         private MidiLoad midiLoaded;
 
-        /// <summary>
+        /// <summary>@brief
         /// Get detailed information about the midi loaded. 
         /// </summary>
         public MidiLoad MPTK_MidiLoaded { get { return midiLoaded; } }
@@ -236,7 +239,7 @@ namespace MidiPlayerTK
         }
 
 
-        /// <summary>
+        /// <summary>@brief
         /// Load the midi file defined with MPTK_MidiName or MPTK_MidiIndex or from a array of bytes. Look at MPTK_MidiLoaded for detailed information about the MIDI loaded.
         /// </summary>
         /// <param name="midiBytesToLoad">byte arry from a midi stream</param>
@@ -314,7 +317,7 @@ namespace MidiPlayerTK
                 MPTK_TrackCount = midiLoaded.MPTK_TrackCount;
             }
         }
-        /// <summary>
+        /// <summary>@brief
         /// Read the list of midi events available in the Midi file from a ticks position to an end position into a List of MPTKEvent
         /// @snippet TestMidiFileLoad.cs Example TheMostSimpleDemoForMidiLoader
         /// See full example in TestMidiFileLoad.cs
@@ -340,7 +343,7 @@ namespace MidiPlayerTK
         {
             Debug.LogWarning(string.Format("No Midi loaded, {0} canceled", action));
         }
-        /// <summary>
+        /// <summary>@brief
         /// Read next Midi from the list of midi defined in MPTK (see Unity menu Midi)
         /// </summary>
         public void MPTK_Next()
@@ -371,7 +374,7 @@ namespace MidiPlayerTK
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Read previous Midi from the list of midi defined in MPTK (see Unity menu Midi)
         /// </summary>
         public void MPTK_Previous()
@@ -400,7 +403,7 @@ namespace MidiPlayerTK
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Return note length as https://en.wikipedia.org/wiki/Note_value 
         /// </summary>
         /// <param name="note"></param>

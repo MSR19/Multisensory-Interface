@@ -43,7 +43,7 @@ namespace MidiPlayerTK
         FLUID_MOD_PITCHWHEELSENS = 16
     }
 
-    /// <summary>
+    /// <summary>@brief
     /// Defined Modulator from fluid_mod_t
     /// </summary>
     public class HiMod

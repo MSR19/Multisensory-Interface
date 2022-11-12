@@ -5,9 +5,15 @@ using MidiPlayerTK;
 
 namespace DemoMVP
 {
-    /// <summary>
+    /// <summary>@brief
     /// This demo is able to load all events from a MIDI file only by script.\n
-    /// There is nothing to create in the Unity editor, just add this script to a GameObject in your scene and run!
+    /// There is nothing to create in the Unity editor, just add this script to a GameObject in your scene and run!\n
+    /// You could also:\n 
+    ///     Add a MidiFileLoader prefab in your hierarchy\n
+    ///     Add in your class:\n
+    ///         public MidiFileLoader midiFileLoader = FindObjectOfType<MidiFileLoader>()\n
+    ///     And in the Unity Start()\n
+    ///         midiFileLoader = FindObjectOfType<MidiFileLoader>();\n
     /// </summary>
     public class TheSimplestMidiLoader : MonoBehaviour
     {

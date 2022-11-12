@@ -56,6 +56,7 @@ MonoBehaviour:
   MaxDspLoad: 50
   IdSynth: 0
   IdSession: 0
+  MPTK_ResetChannel: 1
   playOnlyFirstWave: 0
   MPTK_EnablePresetDrum: 0
   MPTK_ReleaseSameNote: 1
@@ -73,6 +74,8 @@ MonoBehaviour:
   StatDspLoadMIN: 0
   StatDspLoadMAX: 0
   StatDspLoadAVG: 0
+  StatDspBufferSize: 0
+  StatDspChannelCount: 0
   StatSynthLatencyLAST: 0
   StatSynthLatencyAVG: 0
   StatSynthLatencyMIN: 0
@@ -143,9 +146,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   showMidiInfo: 0
-  showSynthParameter: 1
+  showSynthParameter: 0
   showSpatialization: 0
-  showUnitySynthParameter: 1
+  showUnitySynthParameter: 0
   showUnityPerformanceParameter: 1
   showSoundFontEffect: 0
   showUnitySynthEffect: 0
@@ -197,8 +200,8 @@ MonoBehaviour:
   MPTK_ModeSpatializer: 0
   MPTK_MaxSpatialSynth: 0
   MPTK_SpatialSynthEnabled: 0
-  midiNameToPlay: Donkey Kong - Country
-  midiIndexToPlay: 30
+  midiNameToPlay: Bobby Blue Bland - A Touch Of Blues
+  midiIndexToPlay: 49
   MPTK_StartPlayAtFirstNote: 0
   speed: 1
   durationEditorModeOnly: 
@@ -221,6 +224,7 @@ MonoBehaviour:
   loop: 0
   logEvents: 0
   keepNoteOff: 0
+  keepEndTrack: 0
   needDelayToStart: 0
   needDelayToStop: 0
   nextMidi: 0

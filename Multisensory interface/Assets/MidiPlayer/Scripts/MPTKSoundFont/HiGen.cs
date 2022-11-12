@@ -19,7 +19,7 @@ namespace MidiPlayerTK
         GEN_ABS_NRPN        /**< DOCME */
     }
 
-    /// <summary>
+    /// <summary>@brief
     /// Generator type. Value are defined in soundfont for each instruments and each note. 
     /// This default value can be overriden in real time. 
     /// See MPTKEvent class and https://paxstellar.fr/class-mptkevent#Generator-List
@@ -95,7 +95,7 @@ namespace MidiPlayerTK
     {               /* Generator amount structure */
         public ushort Uword;      /* unsigned 16 bit value */
 
-        /// <summary>
+        /// <summary>@brief
         /// Generator amount as a signed short
         /// </summary>
         public short Sword
@@ -104,7 +104,7 @@ namespace MidiPlayerTK
             set { Uword = (ushort)value; }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Low byte amount
         /// </summary>
         public byte Lo
@@ -113,7 +113,7 @@ namespace MidiPlayerTK
             set { Uword &= 0xFF00; Uword += value; }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// High byte amount
         /// </summary>
         public byte Hi
@@ -123,7 +123,7 @@ namespace MidiPlayerTK
         }
     }
 
-    /// <summary>
+    /// <summary>@brief
     /// Defined generator from fluid_gen_t
     /// </summary>
     public class HiGen
@@ -134,12 +134,12 @@ namespace MidiPlayerTK
         public float Val;          /**< The nominal value */
         public float Mod;          /**< Change by modulators */
         //public double nrpn;         /**< Change by NRPN messages - not used with MPTK */
-        /// <summary>
+        /// <summary>@brief
         /// generator value
         /// </summary>
         public HiGenAmount Amount;
 
-        /// <summary>
+        /// <summary>@brief
         ///  Set an array of generators to their initial value
         /// </summary>
         /// <param name="gens"></param>

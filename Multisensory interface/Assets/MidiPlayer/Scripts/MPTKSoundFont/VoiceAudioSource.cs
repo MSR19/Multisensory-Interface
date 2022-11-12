@@ -435,7 +435,7 @@ namespace MidiPlayerTK
             //    if (ChorusFilter.enabled) ChorusFilter.enabled = false;
         }
 
-        /// <summary>
+        /// <summary>@brief
         ///  week device voice: take care only of duration and release time
         /// </summary>
         public void fluid_weakvoice_write(long ticks)

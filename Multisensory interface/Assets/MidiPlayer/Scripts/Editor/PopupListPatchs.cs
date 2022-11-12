@@ -44,6 +44,7 @@ namespace MidiPlayerTK
         {
             try
             {
+                MidiCommonEditor.LoadSkinAndStyle(false);
                 GUILayout.BeginHorizontal();
                 GUILayout.Label(Content, TitleStyle);
                 if (GUILayout.Button("Close", GUILayout.Width(50), GUILayout.Height(20)))

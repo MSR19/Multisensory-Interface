@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace MPTK.NAudio.Midi 
 {
-    /// <summary>
+    /// <summary>@brief
     /// Represents a MIDI sysex message
     /// </summary>
     public class SysexEvent : MidiEvent 
@@ -13,7 +13,7 @@ namespace MPTK.NAudio.Midi
         private byte[] data;
         //private int length;
         
-        /// <summary>
+        /// <summary>@brief
         /// Reads a sysex message from a MIDI stream
         /// </summary>
         /// <param name="br">Stream of MIDI data</param>
@@ -53,7 +53,7 @@ namespace MPTK.NAudio.Midi
             return se;
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a deep clone of this MIDI event.
         /// </summary>
         public override MidiEvent Clone()
@@ -64,7 +64,7 @@ namespace MPTK.NAudio.Midi
             return new SysexEvent { data = (byte[])retData };
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Describes this sysex message
         /// </summary>
         /// <returns>A string describing the sysex message</returns>
@@ -78,7 +78,7 @@ namespace MPTK.NAudio.Midi
             return String.Format("{0} Sysex: {1} bytes\r\n{2}",this.AbsoluteTime,data.Length,sb.ToString());
         }
         
-        /// <summary>
+        /// <summary>@brief
         /// Calls base class export first, then exports the data 
         /// specific to this event
         /// <seealso cref="MidiEvent.Export">MidiEvent.Export</seealso>

@@ -5,14 +5,14 @@ using System.Collections.Generic;
 
 namespace MPTK.NAudio.Midi
 {
-    /// <summary>
+    /// <summary>@brief
     /// Utility class for comparing MidiEvent objects
     /// </summary>
     public class MidiEventComparer : IComparer<MidiEvent>
     {
         #region IComparer<MidiEvent> Members
 
-        /// <summary>
+        /// <summary>@brief
         /// Compares two MidiEvents
         /// Sorts by time, with EndTrack always sorted to the end
         /// </summary>

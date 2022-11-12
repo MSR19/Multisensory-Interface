@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MPTK.NAudio.Midi
 {
-    /// <summary>
+    /// <summary>@brief
     /// Represents a note MIDI event
     /// </summary>
     public class NoteEvent : MidiEvent
@@ -12,7 +12,7 @@ namespace MPTK.NAudio.Midi
         private int noteNumber;
         private int velocity;
 
-        /// <summary>
+        /// <summary>@brief
         /// Reads a NoteEvent from a stream of MIDI data
         /// </summary>
         /// <param name="br">Binary Reader for the stream</param>
@@ -29,7 +29,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Creates a MIDI Note Event with specified parameters
         /// </summary>
         /// <param name="absoluteTime">Absolute time of this event</param>
@@ -46,7 +46,7 @@ namespace MPTK.NAudio.Midi
 
         private static readonly string[] NoteNames = new string[] { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
 
-        /// <summary>
+        /// <summary>@brief
         /// <see cref="MidiEvent.GetAsShortMessage" />
         /// </summary>
         public override int GetAsShortMessage()
@@ -54,7 +54,7 @@ namespace MPTK.NAudio.Midi
             return base.GetAsShortMessage() + (noteNumber << 8) + (velocity << 16);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// The MIDI note number
         /// </summary>
         public virtual int NoteNumber
@@ -73,7 +73,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// The note velocity
         /// </summary>
         public int Velocity
@@ -92,7 +92,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// The note name
         /// </summary>
         public string NoteName
@@ -162,7 +162,7 @@ namespace MPTK.NAudio.Midi
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Describes the Note Event
         /// </summary>
         /// <returns>Note event as a string</returns>
@@ -174,7 +174,7 @@ namespace MPTK.NAudio.Midi
                 this.Velocity);
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// <see cref="MidiEvent.Export"/>
         /// </summary>
         public override void Export(ref long absoluteTime, BinaryWriter writer)

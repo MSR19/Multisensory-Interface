@@ -1,3 +1,31 @@
+V2.89.5 - 2022-09-24
+	Play MIDI also in editor mode.
+	Add some stat calculation from MIDI file in the editor.
+	New MVP demo: read a MIDI file, add some MIDI events, and write in a MIDI file with a few lines of script (see SimplestMidiWriter). Pro version.
+	Corrected: MidiFileWriter2.MPTK_LoadFromFile is now working.
+	Method MidiLoad.MPTK_LoadFile is now available only in PRO version.
+	MidiKeyboard (connect an external synth) is now available for CPU Silicon (M1, M2, …) on Mac. Pro version.
+
+V2.89.4 - 2022-07-23
+	New SoundFont Import: select sample format.
+	New MVP Free: TheSimplestMidiGenerator, a "Hello world" demo.
+	Replacing obsolete Unity API functions.
+	Move MPTK_Play from a bytes array to a base class. Now available for MidiFilePlayer and MidiSpatializer prefab (Pro).
+	Improvement of the pause on distance when spatialization is on.
+
+V2.89.3 - 2022-05-28
+	Update integration with last version of Oboe (Fight Android Audio Latency)
+	Can change tempo by script like MPTK_CurrentTempo = 120 (before, only MPTK_Speed was able to change the speed)
+	New MVP example to show how integrate in a few lines of script a MIDI external keyboard (Maestro Pro) 
+
+V2.89.2 - 2022-03-19
+	Update MidiFilePlayer inspector: add filter on the popup MIDI list for selecting a MIDI.
+	Update TestMidiStream: demo how to play MIDI events with the keyboard. 0-9: play notes, Arrow keys: change preset.
+	Apply Sample Rate setting when loading SoundFont to be able to play Vorbis samples (Thank to Paul).
+	Corrected MidiStreamPlayer which was not able to spatilize the sound (Unity Spatialization).
+	Add exception detection on all callback (like OnEventNotesMidi) to help detecting error in your script.
+	New design for MIDI and SoundFont setup windows. Now works fine with MacOS :-)
+
 V2.89.1 - 2021-10-03
 	Add helper link for the MidiFileLoader inspector and the related page on the web site.
 	Add delayed start to MPTK_Play (Pro version)

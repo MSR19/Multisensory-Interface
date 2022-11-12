@@ -6,7 +6,7 @@ using UnityEditor.SceneManagement;
 
 namespace MidiPlayerTK
 {
-    /// <summary>
+    /// <summary>@brief
     /// Window editor for selecting a demo in editor mode
     /// </summary>
     public class DemoLoaderWindow : EditorWindow
@@ -17,14 +17,9 @@ namespace MidiPlayerTK
 
         static float espace = 5;
 
-        static GUIStyle styleBold;
-        static GUIStyle styleButton;
-        static GUIStyle styleLabelLeft;
-        static GUIStyle styleListCenter;
-
         static bool activLog = false;
 
-        List<ToolsEditor.DefineColumn> ListDemos;
+        List<MPTKGui.StyleItem> ListDemos;
 
         [MenuItem("MPTK/Load Demonstration &D", false, 50)] // The MenuItem's are sorted in increasing order and if you add more then 10 between two items (so, create at 10, 30, 50,...    ), an Separator-Line is drawn before the menuitem.
         public static void Init()
@@ -37,22 +32,6 @@ namespace MidiPlayerTK
             {
                 window = GetWindow<DemoLoaderWindow>(true, "Demonstration Loader - Version: " + ToolsEditor.version);
                 window.minSize = new Vector2(1116, 300);
-
-                styleBold = new GUIStyle(EditorStyles.boldLabel);
-                styleBold.fontStyle = FontStyle.Bold;
-                styleBold.alignment = TextAnchor.UpperLeft;
-                styleBold.normal.textColor = Color.black;
-
-                styleButton = new GUIStyle("button");
-
-                styleListCenter = new GUIStyle(EditorStyles.textField);
-                styleListCenter.alignment = TextAnchor.MiddleCenter;
-                styleListCenter.wordWrap = true;
-
-                styleLabelLeft = new GUIStyle(EditorStyles.textField);
-                styleLabelLeft.alignment = TextAnchor.MiddleLeft;
-                styleLabelLeft.wordWrap = true;
-                styleLabelLeft.richText = true;
 
                 Demonstrator.Load();
             }
@@ -67,7 +46,7 @@ namespace MidiPlayerTK
         {
 
         }
-        /// <summary>
+        /// <summary>@brief
         /// Reload data
         /// </summary>
         private void OnFocus()
@@ -93,13 +72,14 @@ namespace MidiPlayerTK
 
                 if (window == null)
                     Init();
+                MidiCommonEditor.LoadSkinAndStyle();
 
                 float startx = 0;
                 float starty = 0;
 
                 // Background dark gray
-                float gray5 = 0.5f;
-                GUI.color = new Color(gray5, gray5, gray5);
+                //float gray5 = 0.5f;
+                //GUI.color = new Color(gray5, gray5, gray5);
                 GUI.Box(new Rect(0, 0, window.position.width, window.position.height), "", EditorStyles.helpBox);
 
                 //Debug.Log(window.position.size);
@@ -115,7 +95,7 @@ namespace MidiPlayerTK
             }
         }
 
-        /// <summary>
+        /// <summary>@brief
         /// Display, add, remove Soundfont
         /// </summary>
         private void ShowListDemos(float startX, float startY, float width, float height)
@@ -124,33 +104,33 @@ namespace MidiPlayerTK
             {
                 if (ListDemos == null)
                 {
-                    ListDemos = new List<ToolsEditor.DefineColumn>();
-                    ListDemos.Add(new ToolsEditor.DefineColumn() { Width = 20, Caption = "#" });
-                    ListDemos.Add(new ToolsEditor.DefineColumn() { Width = 180, Caption = "Load" });
+                    ListDemos = new List<MPTKGui.StyleItem>();
+                    ListDemos.Add(new MPTKGui.StyleItem() { Width = 20, Caption = "#" });
+                    ListDemos.Add(new MPTKGui.StyleItem() { Width = 180, Caption = "Load" });
                     //ListDemos.Add(new ToolsEditor.DefineColumn() { Width = 50, Caption = "Load" });
-                    ListDemos.Add(new ToolsEditor.DefineColumn() { Width = 50, Caption = "Version" });
-                    ListDemos.Add(new ToolsEditor.DefineColumn() { Width = 360, Caption = "Description" });
-                    ListDemos.Add(new ToolsEditor.DefineColumn() { Width = 180, Caption = "Scene Name" });
-                    ListDemos.Add(new ToolsEditor.DefineColumn() { Width = 180, Caption = "Main Scripts" });
-                    ListDemos.Add(new ToolsEditor.DefineColumn() { Width = 130, Caption = "Class or Prefab" });
+                    ListDemos.Add(new MPTKGui.StyleItem() { Width = 50, Caption = "Version" });
+                    ListDemos.Add(new MPTKGui.StyleItem() { Width = 360, Caption = "Description" });
+                    ListDemos.Add(new MPTKGui.StyleItem() { Width = 180, Caption = "Scene Name" });
+                    ListDemos.Add(new MPTKGui.StyleItem() { Width = 180, Caption = "Main Scripts" });
+                    ListDemos.Add(new MPTKGui.StyleItem() { Width = 130, Caption = "Class or Prefab" });
                 }
                 float titleHeight = 25;
                 float itemContentHeight = 70;
-                float gray = 0.65f;
+                //float gray = 0.65f;
 
-                GUI.color = Color.white;
+                //GUI.color = Color.white;
                 float localstartX = 0;
                 float localstartY = 0;
 
                 // Title
-                GUI.color = new Color(gray, gray, gray);
+                //GUI.color = new Color(gray, gray, gray);
                 float boxX = startX + localstartX;
-                foreach (ToolsEditor.DefineColumn column in ListDemos)
+                foreach (MPTKGui.StyleItem column in ListDemos)
                 {
-                    EditorGUI.LabelField(new Rect(boxX + column.PositionCaption, startY + localstartY, column.Width, titleHeight), column.Caption, styleListCenter);
+                    EditorGUI.LabelField(new Rect(boxX + column.Offset, startY + localstartY, column.Width, titleHeight), column.Caption, MidiCommonEditor.styleListTitle);
                     boxX += column.Width - 1;
                 }
-                GUI.color = Color.white;
+                //GUI.color = Color.white;
 
                 localstartY += titleHeight + espace;
 
@@ -162,7 +142,7 @@ namespace MidiPlayerTK
                     height - localstartY);
                 Rect listContentRect = new Rect(
                     0, 0,
-                    width - 25,
+                    width - 35,
                     (Demonstrator.Demos.Count - 1) * itemContentHeight);
 
                 scrollPosSoundFont = GUI.BeginScrollView(listVisibleRect, scrollPosSoundFont, listContentRect, false, true);
@@ -180,13 +160,14 @@ namespace MidiPlayerTK
 
                     // Id
                     colw = ListDemos[col].Width;
-                    EditorGUI.LabelField(new Rect(boxX, boxY, colw, itemContentHeight), i.ToString(), styleListCenter);
+                    EditorGUI.LabelField(new Rect(boxX, boxY, colw, itemContentHeight), i.ToString(), MidiCommonEditor.styleListRowCenter);
                     boxX += colw - 1; // -1 to avoid double border
                     col++;
 
+                    //GUI.contentColor = Color.white;
                     // title + load
                     colw = ListDemos[col].Width;
-                    if (GUI.Button(new Rect(boxX, boxY, colw, itemContentHeight), sf.Title, styleButton))
+                    if (GUI.Button(new Rect(boxX, boxY, colw, itemContentHeight), sf.Title, MidiCommonEditor.styleButtonDemo))
                     {
                         if (Application.isPlaying)
                             EditorUtility.DisplayDialog("Load a Scene", "Can't load a scnene when running", "ok");
@@ -198,6 +179,7 @@ namespace MidiPlayerTK
                             {
                                 EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
                                 EditorSceneManager.OpenScene(scenePath);
+                                MidiCommonEditor.styleLoaded = false;
                             }
                             catch (Exception ex)
                             {
@@ -209,33 +191,34 @@ namespace MidiPlayerTK
                     boxX += colw - 1; // -1 to avoid double border
                     col++;
 
+                    //GUI.contentColor = Color.black;
                     // version
                     colw = ListDemos[col].Width;
-                    EditorGUI.LabelField(new Rect(boxX, boxY, colw, itemContentHeight), sf.Version, styleListCenter);
+                    EditorGUI.LabelField(new Rect(boxX, boxY, colw, itemContentHeight), sf.Version, MidiCommonEditor.styleListRowCenter);
                     boxX += colw - 1;
                     col++;
 
                     // Description
                     colw = ListDemos[col].Width;
-                    EditorGUI.LabelField(new Rect(boxX, boxY, colw, itemContentHeight), sf.Description, styleLabelLeft);
+                    EditorGUI.LabelField(new Rect(boxX, boxY, colw, itemContentHeight), sf.Description, MidiCommonEditor.styleListRowLeft);
                     boxX += colw - 1;
                     col++;
 
                     // SceneName
                     colw = ListDemos[col].Width;
-                    EditorGUI.LabelField(new Rect(boxX, boxY, colw, itemContentHeight), sf.SceneName, styleLabelLeft);
+                    EditorGUI.LabelField(new Rect(boxX, boxY, colw, itemContentHeight), sf.SceneName, MidiCommonEditor.styleListRowLeft);
                     boxX += colw - 1;
                     col++;
 
                     // ScripName
                     colw = ListDemos[col].Width;
-                    EditorGUI.LabelField(new Rect(boxX, boxY, colw, itemContentHeight), sf.ScripName, styleLabelLeft);
+                    EditorGUI.LabelField(new Rect(boxX, boxY, colw, itemContentHeight), sf.ScripName, MidiCommonEditor.styleListRowLeft);
                     boxX += colw - 1;
                     col++;
 
                     // Prefab or class
                     colw = ListDemos[col].Width;
-                    EditorGUI.LabelField(new Rect(boxX, boxY, colw, itemContentHeight), sf.PrefabClass, styleLabelLeft);
+                    EditorGUI.LabelField(new Rect(boxX, boxY, colw, itemContentHeight), sf.PrefabClass, MidiCommonEditor.styleListRowLeft);
                     boxX += colw - 1;
                     col++;
 

@@ -4,7 +4,10 @@ using UnityEngine.Assertions;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+#if UNITY_5_5_OR_NEWER
 using UnityEngine.Profiling;
+#endif
+
 
 namespace MEC
 {
@@ -132,9 +135,9 @@ namespace MEC
 
         private static object _tmpRef;
         private static int _tmpInt;
-        //private static bool _tmpBool;
+        private static bool _tmpBool;
         private static Segment _tmpSegment;
-        //private static CoroutineHandle _tmpHandle;
+        private static CoroutineHandle _tmpHandle;
 
         private int _currentUpdateFrame;
         private int _currentLateUpdateFrame;
@@ -789,7 +792,15 @@ namespace MEC
 
                 for (coindex.i = 0; coindex.i < _lastEditorUpdateProcessSlot; coindex.i++)
                 {
-                    currentCoroutine = _indexToHandle[coindex];
+                    // TBN
+                    try
+                    {
+                        currentCoroutine = _indexToHandle[coindex];
+                    }
+                    catch
+                    {
+                        continue;
+                    }
 
                     try
                     {
@@ -3068,6 +3079,17 @@ namespace MEC
         }
 
         /// <summary>
+        /// Kills the coroutine that you pass in (ignores it if the handle is invalid or isn't running).
+        /// </summary>
+        /// <param name="handles">A list of handles to be killed.</param>
+        /// <returns>The number of coroutines that were found and killed.</returns>
+        public static int KillCoroutines(CoroutineHandle handle)
+        {
+            return ActiveInstances[handle.Key] != null
+                ? GetInstance(handle.Key).KillCoroutinesOnInstance(handle) : 0;
+        }
+
+        /// <summary>
         /// Kills all the coroutines that you pass in (ignores any that aren't running).
         /// </summary>
         /// <param name="handles">A list of handles to be killed.</param>
@@ -3697,6 +3719,16 @@ namespace MEC
         /// </summary>
         /// <param name="handles">A list of handles to coroutines you want to pause.</param>
         /// <returns>The number of coroutines that were paused.</returns>
+        public static int PauseCoroutines(CoroutineHandle handle)
+        {
+            return _instance == null ? 0 : _instance.PauseCoroutinesOnInstance(handle);
+        }
+
+        /// <summary>
+        /// This will pause any matching coroutines until ResumeCoroutines is called.
+        /// </summary>
+        /// <param name="handles">A list of handles to coroutines you want to pause.</param>
+        /// <returns>The number of coroutines that were paused.</returns>
         public static int PauseCoroutines(params CoroutineHandle[] handles)
         {
             int total = 0;
@@ -3995,6 +4027,16 @@ namespace MEC
             return count;
         }
 
+        /// <summary>
+        /// This will resume any matching coroutines that are paused.
+        /// </summary>
+        /// <param name="handles">A list of handles to coroutines you want to resume.</param>
+        /// <returns>The number of coroutines that were resumed.</returns>
+        public static int ResumeCoroutines(CoroutineHandle handle)
+        {
+            return _instance == null ? 0 : _instance.ResumeCoroutinesOnInstance(handle);
+        }
+        
         /// <summary>
         /// This will resume any matching coroutines that are paused.
         /// </summary>
@@ -6830,6 +6872,59 @@ namespace MEC
         public bool IsValid
         {
             get { return Key != 0; }
+        }
+
+        /// <summary>
+        /// This will execute the function you pass in once the coroutine this handle is pointing to is ended. This works whether this 
+        /// coroutine gets to the end of its function, throws an exception, or is the target of a KillCoroutines command. NOTE: It is 
+        /// generally a bad idea to use this function on any coroutine that you would use a CancelWith command on, because that will
+        /// typically lead to exceptions when the gameObject is destroyed.
+        /// </summary>
+        /// <param name="action">The function that you want to execute after this coroutine ends.</param>
+        /// <param name="segment">The timing segment that the OnDestroy action should be executed in.</param>
+        /// <returns></returns>
+        public CoroutineHandle OnDestroy(System.Action action, Segment segment = Segment.Update)
+        {
+            Routine inst = Routine.GetInstance(Key);
+            if (action == null || inst == null)
+                return new CoroutineHandle();
+
+            return inst.RunCoroutineOnInstance(_OnDestroy(this, action), segment);
+        }
+
+        /// <summary>
+        /// This will execute the coroutine you pass in once the coroutine this handle is pointing to is ended. This works whether this 
+        /// coroutine gets to the end of its function, throws an exception, or is the target of a KillCoroutines command. NOTE: It is 
+        /// generally a bad idea to use this function on any coroutine that you would use a CancelWith command on, because that will
+        /// typically lead to exceptions when the gameObject is destroyed.
+        /// </summary>
+        /// <param name="action">The coroutine that you want to execute after this coroutine ends.</param>
+        /// <param name="segment">The timing segment that the OnDestroy coroutine should be executed in.</param>
+        /// <returns></returns>
+        public CoroutineHandle OnDestroy(IEnumerator<float> action, Segment segment = Segment.Update)
+        {
+            Routine inst = Routine.GetInstance(Key);
+            if (action == null || inst == null)
+                return new CoroutineHandle();
+
+            return inst.RunCoroutineOnInstance(_OnDestroy(this, action), segment);
+        }
+
+        private static IEnumerator<float> _OnDestroy(CoroutineHandle watched, System.Action action)
+        {
+            while (watched.IsRunning)
+                yield return Routine.WaitForOneFrame;
+
+            action();
+        }
+
+        private static IEnumerator<float> _OnDestroy(CoroutineHandle watched, IEnumerator<float> action)
+        {
+            while (watched.IsRunning)
+                yield return Routine.WaitForOneFrame;
+
+            while (action.MoveNext())
+                yield return action.Current;
         }
     }
 

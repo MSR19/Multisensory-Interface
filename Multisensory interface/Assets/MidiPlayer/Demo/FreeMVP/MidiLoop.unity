@@ -375,8 +375,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   midiFilePlayer: {fileID: 0}
-  StartBar: 4
-  LoopBar: 6
+  StartBar: 0
+  LoopBar: 1
   ChannelSelected: -1
 --- !u!4 &1520397485
 Transform:
@@ -954,8 +954,8 @@ MonoBehaviour:
   MPTK_ModeSpatializer: 0
   MPTK_MaxSpatialSynth: 0
   MPTK_SpatialSynthEnabled: 0
-  midiNameToPlay: _Merle 16
-  midiIndexToPlay: 14
+  midiNameToPlay: _TestLoop 4-4
+  midiIndexToPlay: 28
   MPTK_StartPlayAtFirstNote: 1
   speed: 1
   durationEditorModeOnly: 

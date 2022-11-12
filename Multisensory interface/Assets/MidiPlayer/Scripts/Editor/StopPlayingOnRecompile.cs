@@ -7,7 +7,7 @@
 using UnityEditor;
 using UnityEngine;
 
-/// <summary>
+/// <summary>@brief
 /// Prevents script compilation and reload while in play mode.
 /// The editor will show a the spinning reload icon if there are unapplied changes but will not actually
 /// apply them until playmode is exited.

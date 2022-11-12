@@ -5,9 +5,12 @@ using MidiPlayerTK;
 
 namespace DemoMVP
 {
-    /// <summary>
+    /// <summary>@brief
     /// This demo is able to play a MIDI file only by script.\n
-    /// There is nothing to create in the Unity editor, just add this script to a GameObject in your scene and run!
+    /// In Unity Editor:\n
+    ///    Create a GameObject or reuse an existing one\n
+    ///    add this script to the GameObject\n
+    ///    and run!
     /// </summary>
     public class TheSimplestMidiPlayer : MonoBehaviour
     {
@@ -34,9 +37,15 @@ namespace DemoMVP
             Debug.Log("Start: select a MIDI file from the MPTK DB and play");
 
             // Select a MIDI from the MIDI DB (with exact name)
-            midiFilePlayer.MPTK_MidiName = "Bach - Fugue";
+            midiFilePlayer.MPTK_MidiName = "Bach can1";
             // Play the MIDI file
             midiFilePlayer.MPTK_Play();
+
+            // If you only want to load the MIDI and read informartion like duration,
+            // just, comment MPTK_Play() and uncomment these two lines:
+                // MidiLoad midiLoadeded = midiFilePlayer.MPTK_Load();
+                // Debug.Log(midiLoadeded.MPTK_DurationMS);
+            // The MIDI is read but not play.
         }
     }
 }
